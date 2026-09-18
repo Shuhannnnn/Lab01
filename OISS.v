@@ -1,3 +1,5 @@
+// Legal-input optimization: every opcode latency is 1..50 cycles.
+// See Lab01_Exercise_2026_fall.pdf for the narrower per-opcode ranges.
 module OISS (
     input  [95:0] Inst_seq_I,
     input  [47:0] Inst_latency_I,
@@ -134,39 +136,89 @@ wire [7:0] indep_mask = ~active;
 
 
 //////// CHAIN COMPACTION ////////
-reg [2:0] chain0_inst [0:7];
-reg [2:0] chain1_inst [0:7];
-reg [3:0] chain0_len;
-reg [3:0] chain1_len;
-
-reg [3:0] c0_ptr;
-reg [3:0] c1_ptr;
-integer compact_i;
-
-always @(*) begin
-    c0_ptr = 4'd0;
-    c1_ptr = 4'd0;
-
-    for (compact_i = 0; compact_i < 8; compact_i = compact_i + 1) begin
-        chain0_inst[compact_i] = 3'd0;
-        chain1_inst[compact_i] = 3'd0;
-    end
-
-    for (compact_i = 0; compact_i < 8; compact_i = compact_i + 1) begin
-        if (chain0_mask[compact_i]) begin
-            chain0_inst[c0_ptr] = compact_i;
-            c0_ptr = c0_ptr + 4'd1;
-        end
-        else if (chain1_mask[compact_i]) begin
-            chain1_inst[c1_ptr] = compact_i;
-            c1_ptr = c1_ptr + 4'd1;
-        end
-    end
-
-    chain0_len = c0_ptr;
-    chain1_len = c1_ptr;
-end
-
+wire [2:0] chain0_inst [0:7];
+wire [2:0] chain1_inst [0:7];
+wire [3:0] c0_rank [0:8];
+wire [3:0] c1_rank [0:8];
+assign c0_rank[0] = 4'd0;
+assign c1_rank[0] = 4'd0;
+genvar compact_g;
+generate for (compact_g=0; compact_g<8; compact_g=compact_g+1) begin: GEN_RANK
+  assign c0_rank[compact_g+1] = c0_rank[compact_g] + {3'd0,chain0_mask[compact_g]};
+  assign c1_rank[compact_g+1] = c1_rank[compact_g] + {3'd0,chain1_mask[compact_g]};
+end endgenerate
+wire [3:0] chain0_len = c0_rank[8];
+wire [3:0] chain1_len = c1_rank[8];
+assign chain0_inst[0] = ({3{chain0_mask[1] && (c0_rank[1] == 4'd0)}} & 3'd1) |
+    ({3{chain0_mask[2] && (c0_rank[2] == 4'd0)}} & 3'd2) |
+    ({3{chain0_mask[3] && (c0_rank[3] == 4'd0)}} & 3'd3) |
+    ({3{chain0_mask[4] && (c0_rank[4] == 4'd0)}} & 3'd4) |
+    ({3{chain0_mask[5] && (c0_rank[5] == 4'd0)}} & 3'd5) |
+    ({3{chain0_mask[6] && (c0_rank[6] == 4'd0)}} & 3'd6) |
+    ({3{chain0_mask[7] && (c0_rank[7] == 4'd0)}} & 3'd7);
+assign chain0_inst[1] = ({3{chain0_mask[1] && (c0_rank[1] == 4'd1)}} & 3'd1) |
+    ({3{chain0_mask[2] && (c0_rank[2] == 4'd1)}} & 3'd2) |
+    ({3{chain0_mask[3] && (c0_rank[3] == 4'd1)}} & 3'd3) |
+    ({3{chain0_mask[4] && (c0_rank[4] == 4'd1)}} & 3'd4) |
+    ({3{chain0_mask[5] && (c0_rank[5] == 4'd1)}} & 3'd5) |
+    ({3{chain0_mask[6] && (c0_rank[6] == 4'd1)}} & 3'd6) |
+    ({3{chain0_mask[7] && (c0_rank[7] == 4'd1)}} & 3'd7);
+assign chain0_inst[2] = ({3{chain0_mask[2] && (c0_rank[2] == 4'd2)}} & 3'd2) |
+    ({3{chain0_mask[3] && (c0_rank[3] == 4'd2)}} & 3'd3) |
+    ({3{chain0_mask[4] && (c0_rank[4] == 4'd2)}} & 3'd4) |
+    ({3{chain0_mask[5] && (c0_rank[5] == 4'd2)}} & 3'd5) |
+    ({3{chain0_mask[6] && (c0_rank[6] == 4'd2)}} & 3'd6) |
+    ({3{chain0_mask[7] && (c0_rank[7] == 4'd2)}} & 3'd7);
+assign chain0_inst[3] = ({3{chain0_mask[3] && (c0_rank[3] == 4'd3)}} & 3'd3) |
+    ({3{chain0_mask[4] && (c0_rank[4] == 4'd3)}} & 3'd4) |
+    ({3{chain0_mask[5] && (c0_rank[5] == 4'd3)}} & 3'd5) |
+    ({3{chain0_mask[6] && (c0_rank[6] == 4'd3)}} & 3'd6) |
+    ({3{chain0_mask[7] && (c0_rank[7] == 4'd3)}} & 3'd7);
+assign chain0_inst[4] = ({3{chain0_mask[4] && (c0_rank[4] == 4'd4)}} & 3'd4) |
+    ({3{chain0_mask[5] && (c0_rank[5] == 4'd4)}} & 3'd5) |
+    ({3{chain0_mask[6] && (c0_rank[6] == 4'd4)}} & 3'd6) |
+    ({3{chain0_mask[7] && (c0_rank[7] == 4'd4)}} & 3'd7);
+assign chain0_inst[5] = ({3{chain0_mask[5] && (c0_rank[5] == 4'd5)}} & 3'd5) |
+    ({3{chain0_mask[6] && (c0_rank[6] == 4'd5)}} & 3'd6) |
+    ({3{chain0_mask[7] && (c0_rank[7] == 4'd5)}} & 3'd7);
+assign chain0_inst[6] = ({3{chain0_mask[6] && (c0_rank[6] == 4'd6)}} & 3'd6) |
+    ({3{chain0_mask[7] && (c0_rank[7] == 4'd6)}} & 3'd7);
+assign chain0_inst[7] = ({3{chain0_mask[7] && (c0_rank[7] == 4'd7)}} & 3'd7);
+assign chain1_inst[0] = ({3{chain1_mask[1] && (c1_rank[1] == 4'd0)}} & 3'd1) |
+    ({3{chain1_mask[2] && (c1_rank[2] == 4'd0)}} & 3'd2) |
+    ({3{chain1_mask[3] && (c1_rank[3] == 4'd0)}} & 3'd3) |
+    ({3{chain1_mask[4] && (c1_rank[4] == 4'd0)}} & 3'd4) |
+    ({3{chain1_mask[5] && (c1_rank[5] == 4'd0)}} & 3'd5) |
+    ({3{chain1_mask[6] && (c1_rank[6] == 4'd0)}} & 3'd6) |
+    ({3{chain1_mask[7] && (c1_rank[7] == 4'd0)}} & 3'd7);
+assign chain1_inst[1] = ({3{chain1_mask[1] && (c1_rank[1] == 4'd1)}} & 3'd1) |
+    ({3{chain1_mask[2] && (c1_rank[2] == 4'd1)}} & 3'd2) |
+    ({3{chain1_mask[3] && (c1_rank[3] == 4'd1)}} & 3'd3) |
+    ({3{chain1_mask[4] && (c1_rank[4] == 4'd1)}} & 3'd4) |
+    ({3{chain1_mask[5] && (c1_rank[5] == 4'd1)}} & 3'd5) |
+    ({3{chain1_mask[6] && (c1_rank[6] == 4'd1)}} & 3'd6) |
+    ({3{chain1_mask[7] && (c1_rank[7] == 4'd1)}} & 3'd7);
+assign chain1_inst[2] = ({3{chain1_mask[2] && (c1_rank[2] == 4'd2)}} & 3'd2) |
+    ({3{chain1_mask[3] && (c1_rank[3] == 4'd2)}} & 3'd3) |
+    ({3{chain1_mask[4] && (c1_rank[4] == 4'd2)}} & 3'd4) |
+    ({3{chain1_mask[5] && (c1_rank[5] == 4'd2)}} & 3'd5) |
+    ({3{chain1_mask[6] && (c1_rank[6] == 4'd2)}} & 3'd6) |
+    ({3{chain1_mask[7] && (c1_rank[7] == 4'd2)}} & 3'd7);
+assign chain1_inst[3] = ({3{chain1_mask[3] && (c1_rank[3] == 4'd3)}} & 3'd3) |
+    ({3{chain1_mask[4] && (c1_rank[4] == 4'd3)}} & 3'd4) |
+    ({3{chain1_mask[5] && (c1_rank[5] == 4'd3)}} & 3'd5) |
+    ({3{chain1_mask[6] && (c1_rank[6] == 4'd3)}} & 3'd6) |
+    ({3{chain1_mask[7] && (c1_rank[7] == 4'd3)}} & 3'd7);
+assign chain1_inst[4] = ({3{chain1_mask[4] && (c1_rank[4] == 4'd4)}} & 3'd4) |
+    ({3{chain1_mask[5] && (c1_rank[5] == 4'd4)}} & 3'd5) |
+    ({3{chain1_mask[6] && (c1_rank[6] == 4'd4)}} & 3'd6) |
+    ({3{chain1_mask[7] && (c1_rank[7] == 4'd4)}} & 3'd7);
+assign chain1_inst[5] = ({3{chain1_mask[5] && (c1_rank[5] == 4'd5)}} & 3'd5) |
+    ({3{chain1_mask[6] && (c1_rank[6] == 4'd5)}} & 3'd6) |
+    ({3{chain1_mask[7] && (c1_rank[7] == 4'd5)}} & 3'd7);
+assign chain1_inst[6] = ({3{chain1_mask[6] && (c1_rank[6] == 4'd6)}} & 3'd6) |
+    ({3{chain1_mask[7] && (c1_rank[7] == 4'd6)}} & 3'd7);
+assign chain1_inst[7] = ({3{chain1_mask[7] && (c1_rank[7] == 4'd7)}} & 3'd7);
 
 //////// INDEPENDENT SORTING ////////
 function [8:0] ind_hi;
@@ -362,31 +414,60 @@ end
 // Tree Calculator
 // ============================================================
 
-// shared tail precomputation
-wire [8:0] A_dep_sum_3 = A_lat_ext[3];
-wire [8:0] A_dep_sum_2 = A_lat_ext[2] + A_dep_sum_3;
-wire [8:0] A_dep_sum_1 = A_lat_ext[1] + A_dep_sum_2;
-wire [8:0] A_dep_sum_0 = A_lat_ext[0] + A_dep_sum_1;
+// Shared arithmetic for two consecutive issues from the same group.
+// Legal latency is positive: consecutive dependent issues advance by latency.
+wire [5:0] A_step_0 = A_dependent ? A_lat_ext[0][5:0] : 6'd1;
+wire [6:0] A_pair_0 = {1'b0,A_step_0} + {1'b0,A_lat_ext[1][5:0]};
+wire [5:0] A_step_1 = A_dependent ? A_lat_ext[1][5:0] : 6'd1;
+wire [6:0] A_pair_1 = {1'b0,A_step_1} + {1'b0,A_lat_ext[2][5:0]};
+wire [5:0] A_step_2 = A_dependent ? A_lat_ext[2][5:0] : 6'd1;
+wire [6:0] A_pair_2 = {1'b0,A_step_2} + {1'b0,A_lat_ext[3][5:0]};
+wire [5:0] A_step_3 = A_dependent ? A_lat_ext[3][5:0] : 6'd1;
+wire [6:0] A_pair_3 = {1'b0,A_step_3} + {1'b0,A_lat_ext[4][5:0]};
+wire [5:0] A_step_4 = A_dependent ? A_lat_ext[4][5:0] : 6'd1;
+wire [6:0] A_pair_4 = {1'b0,A_step_4} + {1'b0,A_lat_ext[5][5:0]};
+wire [5:0] A_step_5 = A_dependent ? A_lat_ext[5][5:0] : 6'd1;
+wire [6:0] A_pair_5 = {1'b0,A_step_5} + {1'b0,A_lat_ext[6][5:0]};
+wire [5:0] A_step_6 = A_dependent ? A_lat_ext[6][5:0] : 6'd1;
+wire [6:0] A_pair_6 = {1'b0,A_step_6} + {1'b0,A_lat_ext[7][5:0]};
+wire [5:0] B_step_0 = B_dependent ? B_lat_ext[0][5:0] : 6'd1;
+wire [6:0] B_pair_0 = {1'b0,B_step_0} + {1'b0,B_lat_ext[1][5:0]};
+wire [5:0] B_step_1 = B_dependent ? B_lat_ext[1][5:0] : 6'd1;
+wire [6:0] B_pair_1 = {1'b0,B_step_1} + {1'b0,B_lat_ext[2][5:0]};
+wire [5:0] B_step_2 = B_dependent ? B_lat_ext[2][5:0] : 6'd1;
+wire [6:0] B_pair_2 = {1'b0,B_step_2} + {1'b0,B_lat_ext[3][5:0]};
 
-wire [8:0] A_ind_tail_3 = 9'd1 + A_lat_ext[3];
-wire [8:0] A_ind_tail_2 = 9'd1 + ((A_lat_ext[2] > A_ind_tail_3) ?
+// shared tail precomputation
+wire [5:0] A_dep_sum_3 = A_lat_ext[3];
+wire [6:0] A_dep_sum_2 = A_lat_ext[2] + A_dep_sum_3;
+wire [7:0] A_dep_sum_1 = A_lat_ext[1] + A_dep_sum_2;
+wire [7:0] A_dep_sum_0 = A_lat_ext[0] + A_dep_sum_1;
+
+wire [5:0] A_ind_tail_3 = 9'd1 + A_lat_ext[3];
+wire [5:0] A_ind_tail_2 = 9'd1 + ((A_lat_ext[2] > A_ind_tail_3) ?
                                    A_lat_ext[2] : A_ind_tail_3);
-wire [8:0] A_ind_tail_1 = 9'd1 + ((A_lat_ext[1] > A_ind_tail_2) ?
+wire [5:0] A_ind_tail_1 = 9'd1 + ((A_lat_ext[1] > A_ind_tail_2) ?
                                    A_lat_ext[1] : A_ind_tail_2);
-wire [8:0] A_ind_tail_0 = 9'd1 + ((A_lat_ext[0] > A_ind_tail_1) ?
+wire [5:0] A_ind_tail_0 = 9'd1 + ((A_lat_ext[0] > A_ind_tail_1) ?
                                    A_lat_ext[0] : A_ind_tail_1);
 
 //////// DEPT 2 //////// 
 // n_AA
-wire [8:0] n_AA_sl, n_AA_fa, n_AA_fb, n_AA_fm;
+wire [5:0] n_AA_sl;
+wire [6:0] n_AA_fa;
+wire [0:0] n_AA_fb;
+wire [6:0] n_AA_fm;
 
-assign n_AA_sl = (A_dependent && (A_lat_ext[0] > 9'd1)) ? A_lat_ext[0] : 9'd1;
+assign n_AA_sl = A_dependent ? A_lat_ext[0] : 9'd1;
 assign n_AA_fa = n_AA_sl + A_lat_ext[1];
 assign n_AA_fb = 9'd0;
 assign n_AA_fm = (A_lat_ext[0] > n_AA_fa) ? A_lat_ext[0] : n_AA_fa;
 
 // n_AB
-wire [8:0] n_AB_sl, n_AB_fa, n_AB_fb, n_AB_fm;
+wire [0:0] n_AB_sl;
+wire [5:0] n_AB_fa;
+wire [5:0] n_AB_fb;
+wire [5:0] n_AB_fm;
 
 assign n_AB_sl = 9'd1;
 assign n_AB_fa = A_lat_ext[0];
@@ -394,7 +475,10 @@ assign n_AB_fb = 9'd1 + B_lat_ext[0];
 assign n_AB_fm = (n_AB_fa > n_AB_fb) ? n_AB_fa : n_AB_fb;
 
 // n_BA
-wire [8:0] n_BA_sl, n_BA_fa, n_BA_fb, n_BA_fm;
+wire [0:0] n_BA_sl;
+wire [5:0] n_BA_fa;
+wire [5:0] n_BA_fb;
+wire [5:0] n_BA_fm;
 
 assign n_BA_sl = 9'd1;
 assign n_BA_fa = 9'd1 + A_lat_ext[0];
@@ -402,9 +486,12 @@ assign n_BA_fb = B_lat_ext[0];
 assign n_BA_fm = (n_BA_fa > n_BA_fb) ? n_BA_fa : n_BA_fb;
 
 // n_BB
-wire [8:0] n_BB_sl, n_BB_fa, n_BB_fb, n_BB_fm;
+wire [5:0] n_BB_sl;
+wire [0:0] n_BB_fa;
+wire [6:0] n_BB_fb;
+wire [6:0] n_BB_fm;
 
-assign n_BB_sl = (B_dependent && (B_lat_ext[0] > 9'd1)) ? B_lat_ext[0] : 9'd1;
+assign n_BB_sl = B_dependent ? B_lat_ext[0] : 9'd1;
 assign n_BB_fa = 9'd0;
 assign n_BB_fb = n_BB_sl + B_lat_ext[1];
 assign n_BB_fm = (B_lat_ext[0] > n_BB_fb) ? B_lat_ext[0] : n_BB_fb;
