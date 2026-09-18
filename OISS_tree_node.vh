@@ -1,1917 +1,1302 @@
-//////// DEPTH 3 //////// 
-// depth-2 branches
-wire [5:0] n_AA_ready = n_AA_sl + 9'd1;
-wire [1:0] n_AB_ready = n_AB_sl + 9'd1;
-wire [1:0] n_BA_ready = n_BA_sl + 9'd1;
-wire [5:0] n_BB_ready = n_BB_sl + 9'd1;
-
-// n_AAA
-wire [6:0] n_AAA_sl;
-wire [7:0] n_AAA_fa;
-wire [0:0] n_AAA_fb;
-wire [7:0] n_AAA_fm;
-
-assign n_AAA_sl = n_AA_sl + A_step_1;
-assign n_AAA_fa = n_AA_sl + A_pair_1;
-assign n_AAA_fb = n_AA_fb;
-assign n_AAA_fm = (n_AAA_fa > n_AA_fm) ? n_AAA_fa : n_AA_fm;
-
-// n_AAB
-wire [5:0] n_AAB_sl;
-wire [6:0] n_AAB_fa;
-wire [6:0] n_AAB_fb;
-wire [6:0] n_AAB_fm;
-
-assign n_AAB_sl = n_AA_ready;
-assign n_AAB_fa = n_AA_fa;
-assign n_AAB_fb = n_AA_ready + B_lat_ext[0];
-assign n_AAB_fm = (n_AAB_fb > n_AA_fm) ?  n_AAB_fb : n_AA_fm;
-
-// n_ABA
-wire [5:0] n_ABA_sl;
-wire [6:0] n_ABA_fa;
-wire [5:0] n_ABA_fb;
-wire [6:0] n_ABA_fm;
-
-assign n_ABA_sl = (A_dependent && (n_AB_fa > n_AB_ready)) ?
-                  n_AB_fa : n_AB_ready;
-assign n_ABA_fa = n_ABA_sl + A_lat_ext[1];
-assign n_ABA_fb = n_AB_fb;
-assign n_ABA_fm = (n_ABA_fa > n_AB_fm) ?
-                  n_ABA_fa : n_AB_fm;
-
-// n_ABB
-wire [5:0] n_ABB_sl;
-wire [5:0] n_ABB_fa;
-wire [6:0] n_ABB_fb;
-wire [6:0] n_ABB_fm;
-
-assign n_ABB_sl = n_AB_sl + B_step_0;
-assign n_ABB_fa = n_AB_fa;
-assign n_ABB_fb = n_AB_sl + B_pair_0;
-assign n_ABB_fm = (n_ABB_fb > n_AB_fm) ? n_ABB_fb : n_AB_fm;
-
-// n_BAA
-wire [5:0] n_BAA_sl;
-wire [6:0] n_BAA_fa;
-wire [5:0] n_BAA_fb;
-wire [6:0] n_BAA_fm;
-
-assign n_BAA_sl = n_BA_sl + A_step_0;
-assign n_BAA_fa = n_BA_sl + A_pair_0;
-assign n_BAA_fb = n_BA_fb;
-assign n_BAA_fm = (n_BAA_fa > n_BA_fm) ? n_BAA_fa : n_BA_fm;
-
-// n_BAB
-wire [5:0] n_BAB_sl;
-wire [5:0] n_BAB_fa;
-wire [6:0] n_BAB_fb;
-wire [6:0] n_BAB_fm;
-
-assign n_BAB_sl = (B_dependent && (n_BA_fb > n_BA_ready)) ?
-                  n_BA_fb : n_BA_ready;
-assign n_BAB_fa = n_BA_fa;
-assign n_BAB_fb = n_BAB_sl + B_lat_ext[1];
-assign n_BAB_fm = (n_BAB_fb > n_BA_fm) ? n_BAB_fb : n_BA_fm;
-
-// n_BBA
-wire [5:0] n_BBA_sl;
-wire [6:0] n_BBA_fa;
-wire [6:0] n_BBA_fb;
-wire [6:0] n_BBA_fm;
-
-assign n_BBA_sl = n_BB_ready;
-assign n_BBA_fa = n_BB_ready + A_lat_ext[0];
-assign n_BBA_fb = n_BB_fb;
-assign n_BBA_fm = (n_BBA_fa > n_BB_fm) ? n_BBA_fa : n_BB_fm;
-
-// n_BBB
-wire [6:0] n_BBB_sl;
-wire [0:0] n_BBB_fa;
-wire [7:0] n_BBB_fb;
-wire [7:0] n_BBB_fm;
-
-assign n_BBB_sl = n_BB_sl + B_step_1;
-assign n_BBB_fa = n_BB_fa;
-assign n_BBB_fb = n_BB_sl + B_pair_1;
-assign n_BBB_fm = (n_BBB_fb > n_BB_fm) ? n_BBB_fb : n_BB_fm;
-
-//////// DEPTH 4 ////////
-// depth-3 branches
-wire [6:0] n_AAA_ready = n_AAA_sl + 9'd1;
-wire [5:0] n_AAB_ready = n_AAB_sl + 9'd1;
-wire [5:0] n_ABA_ready = n_ABA_sl + 9'd1;
-wire [5:0] n_ABB_ready = n_ABB_sl + 9'd1;
-wire [5:0] n_BAA_ready = n_BAA_sl + 9'd1;
-wire [5:0] n_BAB_ready = n_BAB_sl + 9'd1;
-wire [5:0] n_BBA_ready = n_BBA_sl + 9'd1;
-wire [6:0] n_BBB_ready = n_BBB_sl + 9'd1;
-
-// n_AAAA
-wire [7:0] n_AAAA_sl;
-wire [7:0] n_AAAA_fa;
-wire [0:0] n_AAAA_fb;
-wire [7:0] n_AAAA_fm;
-
-assign n_AAAA_sl = n_AAA_sl + A_step_2;
-assign n_AAAA_fa = n_AAA_sl + A_pair_2;
-assign n_AAAA_fb = n_AAA_fb;
-assign n_AAAA_fm = (n_AAAA_fa > n_AAA_fm) ?
-                   n_AAAA_fa : n_AAA_fm;
-
-
-// n_AAAB
-wire [6:0] n_AAAB_sl;
-wire [7:0] n_AAAB_fa;
-wire [7:0] n_AAAB_fb;
-wire [7:0] n_AAAB_fm;
-
-assign n_AAAB_sl = n_AAA_ready;
-assign n_AAAB_fa = n_AAA_fa;
-assign n_AAAB_fb = n_AAA_ready + B_lat_ext[0];
-assign n_AAAB_fm = (n_AAAB_fb > n_AAA_fm) ?
-                   n_AAAB_fb : n_AAA_fm;
-
-// n_AABA
-wire [6:0] n_AABA_sl;
-wire [7:0] n_AABA_fa;
-wire [6:0] n_AABA_fb;
-wire [7:0] n_AABA_fm;
-
-assign n_AABA_sl = (A_dependent && (n_AAB_fa > n_AAB_ready)) ?
-                   n_AAB_fa : n_AAB_ready;
-assign n_AABA_fa = n_AABA_sl + A_lat_ext[2];
-assign n_AABA_fb = n_AAB_fb;
-assign n_AABA_fm = (n_AABA_fa > n_AAB_fm) ?
-                   n_AABA_fa : n_AAB_fm;
-
-// n_AABB
-wire [6:0] n_AABB_sl;
-wire [6:0] n_AABB_fa;
-wire [7:0] n_AABB_fb;
-wire [7:0] n_AABB_fm;
-assign n_AABB_sl = n_AAB_sl + B_step_0;
-assign n_AABB_fa = n_AAB_fa;
-assign n_AABB_fb = n_AAB_sl + B_pair_0;
-assign n_AABB_fm = (n_AABB_fb > n_AAB_fm) ?
-                   n_AABB_fb : n_AAB_fm;
-
-
-// n_ABAA
-wire [6:0] n_ABAA_sl;
-wire [7:0] n_ABAA_fa;
-wire [5:0] n_ABAA_fb;
-wire [7:0] n_ABAA_fm;
-
-assign n_ABAA_sl = n_ABA_sl + A_step_1;
-assign n_ABAA_fa = n_ABA_sl + A_pair_1;
-assign n_ABAA_fb = n_ABA_fb;
-assign n_ABAA_fm = (n_ABAA_fa > n_ABA_fm) ?
-                   n_ABAA_fa : n_ABA_fm;
-
-
-// n_ABAB
-wire [5:0] n_ABAB_sl;
-wire [6:0] n_ABAB_fa;
-wire [6:0] n_ABAB_fb;
-wire [6:0] n_ABAB_fm;
-
-assign n_ABAB_sl = (B_dependent && (n_ABA_fb > n_ABA_ready)) ?
-                   n_ABA_fb : n_ABA_ready;
-assign n_ABAB_fa = n_ABA_fa;
-assign n_ABAB_fb = n_ABAB_sl + B_lat_ext[1];
-assign n_ABAB_fm = (n_ABAB_fb > n_ABA_fm) ?
-                   n_ABAB_fb : n_ABA_fm;
-
-
-// n_ABBA
-wire [5:0] n_ABBA_sl;
-wire [6:0] n_ABBA_fa;
-wire [6:0] n_ABBA_fb;
-wire [6:0] n_ABBA_fm;
-
-assign n_ABBA_sl = (A_dependent && (n_ABB_fa > n_ABB_ready)) ?
-                   n_ABB_fa : n_ABB_ready;
-assign n_ABBA_fa = n_ABBA_sl + A_lat_ext[1];
-assign n_ABBA_fb = n_ABB_fb;
-assign n_ABBA_fm = (n_ABBA_fa > n_ABB_fm) ?
-                   n_ABBA_fa : n_ABB_fm;
-
-
-// n_ABBB
-wire [6:0] n_ABBB_sl;
-wire [5:0] n_ABBB_fa;
-wire [7:0] n_ABBB_fb;
-wire [7:0] n_ABBB_fm;
-
-assign n_ABBB_sl = n_ABB_sl + B_step_1;
-assign n_ABBB_fa = n_ABB_fa;
-assign n_ABBB_fb = n_ABB_sl + B_pair_1;
-assign n_ABBB_fm = (n_ABBB_fb > n_ABB_fm) ?
-                   n_ABBB_fb : n_ABB_fm;
-
-
-// n_BAAA
-wire [6:0] n_BAAA_sl;
-wire [7:0] n_BAAA_fa;
-wire [5:0] n_BAAA_fb;
-wire [7:0] n_BAAA_fm;
-
-assign n_BAAA_sl = n_BAA_sl + A_step_1;
-assign n_BAAA_fa = n_BAA_sl + A_pair_1;
-assign n_BAAA_fb = n_BAA_fb;
-assign n_BAAA_fm = (n_BAAA_fa > n_BAA_fm) ?
-                   n_BAAA_fa : n_BAA_fm;
-
-
-// n_BAAB
-wire [5:0] n_BAAB_sl;
-wire [6:0] n_BAAB_fa;
-wire [6:0] n_BAAB_fb;
-wire [6:0] n_BAAB_fm;
-
-assign n_BAAB_sl = (B_dependent && (n_BAA_fb > n_BAA_ready)) ?
-                   n_BAA_fb : n_BAA_ready;
-assign n_BAAB_fa = n_BAA_fa;
-assign n_BAAB_fb = n_BAAB_sl + B_lat_ext[1];
-assign n_BAAB_fm = (n_BAAB_fb > n_BAA_fm) ?
-                   n_BAAB_fb : n_BAA_fm;
-
-
-// n_BABA
-wire [5:0] n_BABA_sl;
-wire [6:0] n_BABA_fa;
-wire [6:0] n_BABA_fb;
-wire [6:0] n_BABA_fm;
-
-assign n_BABA_sl = (A_dependent && (n_BAB_fa > n_BAB_ready)) ?
-                   n_BAB_fa : n_BAB_ready;
-assign n_BABA_fa = n_BABA_sl + A_lat_ext[1];
-assign n_BABA_fb = n_BAB_fb;
-assign n_BABA_fm = (n_BABA_fa > n_BAB_fm) ?
-                   n_BABA_fa : n_BAB_fm;
-
-
-// n_BABB
-wire [6:0] n_BABB_sl;
-wire [5:0] n_BABB_fa;
-wire [7:0] n_BABB_fb;
-wire [7:0] n_BABB_fm;
-
-assign n_BABB_sl = n_BAB_sl + B_step_1;
-assign n_BABB_fa = n_BAB_fa;
-assign n_BABB_fb = n_BAB_sl + B_pair_1;
-assign n_BABB_fm = (n_BABB_fb > n_BAB_fm) ?
-                   n_BABB_fb : n_BAB_fm;
-
-
-// n_BBAA
-wire [6:0] n_BBAA_sl;
-wire [7:0] n_BBAA_fa;
-wire [6:0] n_BBAA_fb;
-wire [7:0] n_BBAA_fm;
-
-assign n_BBAA_sl = n_BBA_sl + A_step_0;
-assign n_BBAA_fa = n_BBA_sl + A_pair_0;
-assign n_BBAA_fb = n_BBA_fb;
-assign n_BBAA_fm = (n_BBAA_fa > n_BBA_fm) ?
-                   n_BBAA_fa : n_BBA_fm;
-
-
-// n_BBAB
-wire [6:0] n_BBAB_sl;
-wire [6:0] n_BBAB_fa;
-wire [7:0] n_BBAB_fb;
-wire [7:0] n_BBAB_fm;
-
-assign n_BBAB_sl = (B_dependent && (n_BBA_fb > n_BBA_ready)) ?
-                   n_BBA_fb : n_BBA_ready;
-assign n_BBAB_fa = n_BBA_fa;
-assign n_BBAB_fb = n_BBAB_sl + B_lat_ext[2];
-assign n_BBAB_fm = (n_BBAB_fb > n_BBA_fm) ?
-                   n_BBAB_fb : n_BBA_fm;
-
-
-// n_BBBA
-wire [6:0] n_BBBA_sl;
-wire [7:0] n_BBBA_fa;
-wire [7:0] n_BBBA_fb;
-wire [7:0] n_BBBA_fm;
-
-assign n_BBBA_sl = n_BBB_ready;
-assign n_BBBA_fa = n_BBB_ready + A_lat_ext[0];
-assign n_BBBA_fb = n_BBB_fb;
-assign n_BBBA_fm = (n_BBBA_fa > n_BBB_fm) ?
-                   n_BBBA_fa : n_BBB_fm;
-
-
-//////// DEPTH 5 ////////
-// depth-4 branches
-wire [7:0] n_AAAA_ready = n_AAAA_sl + 9'd1;
-wire [6:0] n_AAAB_ready = n_AAAB_sl + 9'd1;
-wire [6:0] n_AABA_ready = n_AABA_sl + 9'd1;
-wire [6:0] n_AABB_ready = n_AABB_sl + 9'd1;
-wire [6:0] n_ABAA_ready = n_ABAA_sl + 9'd1;
-wire [5:0] n_ABAB_ready = n_ABAB_sl + 9'd1;
-wire [5:0] n_ABBA_ready = n_ABBA_sl + 9'd1;
-wire [6:0] n_ABBB_ready = n_ABBB_sl + 9'd1;
-wire [6:0] n_BAAA_ready = n_BAAA_sl + 9'd1;
-wire [5:0] n_BAAB_ready = n_BAAB_sl + 9'd1;
-wire [5:0] n_BABA_ready = n_BABA_sl + 9'd1;
-wire [6:0] n_BABB_ready = n_BABB_sl + 9'd1;
-wire [6:0] n_BBAA_ready = n_BBAA_sl + 9'd1;
-wire [6:0] n_BBAB_ready = n_BBAB_sl + 9'd1;
-wire [6:0] n_BBBA_ready = n_BBBA_sl + 9'd1;
-
-// n_AAAAA
-wire [7:0] n_AAAAA_sl;
-wire [7:0] n_AAAAA_fa;
-wire [0:0] n_AAAAA_fb;
-wire [7:0] n_AAAAA_fm;
-assign n_AAAAA_sl = n_AAAA_sl + A_step_3;
-assign n_AAAAA_fa = n_AAAA_sl + A_pair_3;
-assign n_AAAAA_fb = n_AAAA_fb;
-assign n_AAAAA_fm = (n_AAAAA_fa > n_AAAA_fm) ?
-                    n_AAAAA_fa : n_AAAA_fm;
-
-// n_AAAAB
-wire [7:0] n_AAAAB_sl;
-wire [7:0] n_AAAAB_fa;
-wire [7:0] n_AAAAB_fb;
-wire [7:0] n_AAAAB_fm;
-assign n_AAAAB_sl = n_AAAA_ready;
-assign n_AAAAB_fa = n_AAAA_fa;
-assign n_AAAAB_fb = n_AAAA_ready + B_lat_ext[0];
-assign n_AAAAB_fm = (n_AAAAB_fb > n_AAAA_fm) ?
-                    n_AAAAB_fb : n_AAAA_fm;
-
-// n_AAABA
-wire [7:0] n_AAABA_sl;
-wire [7:0] n_AAABA_fa;
-wire [7:0] n_AAABA_fb;
-wire [7:0] n_AAABA_fm;
-assign n_AAABA_sl = (A_dependent && (n_AAAB_fa > n_AAAB_ready)) ?
-                    n_AAAB_fa : n_AAAB_ready;
-assign n_AAABA_fa = n_AAABA_sl + A_lat_ext[3];
-assign n_AAABA_fb = n_AAAB_fb;
-assign n_AAABA_fm = (n_AAABA_fa > n_AAAB_fm) ?
-                    n_AAABA_fa : n_AAAB_fm;
-
-// n_AAABB
-wire [7:0] n_AAABB_sl;
-wire [7:0] n_AAABB_fa;
-wire [7:0] n_AAABB_fb;
-wire [7:0] n_AAABB_fm;
-assign n_AAABB_sl = n_AAAB_sl + B_step_0;
-assign n_AAABB_fa = n_AAAB_fa;
-assign n_AAABB_fb = n_AAAB_sl + B_pair_0;
-assign n_AAABB_fm = (n_AAABB_fb > n_AAAB_fm) ?
-                    n_AAABB_fb : n_AAAB_fm;
-
-// n_AABAA
-wire [7:0] n_AABAA_sl;
-wire [7:0] n_AABAA_fa;
-wire [6:0] n_AABAA_fb;
-wire [7:0] n_AABAA_fm;
-assign n_AABAA_sl = n_AABA_sl + A_step_2;
-assign n_AABAA_fa = n_AABA_sl + A_pair_2;
-assign n_AABAA_fb = n_AABA_fb;
-assign n_AABAA_fm = (n_AABAA_fa > n_AABA_fm) ?
-                    n_AABAA_fa : n_AABA_fm;
-
-// n_AABAB
-wire [6:0] n_AABAB_sl;
-wire [7:0] n_AABAB_fa;
-wire [7:0] n_AABAB_fb;
-wire [7:0] n_AABAB_fm;
-assign n_AABAB_sl = (B_dependent && (n_AABA_fb > n_AABA_ready)) ?
-                    n_AABA_fb : n_AABA_ready;
-assign n_AABAB_fa = n_AABA_fa;
-assign n_AABAB_fb = n_AABAB_sl + B_lat_ext[1];
-assign n_AABAB_fm = (n_AABAB_fb > n_AABA_fm) ?
-                    n_AABAB_fb : n_AABA_fm;
-
-// n_AABBA
-wire [6:0] n_AABBA_sl;
-wire [7:0] n_AABBA_fa;
-wire [7:0] n_AABBA_fb;
-wire [7:0] n_AABBA_fm;
-assign n_AABBA_sl = (A_dependent && (n_AABB_fa > n_AABB_ready)) ?
-                    n_AABB_fa : n_AABB_ready;
-assign n_AABBA_fa = n_AABBA_sl + A_lat_ext[2];
-assign n_AABBA_fb = n_AABB_fb;
-assign n_AABBA_fm = (n_AABBA_fa > n_AABB_fm) ?
-                    n_AABBA_fa : n_AABB_fm;
-
-// n_AABBB
-wire [7:0] n_AABBB_sl;
-wire [6:0] n_AABBB_fa;
-wire [7:0] n_AABBB_fb;
-wire [7:0] n_AABBB_fm;
-assign n_AABBB_sl = n_AABB_sl + B_step_1;
-assign n_AABBB_fa = n_AABB_fa;
-assign n_AABBB_fb = n_AABB_sl + B_pair_1;
-assign n_AABBB_fm = (n_AABBB_fb > n_AABB_fm) ?
-                    n_AABBB_fb : n_AABB_fm;
-
-// n_ABAAA
-wire [7:0] n_ABAAA_sl;
-wire [7:0] n_ABAAA_fa;
-wire [5:0] n_ABAAA_fb;
-wire [7:0] n_ABAAA_fm;
-assign n_ABAAA_sl = n_ABAA_sl + A_step_2;
-assign n_ABAAA_fa = n_ABAA_sl + A_pair_2;
-assign n_ABAAA_fb = n_ABAA_fb;
-assign n_ABAAA_fm = (n_ABAAA_fa > n_ABAA_fm) ?
-                    n_ABAAA_fa : n_ABAA_fm;
-
-// n_ABAAB
-wire [6:0] n_ABAAB_sl;
-wire [7:0] n_ABAAB_fa;
-wire [7:0] n_ABAAB_fb;
-wire [7:0] n_ABAAB_fm;
-assign n_ABAAB_sl = (B_dependent && (n_ABAA_fb > n_ABAA_ready)) ?
-                    n_ABAA_fb : n_ABAA_ready;
-assign n_ABAAB_fa = n_ABAA_fa;
-assign n_ABAAB_fb = n_ABAAB_sl + B_lat_ext[1];
-assign n_ABAAB_fm = (n_ABAAB_fb > n_ABAA_fm) ?
-                    n_ABAAB_fb : n_ABAA_fm;
-
-// n_ABABA
-wire [6:0] n_ABABA_sl;
-wire [7:0] n_ABABA_fa;
-wire [6:0] n_ABABA_fb;
-wire [7:0] n_ABABA_fm;
-assign n_ABABA_sl = (A_dependent && (n_ABAB_fa > n_ABAB_ready)) ?
-                    n_ABAB_fa : n_ABAB_ready;
-assign n_ABABA_fa = n_ABABA_sl + A_lat_ext[2];
-assign n_ABABA_fb = n_ABAB_fb;
-assign n_ABABA_fm = (n_ABABA_fa > n_ABAB_fm) ?
-                    n_ABABA_fa : n_ABAB_fm;
-
-// n_ABABB
-wire [6:0] n_ABABB_sl;
-wire [6:0] n_ABABB_fa;
-wire [7:0] n_ABABB_fb;
-wire [7:0] n_ABABB_fm;
-assign n_ABABB_sl = n_ABAB_sl + B_step_1;
-assign n_ABABB_fa = n_ABAB_fa;
-assign n_ABABB_fb = n_ABAB_sl + B_pair_1;
-assign n_ABABB_fm = (n_ABABB_fb > n_ABAB_fm) ?
-                    n_ABABB_fb : n_ABAB_fm;
-
-// n_ABBAA
-wire [6:0] n_ABBAA_sl;
-wire [7:0] n_ABBAA_fa;
-wire [6:0] n_ABBAA_fb;
-wire [7:0] n_ABBAA_fm;
-assign n_ABBAA_sl = n_ABBA_sl + A_step_1;
-assign n_ABBAA_fa = n_ABBA_sl + A_pair_1;
-assign n_ABBAA_fb = n_ABBA_fb;
-assign n_ABBAA_fm = (n_ABBAA_fa > n_ABBA_fm) ?
-                    n_ABBAA_fa : n_ABBA_fm;
-
-// n_ABBAB
-wire [6:0] n_ABBAB_sl;
-wire [6:0] n_ABBAB_fa;
-wire [7:0] n_ABBAB_fb;
-wire [7:0] n_ABBAB_fm;
-assign n_ABBAB_sl = (B_dependent && (n_ABBA_fb > n_ABBA_ready)) ?
-                    n_ABBA_fb : n_ABBA_ready;
-assign n_ABBAB_fa = n_ABBA_fa;
-assign n_ABBAB_fb = n_ABBAB_sl + B_lat_ext[2];
-assign n_ABBAB_fm = (n_ABBAB_fb > n_ABBA_fm) ?
-                    n_ABBAB_fb : n_ABBA_fm;
-
-// n_ABBBA
-wire [6:0] n_ABBBA_sl;
-wire [7:0] n_ABBBA_fa;
-wire [7:0] n_ABBBA_fb;
-wire [7:0] n_ABBBA_fm;
-assign n_ABBBA_sl = (A_dependent && (n_ABBB_fa > n_ABBB_ready)) ?
-                    n_ABBB_fa : n_ABBB_ready;
-assign n_ABBBA_fa = n_ABBBA_sl + A_lat_ext[1];
-assign n_ABBBA_fb = n_ABBB_fb;
-assign n_ABBBA_fm = (n_ABBBA_fa > n_ABBB_fm) ?
-                    n_ABBBA_fa : n_ABBB_fm;
-
-// n_BAAAA
-wire [7:0] n_BAAAA_sl;
-wire [7:0] n_BAAAA_fa;
-wire [5:0] n_BAAAA_fb;
-wire [7:0] n_BAAAA_fm;
-assign n_BAAAA_sl = n_BAAA_sl + A_step_2;
-assign n_BAAAA_fa = n_BAAA_sl + A_pair_2;
-assign n_BAAAA_fb = n_BAAA_fb;
-assign n_BAAAA_fm = (n_BAAAA_fa > n_BAAA_fm) ?
-                    n_BAAAA_fa : n_BAAA_fm;
-
-// n_BAAAB
-wire [6:0] n_BAAAB_sl;
-wire [7:0] n_BAAAB_fa;
-wire [7:0] n_BAAAB_fb;
-wire [7:0] n_BAAAB_fm;
-assign n_BAAAB_sl = (B_dependent && (n_BAAA_fb > n_BAAA_ready)) ?
-                    n_BAAA_fb : n_BAAA_ready;
-assign n_BAAAB_fa = n_BAAA_fa;
-assign n_BAAAB_fb = n_BAAAB_sl + B_lat_ext[1];
-assign n_BAAAB_fm = (n_BAAAB_fb > n_BAAA_fm) ?
-                    n_BAAAB_fb : n_BAAA_fm;
-
-// n_BAABA
-wire [6:0] n_BAABA_sl;
-wire [7:0] n_BAABA_fa;
-wire [6:0] n_BAABA_fb;
-wire [7:0] n_BAABA_fm;
-assign n_BAABA_sl = (A_dependent && (n_BAAB_fa > n_BAAB_ready)) ?
-                    n_BAAB_fa : n_BAAB_ready;
-assign n_BAABA_fa = n_BAABA_sl + A_lat_ext[2];
-assign n_BAABA_fb = n_BAAB_fb;
-assign n_BAABA_fm = (n_BAABA_fa > n_BAAB_fm) ?
-                    n_BAABA_fa : n_BAAB_fm;
-
-// n_BAABB
-wire [6:0] n_BAABB_sl;
-wire [6:0] n_BAABB_fa;
-wire [7:0] n_BAABB_fb;
-wire [7:0] n_BAABB_fm;
-assign n_BAABB_sl = n_BAAB_sl + B_step_1;
-assign n_BAABB_fa = n_BAAB_fa;
-assign n_BAABB_fb = n_BAAB_sl + B_pair_1;
-assign n_BAABB_fm = (n_BAABB_fb > n_BAAB_fm) ?
-                    n_BAABB_fb : n_BAAB_fm;
-
-// n_BABAA
-wire [6:0] n_BABAA_sl;
-wire [7:0] n_BABAA_fa;
-wire [6:0] n_BABAA_fb;
-wire [7:0] n_BABAA_fm;
-assign n_BABAA_sl = n_BABA_sl + A_step_1;
-assign n_BABAA_fa = n_BABA_sl + A_pair_1;
-assign n_BABAA_fb = n_BABA_fb;
-assign n_BABAA_fm = (n_BABAA_fa > n_BABA_fm) ?
-                    n_BABAA_fa : n_BABA_fm;
-
-// n_BABAB
-wire [6:0] n_BABAB_sl;
-wire [6:0] n_BABAB_fa;
-wire [7:0] n_BABAB_fb;
-wire [7:0] n_BABAB_fm;
-assign n_BABAB_sl = (B_dependent && (n_BABA_fb > n_BABA_ready)) ?
-                    n_BABA_fb : n_BABA_ready;
-assign n_BABAB_fa = n_BABA_fa;
-assign n_BABAB_fb = n_BABAB_sl + B_lat_ext[2];
-assign n_BABAB_fm = (n_BABAB_fb > n_BABA_fm) ?
-                    n_BABAB_fb : n_BABA_fm;
-
-// n_BABBA
-wire [6:0] n_BABBA_sl;
-wire [7:0] n_BABBA_fa;
-wire [7:0] n_BABBA_fb;
-wire [7:0] n_BABBA_fm;
-assign n_BABBA_sl = (A_dependent && (n_BABB_fa > n_BABB_ready)) ?
-                    n_BABB_fa : n_BABB_ready;
-assign n_BABBA_fa = n_BABBA_sl + A_lat_ext[1];
-assign n_BABBA_fb = n_BABB_fb;
-assign n_BABBA_fm = (n_BABBA_fa > n_BABB_fm) ?
-                    n_BABBA_fa : n_BABB_fm;
-
-// n_BBAAA
-wire [7:0] n_BBAAA_sl;
-wire [7:0] n_BBAAA_fa;
-wire [6:0] n_BBAAA_fb;
-wire [7:0] n_BBAAA_fm;
-assign n_BBAAA_sl = n_BBAA_sl + A_step_1;
-assign n_BBAAA_fa = n_BBAA_sl + A_pair_1;
-assign n_BBAAA_fb = n_BBAA_fb;
-assign n_BBAAA_fm = (n_BBAAA_fa > n_BBAA_fm) ?
-                    n_BBAAA_fa : n_BBAA_fm;
-
-// n_BBAAB
-wire [6:0] n_BBAAB_sl;
-wire [7:0] n_BBAAB_fa;
-wire [7:0] n_BBAAB_fb;
-wire [7:0] n_BBAAB_fm;
-assign n_BBAAB_sl = (B_dependent && (n_BBAA_fb > n_BBAA_ready)) ?
-                    n_BBAA_fb : n_BBAA_ready;
-assign n_BBAAB_fa = n_BBAA_fa;
-assign n_BBAAB_fb = n_BBAAB_sl + B_lat_ext[2];
-assign n_BBAAB_fm = (n_BBAAB_fb > n_BBAA_fm) ?
-                    n_BBAAB_fb : n_BBAA_fm;
-
-// n_BBABA
-wire [6:0] n_BBABA_sl;
-wire [7:0] n_BBABA_fa;
-wire [7:0] n_BBABA_fb;
-wire [7:0] n_BBABA_fm;
-assign n_BBABA_sl = (A_dependent && (n_BBAB_fa > n_BBAB_ready)) ?
-                    n_BBAB_fa : n_BBAB_ready;
-assign n_BBABA_fa = n_BBABA_sl + A_lat_ext[1];
-assign n_BBABA_fb = n_BBAB_fb;
-assign n_BBABA_fm = (n_BBABA_fa > n_BBAB_fm) ?
-                    n_BBABA_fa : n_BBAB_fm;
-
-// n_BBBAA
-wire [7:0] n_BBBAA_sl;
-wire [7:0] n_BBBAA_fa;
-wire [7:0] n_BBBAA_fb;
-wire [7:0] n_BBBAA_fm;
-assign n_BBBAA_sl = n_BBBA_sl + A_step_0;
-assign n_BBBAA_fa = n_BBBA_sl + A_pair_0;
-assign n_BBBAA_fb = n_BBBA_fb;
-assign n_BBBAA_fm = (n_BBBAA_fa > n_BBBA_fm) ?
-                    n_BBBAA_fa : n_BBBA_fm;
-
-//////// DEPTH 6 ////////
-// depth-5 branches
-wire [7:0] n_AAAAA_ready = n_AAAAA_sl + 9'd1;
-wire [7:0] n_AAAAB_ready = n_AAAAB_sl + 9'd1;
-wire [7:0] n_AAABA_ready = n_AAABA_sl + 9'd1;
-wire [7:0] n_AAABB_ready = n_AAABB_sl + 9'd1;
-wire [7:0] n_AABAA_ready = n_AABAA_sl + 9'd1;
-wire [6:0] n_AABAB_ready = n_AABAB_sl + 9'd1;
-wire [6:0] n_AABBA_ready = n_AABBA_sl + 9'd1;
-wire [7:0] n_AABBB_ready = n_AABBB_sl + 9'd1;
-wire [7:0] n_ABAAA_ready = n_ABAAA_sl + 9'd1;
-wire [6:0] n_ABAAB_ready = n_ABAAB_sl + 9'd1;
-wire [6:0] n_ABABA_ready = n_ABABA_sl + 9'd1;
-wire [6:0] n_ABABB_ready = n_ABABB_sl + 9'd1;
-wire [6:0] n_ABBAA_ready = n_ABBAA_sl + 9'd1;
-wire [6:0] n_ABBAB_ready = n_ABBAB_sl + 9'd1;
-wire [6:0] n_ABBBA_ready = n_ABBBA_sl + 9'd1;
-wire [7:0] n_BAAAA_ready = n_BAAAA_sl + 9'd1;
-wire [6:0] n_BAAAB_ready = n_BAAAB_sl + 9'd1;
-wire [6:0] n_BAABA_ready = n_BAABA_sl + 9'd1;
-wire [6:0] n_BAABB_ready = n_BAABB_sl + 9'd1;
-wire [6:0] n_BABAA_ready = n_BABAA_sl + 9'd1;
-wire [6:0] n_BABAB_ready = n_BABAB_sl + 9'd1;
-wire [6:0] n_BABBA_ready = n_BABBA_sl + 9'd1;
-wire [7:0] n_BBAAA_ready = n_BBAAA_sl + 9'd1;
-wire [6:0] n_BBAAB_ready = n_BBAAB_sl + 9'd1;
-wire [6:0] n_BBABA_ready = n_BBABA_sl + 9'd1;
-wire [7:0] n_BBBAA_ready = n_BBBAA_sl + 9'd1;
-
-// n_AAAAAA
-wire [7:0] n_AAAAAA_sl;
-wire [8:0] n_AAAAAA_fa;
-wire [0:0] n_AAAAAA_fb;
-wire [8:0] n_AAAAAA_fm;
-assign n_AAAAAA_sl = n_AAAAA_sl + A_step_4;
-assign n_AAAAAA_fa = n_AAAAA_sl + A_pair_4;
-assign n_AAAAAA_fb = n_AAAAA_fb;
-assign n_AAAAAA_fm = (n_AAAAAA_fa > n_AAAAA_fm) ?
-                     n_AAAAAA_fa : n_AAAAA_fm;
-
-// n_AAAAAB
-wire [7:0] n_AAAAAB_sl;
-wire [7:0] n_AAAAAB_fa;
-wire [7:0] n_AAAAAB_fb;
-wire [7:0] n_AAAAAB_fm;
-assign n_AAAAAB_sl = n_AAAAA_ready;
-assign n_AAAAAB_fa = n_AAAAA_fa;
-assign n_AAAAAB_fb = n_AAAAAB_sl + B_lat_ext[0];
-assign n_AAAAAB_fm = (n_AAAAAB_fb > n_AAAAA_fm) ?
-                     n_AAAAAB_fb : n_AAAAA_fm;
-
-// n_AAAABA
-wire [7:0] n_AAAABA_sl;
-wire [7:0] n_AAAABA_fa;
-wire [7:0] n_AAAABA_fb;
-wire [7:0] n_AAAABA_fm;
-assign n_AAAABA_sl = (A_dependent && (n_AAAAB_fa > n_AAAAB_ready)) ?
-                     n_AAAAB_fa : n_AAAAB_ready;
-assign n_AAAABA_fa = n_AAAABA_sl + A_lat_ext[4];
-assign n_AAAABA_fb = n_AAAAB_fb;
-assign n_AAAABA_fm = (n_AAAABA_fa > n_AAAAB_fm) ?
-                     n_AAAABA_fa : n_AAAAB_fm;
-
-// n_AAAABB
-wire [7:0] n_AAAABB_sl;
-wire [7:0] n_AAAABB_fa;
-wire [7:0] n_AAAABB_fb;
-wire [7:0] n_AAAABB_fm;
-assign n_AAAABB_sl = n_AAAAB_sl + B_step_0;
-assign n_AAAABB_fa = n_AAAAB_fa;
-assign n_AAAABB_fb = n_AAAAB_sl + B_pair_0;
-assign n_AAAABB_fm = (n_AAAABB_fb > n_AAAAB_fm) ?
-                     n_AAAABB_fb : n_AAAAB_fm;
-
-// n_AAABAA
-wire [7:0] n_AAABAA_sl;
-wire [7:0] n_AAABAA_fa;
-wire [7:0] n_AAABAA_fb;
-wire [7:0] n_AAABAA_fm;
-assign n_AAABAA_sl = n_AAABA_sl + A_step_3;
-assign n_AAABAA_fa = n_AAABA_sl + A_pair_3;
-assign n_AAABAA_fb = n_AAABA_fb;
-assign n_AAABAA_fm = (n_AAABAA_fa > n_AAABA_fm) ?
-                     n_AAABAA_fa : n_AAABA_fm;
-
-// n_AAABAB
-wire [7:0] n_AAABAB_sl;
-wire [7:0] n_AAABAB_fa;
-wire [7:0] n_AAABAB_fb;
-wire [7:0] n_AAABAB_fm;
-assign n_AAABAB_sl = (B_dependent && (n_AAABA_fb > n_AAABA_ready)) ?
-                     n_AAABA_fb : n_AAABA_ready;
-assign n_AAABAB_fa = n_AAABA_fa;
-assign n_AAABAB_fb = n_AAABAB_sl + B_lat_ext[1];
-assign n_AAABAB_fm = (n_AAABAB_fb > n_AAABA_fm) ?
-                     n_AAABAB_fb : n_AAABA_fm;
-
-// n_AAABBA
-wire [7:0] n_AAABBA_sl;
-wire [7:0] n_AAABBA_fa;
-wire [7:0] n_AAABBA_fb;
-wire [7:0] n_AAABBA_fm;
-assign n_AAABBA_sl = (A_dependent && (n_AAABB_fa > n_AAABB_ready)) ?
-                     n_AAABB_fa : n_AAABB_ready;
-assign n_AAABBA_fa = n_AAABBA_sl + A_lat_ext[3];
-assign n_AAABBA_fb = n_AAABB_fb;
-assign n_AAABBA_fm = (n_AAABBA_fa > n_AAABB_fm) ?
-                     n_AAABBA_fa : n_AAABB_fm;
-
-// n_AAABBB
-wire [7:0] n_AAABBB_sl;
-wire [7:0] n_AAABBB_fa;
-wire [7:0] n_AAABBB_fb;
-wire [7:0] n_AAABBB_fm;
-assign n_AAABBB_sl = n_AAABB_sl + B_step_1;
-assign n_AAABBB_fa = n_AAABB_fa;
-assign n_AAABBB_fb = n_AAABB_sl + B_pair_1;
-assign n_AAABBB_fm = (n_AAABBB_fb > n_AAABB_fm) ?
-                     n_AAABBB_fb : n_AAABB_fm;
-
-// n_AABAAA
-wire [7:0] n_AABAAA_sl;
-wire [7:0] n_AABAAA_fa;
-wire [6:0] n_AABAAA_fb;
-wire [7:0] n_AABAAA_fm;
-assign n_AABAAA_sl = n_AABAA_sl + A_step_3;
-assign n_AABAAA_fa = n_AABAA_sl + A_pair_3;
-assign n_AABAAA_fb = n_AABAA_fb;
-assign n_AABAAA_fm = (n_AABAAA_fa > n_AABAA_fm) ?
-                     n_AABAAA_fa : n_AABAA_fm;
-
-// n_AABAAB
-wire [7:0] n_AABAAB_sl;
-wire [7:0] n_AABAAB_fa;
-wire [7:0] n_AABAAB_fb;
-wire [7:0] n_AABAAB_fm;
-assign n_AABAAB_sl = (B_dependent && (n_AABAA_fb > n_AABAA_ready)) ?
-                     n_AABAA_fb : n_AABAA_ready;
-assign n_AABAAB_fa = n_AABAA_fa;
-assign n_AABAAB_fb = n_AABAAB_sl + B_lat_ext[1];
-assign n_AABAAB_fm = (n_AABAAB_fb > n_AABAA_fm) ?
-                     n_AABAAB_fb : n_AABAA_fm;
-
-// n_AABABA
-wire [7:0] n_AABABA_sl;
-wire [7:0] n_AABABA_fa;
-wire [7:0] n_AABABA_fb;
-wire [7:0] n_AABABA_fm;
-assign n_AABABA_sl = (A_dependent && (n_AABAB_fa > n_AABAB_ready)) ?
-                     n_AABAB_fa : n_AABAB_ready;
-assign n_AABABA_fa = n_AABABA_sl + A_lat_ext[3];
-assign n_AABABA_fb = n_AABAB_fb;
-assign n_AABABA_fm = (n_AABABA_fa > n_AABAB_fm) ?
-                     n_AABABA_fa : n_AABAB_fm;
-
-// n_AABABB
-wire [7:0] n_AABABB_sl;
-wire [7:0] n_AABABB_fa;
-wire [7:0] n_AABABB_fb;
-wire [7:0] n_AABABB_fm;
-assign n_AABABB_sl = n_AABAB_sl + B_step_1;
-assign n_AABABB_fa = n_AABAB_fa;
-assign n_AABABB_fb = n_AABAB_sl + B_pair_1;
-assign n_AABABB_fm = (n_AABABB_fb > n_AABAB_fm) ?
-                     n_AABABB_fb : n_AABAB_fm;
-
-// n_AABBAA
-wire [7:0] n_AABBAA_sl;
-wire [7:0] n_AABBAA_fa;
-wire [7:0] n_AABBAA_fb;
-wire [7:0] n_AABBAA_fm;
-assign n_AABBAA_sl = n_AABBA_sl + A_step_2;
-assign n_AABBAA_fa = n_AABBA_sl + A_pair_2;
-assign n_AABBAA_fb = n_AABBA_fb;
-assign n_AABBAA_fm = (n_AABBAA_fa > n_AABBA_fm) ?
-                     n_AABBAA_fa : n_AABBA_fm;
-
-// n_AABBAB
-wire [7:0] n_AABBAB_sl;
-wire [7:0] n_AABBAB_fa;
-wire [7:0] n_AABBAB_fb;
-wire [7:0] n_AABBAB_fm;
-assign n_AABBAB_sl = (B_dependent && (n_AABBA_fb > n_AABBA_ready)) ?
-                     n_AABBA_fb : n_AABBA_ready;
-assign n_AABBAB_fa = n_AABBA_fa;
-assign n_AABBAB_fb = n_AABBAB_sl + B_lat_ext[2];
-assign n_AABBAB_fm = (n_AABBAB_fb > n_AABBA_fm) ?
-                     n_AABBAB_fb : n_AABBA_fm;
-
-// n_AABBBA
-wire [7:0] n_AABBBA_sl;
-wire [7:0] n_AABBBA_fa;
-wire [7:0] n_AABBBA_fb;
-wire [7:0] n_AABBBA_fm;
-assign n_AABBBA_sl = (A_dependent && (n_AABBB_fa > n_AABBB_ready)) ?
-                     n_AABBB_fa : n_AABBB_ready;
-assign n_AABBBA_fa = n_AABBBA_sl + A_lat_ext[2];
-assign n_AABBBA_fb = n_AABBB_fb;
-assign n_AABBBA_fm = (n_AABBBA_fa > n_AABBB_fm) ?
-                     n_AABBBA_fa : n_AABBB_fm;
-
-// n_ABAAAA
-wire [7:0] n_ABAAAA_sl;
-wire [7:0] n_ABAAAA_fa;
-wire [5:0] n_ABAAAA_fb;
-wire [7:0] n_ABAAAA_fm;
-assign n_ABAAAA_sl = n_ABAAA_sl + A_step_3;
-assign n_ABAAAA_fa = n_ABAAA_sl + A_pair_3;
-assign n_ABAAAA_fb = n_ABAAA_fb;
-assign n_ABAAAA_fm = (n_ABAAAA_fa > n_ABAAA_fm) ?
-                     n_ABAAAA_fa : n_ABAAA_fm;
-
-// n_ABAAAB
-wire [7:0] n_ABAAAB_sl;
-wire [7:0] n_ABAAAB_fa;
-wire [7:0] n_ABAAAB_fb;
-wire [7:0] n_ABAAAB_fm;
-assign n_ABAAAB_sl = (B_dependent && (n_ABAAA_fb > n_ABAAA_ready)) ?
-                     n_ABAAA_fb : n_ABAAA_ready;
-assign n_ABAAAB_fa = n_ABAAA_fa;
-assign n_ABAAAB_fb = n_ABAAAB_sl + B_lat_ext[1];
-assign n_ABAAAB_fm = (n_ABAAAB_fb > n_ABAAA_fm) ?
-                     n_ABAAAB_fb : n_ABAAA_fm;
-
-// n_ABAABA
-wire [7:0] n_ABAABA_sl;
-wire [7:0] n_ABAABA_fa;
-wire [7:0] n_ABAABA_fb;
-wire [7:0] n_ABAABA_fm;
-assign n_ABAABA_sl = (A_dependent && (n_ABAAB_fa > n_ABAAB_ready)) ?
-                     n_ABAAB_fa : n_ABAAB_ready;
-assign n_ABAABA_fa = n_ABAABA_sl + A_lat_ext[3];
-assign n_ABAABA_fb = n_ABAAB_fb;
-assign n_ABAABA_fm = (n_ABAABA_fa > n_ABAAB_fm) ?
-                     n_ABAABA_fa : n_ABAAB_fm;
-
-// n_ABAABB
-wire [7:0] n_ABAABB_sl;
-wire [7:0] n_ABAABB_fa;
-wire [7:0] n_ABAABB_fb;
-wire [7:0] n_ABAABB_fm;
-assign n_ABAABB_sl = n_ABAAB_sl + B_step_1;
-assign n_ABAABB_fa = n_ABAAB_fa;
-assign n_ABAABB_fb = n_ABAAB_sl + B_pair_1;
-assign n_ABAABB_fm = (n_ABAABB_fb > n_ABAAB_fm) ?
-                     n_ABAABB_fb : n_ABAAB_fm;
-
-// n_ABABAA
-wire [7:0] n_ABABAA_sl;
-wire [7:0] n_ABABAA_fa;
-wire [6:0] n_ABABAA_fb;
-wire [7:0] n_ABABAA_fm;
-assign n_ABABAA_sl = n_ABABA_sl + A_step_2;
-assign n_ABABAA_fa = n_ABABA_sl + A_pair_2;
-assign n_ABABAA_fb = n_ABABA_fb;
-assign n_ABABAA_fm = (n_ABABAA_fa > n_ABABA_fm) ?
-                     n_ABABAA_fa : n_ABABA_fm;
-
-// n_ABABAB
-wire [6:0] n_ABABAB_sl;
-wire [7:0] n_ABABAB_fa;
-wire [7:0] n_ABABAB_fb;
-wire [7:0] n_ABABAB_fm;
-assign n_ABABAB_sl = (B_dependent && (n_ABABA_fb > n_ABABA_ready)) ?
-                     n_ABABA_fb : n_ABABA_ready;
-assign n_ABABAB_fa = n_ABABA_fa;
-assign n_ABABAB_fb = n_ABABAB_sl + B_lat_ext[2];
-assign n_ABABAB_fm = (n_ABABAB_fb > n_ABABA_fm) ?
-                     n_ABABAB_fb : n_ABABA_fm;
-
-// n_ABABBA
-wire [6:0] n_ABABBA_sl;
-wire [7:0] n_ABABBA_fa;
-wire [7:0] n_ABABBA_fb;
-wire [7:0] n_ABABBA_fm;
-assign n_ABABBA_sl = (A_dependent && (n_ABABB_fa > n_ABABB_ready)) ?
-                     n_ABABB_fa : n_ABABB_ready;
-assign n_ABABBA_fa = n_ABABBA_sl + A_lat_ext[2];
-assign n_ABABBA_fb = n_ABABB_fb;
-assign n_ABABBA_fm = (n_ABABBA_fa > n_ABABB_fm) ?
-                     n_ABABBA_fa : n_ABABB_fm;
-
-// n_ABBAAA
-wire [7:0] n_ABBAAA_sl;
-wire [7:0] n_ABBAAA_fa;
-wire [6:0] n_ABBAAA_fb;
-wire [7:0] n_ABBAAA_fm;
-assign n_ABBAAA_sl = n_ABBAA_sl + A_step_2;
-assign n_ABBAAA_fa = n_ABBAA_sl + A_pair_2;
-assign n_ABBAAA_fb = n_ABBAA_fb;
-assign n_ABBAAA_fm = (n_ABBAAA_fa > n_ABBAA_fm) ?
-                     n_ABBAAA_fa : n_ABBAA_fm;
-
-// n_ABBAAB
-wire [6:0] n_ABBAAB_sl;
-wire [7:0] n_ABBAAB_fa;
-wire [7:0] n_ABBAAB_fb;
-wire [7:0] n_ABBAAB_fm;
-assign n_ABBAAB_sl = (B_dependent && (n_ABBAA_fb > n_ABBAA_ready)) ?
-                     n_ABBAA_fb : n_ABBAA_ready;
-assign n_ABBAAB_fa = n_ABBAA_fa;
-assign n_ABBAAB_fb = n_ABBAAB_sl + B_lat_ext[2];
-assign n_ABBAAB_fm = (n_ABBAAB_fb > n_ABBAA_fm) ?
-                     n_ABBAAB_fb : n_ABBAA_fm;
-
-// n_ABBABA
-wire [6:0] n_ABBABA_sl;
-wire [7:0] n_ABBABA_fa;
-wire [7:0] n_ABBABA_fb;
-wire [7:0] n_ABBABA_fm;
-assign n_ABBABA_sl = (A_dependent && (n_ABBAB_fa > n_ABBAB_ready)) ?
-                     n_ABBAB_fa : n_ABBAB_ready;
-assign n_ABBABA_fa = n_ABBABA_sl + A_lat_ext[2];
-assign n_ABBABA_fb = n_ABBAB_fb;
-assign n_ABBABA_fm = (n_ABBABA_fa > n_ABBAB_fm) ?
-                     n_ABBABA_fa : n_ABBAB_fm;
-
-// n_ABBBAA
-wire [7:0] n_ABBBAA_sl;
-wire [7:0] n_ABBBAA_fa;
-wire [7:0] n_ABBBAA_fb;
-wire [7:0] n_ABBBAA_fm;
-assign n_ABBBAA_sl = n_ABBBA_sl + A_step_1;
-assign n_ABBBAA_fa = n_ABBBA_sl + A_pair_1;
-assign n_ABBBAA_fb = n_ABBBA_fb;
-assign n_ABBBAA_fm = (n_ABBBAA_fa > n_ABBBA_fm) ?
-                     n_ABBBAA_fa : n_ABBBA_fm;
-
-// n_BAAAAA
-wire [7:0] n_BAAAAA_sl;
-wire [7:0] n_BAAAAA_fa;
-wire [5:0] n_BAAAAA_fb;
-wire [7:0] n_BAAAAA_fm;
-assign n_BAAAAA_sl = n_BAAAA_sl + A_step_3;
-assign n_BAAAAA_fa = n_BAAAA_sl + A_pair_3;
-assign n_BAAAAA_fb = n_BAAAA_fb;
-assign n_BAAAAA_fm = (n_BAAAAA_fa > n_BAAAA_fm) ?
-                     n_BAAAAA_fa : n_BAAAA_fm;
-
-// n_BAAAAB
-wire [7:0] n_BAAAAB_sl;
-wire [7:0] n_BAAAAB_fa;
-wire [7:0] n_BAAAAB_fb;
-wire [7:0] n_BAAAAB_fm;
-assign n_BAAAAB_sl = (B_dependent && (n_BAAAA_fb > n_BAAAA_ready)) ?
-                     n_BAAAA_fb : n_BAAAA_ready;
-assign n_BAAAAB_fa = n_BAAAA_fa;
-assign n_BAAAAB_fb = n_BAAAAB_sl + B_lat_ext[1];
-assign n_BAAAAB_fm = (n_BAAAAB_fb > n_BAAAA_fm) ?
-                     n_BAAAAB_fb : n_BAAAA_fm;
-
-// n_BAAABA
-wire [7:0] n_BAAABA_sl;
-wire [7:0] n_BAAABA_fa;
-wire [7:0] n_BAAABA_fb;
-wire [7:0] n_BAAABA_fm;
-assign n_BAAABA_sl = (A_dependent && (n_BAAAB_fa > n_BAAAB_ready)) ?
-                     n_BAAAB_fa : n_BAAAB_ready;
-assign n_BAAABA_fa = n_BAAABA_sl + A_lat_ext[3];
-assign n_BAAABA_fb = n_BAAAB_fb;
-assign n_BAAABA_fm = (n_BAAABA_fa > n_BAAAB_fm) ?
-                     n_BAAABA_fa : n_BAAAB_fm;
-
-// n_BAAABB
-wire [7:0] n_BAAABB_sl;
-wire [7:0] n_BAAABB_fa;
-wire [7:0] n_BAAABB_fb;
-wire [7:0] n_BAAABB_fm;
-assign n_BAAABB_sl = n_BAAAB_sl + B_step_1;
-assign n_BAAABB_fa = n_BAAAB_fa;
-assign n_BAAABB_fb = n_BAAAB_sl + B_pair_1;
-assign n_BAAABB_fm = (n_BAAABB_fb > n_BAAAB_fm) ?
-                     n_BAAABB_fb : n_BAAAB_fm;
-
-// n_BAABAA
-wire [7:0] n_BAABAA_sl;
-wire [7:0] n_BAABAA_fa;
-wire [6:0] n_BAABAA_fb;
-wire [7:0] n_BAABAA_fm;
-assign n_BAABAA_sl = n_BAABA_sl + A_step_2;
-assign n_BAABAA_fa = n_BAABA_sl + A_pair_2;
-assign n_BAABAA_fb = n_BAABA_fb;
-assign n_BAABAA_fm = (n_BAABAA_fa > n_BAABA_fm) ?
-                     n_BAABAA_fa : n_BAABA_fm;
-
-// n_BAABAB
-wire [6:0] n_BAABAB_sl;
-wire [7:0] n_BAABAB_fa;
-wire [7:0] n_BAABAB_fb;
-wire [7:0] n_BAABAB_fm;
-assign n_BAABAB_sl = (B_dependent && (n_BAABA_fb > n_BAABA_ready)) ?
-                     n_BAABA_fb : n_BAABA_ready;
-assign n_BAABAB_fa = n_BAABA_fa;
-assign n_BAABAB_fb = n_BAABAB_sl + B_lat_ext[2];
-assign n_BAABAB_fm = (n_BAABAB_fb > n_BAABA_fm) ?
-                     n_BAABAB_fb : n_BAABA_fm;
-
-// n_BAABBA
-wire [6:0] n_BAABBA_sl;
-wire [7:0] n_BAABBA_fa;
-wire [7:0] n_BAABBA_fb;
-wire [7:0] n_BAABBA_fm;
-assign n_BAABBA_sl = (A_dependent && (n_BAABB_fa > n_BAABB_ready)) ?
-                     n_BAABB_fa : n_BAABB_ready;
-assign n_BAABBA_fa = n_BAABBA_sl + A_lat_ext[2];
-assign n_BAABBA_fb = n_BAABB_fb;
-assign n_BAABBA_fm = (n_BAABBA_fa > n_BAABB_fm) ?
-                     n_BAABBA_fa : n_BAABB_fm;
-
-// n_BABAAA
-wire [7:0] n_BABAAA_sl;
-wire [7:0] n_BABAAA_fa;
-wire [6:0] n_BABAAA_fb;
-wire [7:0] n_BABAAA_fm;
-assign n_BABAAA_sl = n_BABAA_sl + A_step_2;
-assign n_BABAAA_fa = n_BABAA_sl + A_pair_2;
-assign n_BABAAA_fb = n_BABAA_fb;
-assign n_BABAAA_fm = (n_BABAAA_fa > n_BABAA_fm) ?
-                     n_BABAAA_fa : n_BABAA_fm;
-
-// n_BABAAB
-wire [6:0] n_BABAAB_sl;
-wire [7:0] n_BABAAB_fa;
-wire [7:0] n_BABAAB_fb;
-wire [7:0] n_BABAAB_fm;
-assign n_BABAAB_sl = (B_dependent && (n_BABAA_fb > n_BABAA_ready)) ?
-                     n_BABAA_fb : n_BABAA_ready;
-assign n_BABAAB_fa = n_BABAA_fa;
-assign n_BABAAB_fb = n_BABAAB_sl + B_lat_ext[2];
-assign n_BABAAB_fm = (n_BABAAB_fb > n_BABAA_fm) ?
-                     n_BABAAB_fb : n_BABAA_fm;
-
-// n_BABABA
-wire [6:0] n_BABABA_sl;
-wire [7:0] n_BABABA_fa;
-wire [7:0] n_BABABA_fb;
-wire [7:0] n_BABABA_fm;
-assign n_BABABA_sl = (A_dependent && (n_BABAB_fa > n_BABAB_ready)) ?
-                     n_BABAB_fa : n_BABAB_ready;
-assign n_BABABA_fa = n_BABABA_sl + A_lat_ext[2];
-assign n_BABABA_fb = n_BABAB_fb;
-assign n_BABABA_fm = (n_BABABA_fa > n_BABAB_fm) ?
-                     n_BABABA_fa : n_BABAB_fm;
-
-// n_BABBAA
-wire [7:0] n_BABBAA_sl;
-wire [7:0] n_BABBAA_fa;
-wire [7:0] n_BABBAA_fb;
-wire [7:0] n_BABBAA_fm;
-assign n_BABBAA_sl = n_BABBA_sl + A_step_1;
-assign n_BABBAA_fa = n_BABBA_sl + A_pair_1;
-assign n_BABBAA_fb = n_BABBA_fb;
-assign n_BABBAA_fm = (n_BABBAA_fa > n_BABBA_fm) ?
-                     n_BABBAA_fa : n_BABBA_fm;
-
-// n_BBAAAA
-wire [7:0] n_BBAAAA_sl;
-wire [7:0] n_BBAAAA_fa;
-wire [6:0] n_BBAAAA_fb;
-wire [7:0] n_BBAAAA_fm;
-assign n_BBAAAA_sl = n_BBAAA_sl + A_step_2;
-assign n_BBAAAA_fa = n_BBAAA_sl + A_pair_2;
-assign n_BBAAAA_fb = n_BBAAA_fb;
-assign n_BBAAAA_fm = (n_BBAAAA_fa > n_BBAAA_fm) ?
-                     n_BBAAAA_fa : n_BBAAA_fm;
-
-// n_BBAAAB
-wire [7:0] n_BBAAAB_sl;
-wire [7:0] n_BBAAAB_fa;
-wire [7:0] n_BBAAAB_fb;
-wire [7:0] n_BBAAAB_fm;
-assign n_BBAAAB_sl = (B_dependent && (n_BBAAA_fb > n_BBAAA_ready)) ?
-                     n_BBAAA_fb : n_BBAAA_ready;
-assign n_BBAAAB_fa = n_BBAAA_fa;
-assign n_BBAAAB_fb = n_BBAAAB_sl + B_lat_ext[2];
-assign n_BBAAAB_fm = (n_BBAAAB_fb > n_BBAAA_fm) ?
-                     n_BBAAAB_fb : n_BBAAA_fm;
-
-// n_BBAABA
-wire [7:0] n_BBAABA_sl;
-wire [7:0] n_BBAABA_fa;
-wire [7:0] n_BBAABA_fb;
-wire [7:0] n_BBAABA_fm;
-assign n_BBAABA_sl = (A_dependent && (n_BBAAB_fa > n_BBAAB_ready)) ?
-                     n_BBAAB_fa : n_BBAAB_ready;
-assign n_BBAABA_fa = n_BBAABA_sl + A_lat_ext[2];
-assign n_BBAABA_fb = n_BBAAB_fb;
-assign n_BBAABA_fm = (n_BBAABA_fa > n_BBAAB_fm) ?
-                     n_BBAABA_fa : n_BBAAB_fm;
-
-// n_BBABAA
-wire [7:0] n_BBABAA_sl;
-wire [7:0] n_BBABAA_fa;
-wire [7:0] n_BBABAA_fb;
-wire [7:0] n_BBABAA_fm;
-assign n_BBABAA_sl = n_BBABA_sl + A_step_1;
-assign n_BBABAA_fa = n_BBABA_sl + A_pair_1;
-assign n_BBABAA_fb = n_BBABA_fb;
-assign n_BBABAA_fm = (n_BBABAA_fa > n_BBABA_fm) ?
-                     n_BBABAA_fa : n_BBABA_fm;
-
-// n_BBBAAA
-wire [7:0] n_BBBAAA_sl;
-wire [7:0] n_BBBAAA_fa;
-wire [7:0] n_BBBAAA_fb;
-wire [7:0] n_BBBAAA_fm;
-assign n_BBBAAA_sl = n_BBBAA_sl + A_step_1;
-assign n_BBBAAA_fa = n_BBBAA_sl + A_pair_1;
-assign n_BBBAAA_fb = n_BBBAA_fb;
-assign n_BBBAAA_fm = (n_BBBAAA_fa > n_BBBAA_fm) ?
-                     n_BBBAAA_fa : n_BBBAA_fm;
-
-
-
-//////// DEPTH 7 ////////
-// depth-6 branches
-wire [7:0] n_AAAAAA_ready = n_AAAAAA_sl + 9'd1;
-wire [7:0] n_AAAAAB_ready = n_AAAAAB_sl + 9'd1;
-wire [7:0] n_AAAABA_ready = n_AAAABA_sl + 9'd1;
-wire [7:0] n_AAAABB_ready = n_AAAABB_sl + 9'd1;
-wire [7:0] n_AAABAA_ready = n_AAABAA_sl + 9'd1;
-wire [7:0] n_AAABAB_ready = n_AAABAB_sl + 9'd1;
-wire [7:0] n_AAABBA_ready = n_AAABBA_sl + 9'd1;
-wire [7:0] n_AAABBB_ready = n_AAABBB_sl + 9'd1;
-wire [7:0] n_AABAAA_ready = n_AABAAA_sl + 9'd1;
-wire [7:0] n_AABAAB_ready = n_AABAAB_sl + 9'd1;
-wire [7:0] n_AABABA_ready = n_AABABA_sl + 9'd1;
-wire [7:0] n_AABABB_ready = n_AABABB_sl + 9'd1;
-wire [7:0] n_AABBAA_ready = n_AABBAA_sl + 9'd1;
-wire [7:0] n_AABBAB_ready = n_AABBAB_sl + 9'd1;
-wire [7:0] n_AABBBA_ready = n_AABBBA_sl + 9'd1;
-wire [7:0] n_ABAAAA_ready = n_ABAAAA_sl + 9'd1;
-wire [7:0] n_ABAAAB_ready = n_ABAAAB_sl + 9'd1;
-wire [7:0] n_ABAABA_ready = n_ABAABA_sl + 9'd1;
-wire [7:0] n_ABAABB_ready = n_ABAABB_sl + 9'd1;
-wire [7:0] n_ABABAA_ready = n_ABABAA_sl + 9'd1;
-wire [6:0] n_ABABAB_ready = n_ABABAB_sl + 9'd1;
-wire [6:0] n_ABABBA_ready = n_ABABBA_sl + 9'd1;
-wire [7:0] n_ABBAAA_ready = n_ABBAAA_sl + 9'd1;
-wire [6:0] n_ABBAAB_ready = n_ABBAAB_sl + 9'd1;
-wire [6:0] n_ABBABA_ready = n_ABBABA_sl + 9'd1;
-wire [7:0] n_ABBBAA_ready = n_ABBBAA_sl + 9'd1;
-wire [7:0] n_BAAAAA_ready = n_BAAAAA_sl + 9'd1;
-wire [7:0] n_BAAAAB_ready = n_BAAAAB_sl + 9'd1;
-wire [7:0] n_BAAABA_ready = n_BAAABA_sl + 9'd1;
-wire [7:0] n_BAAABB_ready = n_BAAABB_sl + 9'd1;
-wire [7:0] n_BAABAA_ready = n_BAABAA_sl + 9'd1;
-wire [6:0] n_BAABAB_ready = n_BAABAB_sl + 9'd1;
-wire [6:0] n_BAABBA_ready = n_BAABBA_sl + 9'd1;
-wire [7:0] n_BABAAA_ready = n_BABAAA_sl + 9'd1;
-wire [6:0] n_BABAAB_ready = n_BABAAB_sl + 9'd1;
-wire [6:0] n_BABABA_ready = n_BABABA_sl + 9'd1;
-wire [7:0] n_BABBAA_ready = n_BABBAA_sl + 9'd1;
-wire [7:0] n_BBAAAA_ready = n_BBAAAA_sl + 9'd1;
-wire [7:0] n_BBAAAB_ready = n_BBAAAB_sl + 9'd1;
-wire [7:0] n_BBAABA_ready = n_BBAABA_sl + 9'd1;
-wire [7:0] n_BBABAA_ready = n_BBABAA_sl + 9'd1;
-wire [7:0] n_BBBAAA_ready = n_BBBAAA_sl + 9'd1;
-
-// n_AAAAAAA
-wire [8:0] n_AAAAAAA_sl;
-wire [8:0] n_AAAAAAA_fa;
-wire [0:0] n_AAAAAAA_fb;
-wire [8:0] n_AAAAAAA_fm;
-assign n_AAAAAAA_sl = n_AAAAAA_sl + A_step_5;
-assign n_AAAAAAA_fa = n_AAAAAA_sl + A_pair_5;
-assign n_AAAAAAA_fb = n_AAAAAA_fb;
-assign n_AAAAAAA_fm = (n_AAAAAAA_fa > n_AAAAAA_fm) ?
-                     n_AAAAAAA_fa : n_AAAAAA_fm;
-
-// n_AAAAAAB
-wire [7:0] n_AAAAAAB_sl;
-wire [8:0] n_AAAAAAB_fa;
-wire [8:0] n_AAAAAAB_fb;
-wire [8:0] n_AAAAAAB_fm;
-assign n_AAAAAAB_sl = n_AAAAAA_ready;
-assign n_AAAAAAB_fa = n_AAAAAA_fa;
-assign n_AAAAAAB_fb = n_AAAAAAB_sl + B_lat_ext[0];
-assign n_AAAAAAB_fm = (n_AAAAAAB_fb > n_AAAAAA_fm) ?
-                     n_AAAAAAB_fb : n_AAAAAA_fm;
-
-// n_AAAAABA
-wire [7:0] n_AAAAABA_sl;
-wire [8:0] n_AAAAABA_fa;
-wire [7:0] n_AAAAABA_fb;
-wire [8:0] n_AAAAABA_fm;
-assign n_AAAAABA_sl = (A_dependent && (n_AAAAAB_fa > n_AAAAAB_ready)) ?
-                     n_AAAAAB_fa : n_AAAAAB_ready;
-assign n_AAAAABA_fa = n_AAAAABA_sl + A_lat_ext[5];
-assign n_AAAAABA_fb = n_AAAAAB_fb;
-assign n_AAAAABA_fm = (n_AAAAABA_fa > n_AAAAAB_fm) ?
-                     n_AAAAABA_fa : n_AAAAAB_fm;
-
-// n_AAAAABB
-wire [7:0] n_AAAAABB_sl;
-wire [7:0] n_AAAAABB_fa;
-wire [8:0] n_AAAAABB_fb;
-wire [8:0] n_AAAAABB_fm;
-assign n_AAAAABB_sl = n_AAAAAB_sl + B_step_0;
-assign n_AAAAABB_fa = n_AAAAAB_fa;
-assign n_AAAAABB_fb = n_AAAAAB_sl + B_pair_0;
-assign n_AAAAABB_fm = (n_AAAAABB_fb > n_AAAAAB_fm) ?
-                     n_AAAAABB_fb : n_AAAAAB_fm;
-
-// n_AAAABAA
-wire [7:0] n_AAAABAA_sl;
-wire [8:0] n_AAAABAA_fa;
-wire [7:0] n_AAAABAA_fb;
-wire [8:0] n_AAAABAA_fm;
-assign n_AAAABAA_sl = n_AAAABA_sl + A_step_4;
-assign n_AAAABAA_fa = n_AAAABA_sl + A_pair_4;
-assign n_AAAABAA_fb = n_AAAABA_fb;
-assign n_AAAABAA_fm = (n_AAAABAA_fa > n_AAAABA_fm) ?
-                     n_AAAABAA_fa : n_AAAABA_fm;
-
-// n_AAAABAB
-wire [7:0] n_AAAABAB_sl;
-wire [7:0] n_AAAABAB_fa;
-wire [7:0] n_AAAABAB_fb;
-wire [7:0] n_AAAABAB_fm;
-assign n_AAAABAB_sl = (B_dependent && (n_AAAABA_fb > n_AAAABA_ready)) ?
-                     n_AAAABA_fb : n_AAAABA_ready;
-assign n_AAAABAB_fa = n_AAAABA_fa;
-assign n_AAAABAB_fb = n_AAAABAB_sl + B_lat_ext[1];
-assign n_AAAABAB_fm = (n_AAAABAB_fb > n_AAAABA_fm) ?
-                     n_AAAABAB_fb : n_AAAABA_fm;
-
-// n_AAAABBA
-wire [7:0] n_AAAABBA_sl;
-wire [7:0] n_AAAABBA_fa;
-wire [7:0] n_AAAABBA_fb;
-wire [7:0] n_AAAABBA_fm;
-assign n_AAAABBA_sl = (A_dependent && (n_AAAABB_fa > n_AAAABB_ready)) ?
-                     n_AAAABB_fa : n_AAAABB_ready;
-assign n_AAAABBA_fa = n_AAAABBA_sl + A_lat_ext[4];
-assign n_AAAABBA_fb = n_AAAABB_fb;
-assign n_AAAABBA_fm = (n_AAAABBA_fa > n_AAAABB_fm) ?
-                     n_AAAABBA_fa : n_AAAABB_fm;
-
-// n_AAAABBB
-wire [7:0] n_AAAABBB_sl;
-wire [7:0] n_AAAABBB_fa;
-wire [8:0] n_AAAABBB_fb;
-wire [8:0] n_AAAABBB_fm;
-assign n_AAAABBB_sl = n_AAAABB_sl + B_step_1;
-assign n_AAAABBB_fa = n_AAAABB_fa;
-assign n_AAAABBB_fb = n_AAAABB_sl + B_pair_1;
-assign n_AAAABBB_fm = (n_AAAABBB_fb > n_AAAABB_fm) ?
-                     n_AAAABBB_fb : n_AAAABB_fm;
-
-// n_AAABAAA
-wire [7:0] n_AAABAAA_sl;
-wire [8:0] n_AAABAAA_fa;
-wire [7:0] n_AAABAAA_fb;
-wire [8:0] n_AAABAAA_fm;
-assign n_AAABAAA_sl = n_AAABAA_sl + A_step_4;
-assign n_AAABAAA_fa = n_AAABAA_sl + A_pair_4;
-assign n_AAABAAA_fb = n_AAABAA_fb;
-assign n_AAABAAA_fm = (n_AAABAAA_fa > n_AAABAA_fm) ?
-                     n_AAABAAA_fa : n_AAABAA_fm;
-
-// n_AAABAAB
-wire [7:0] n_AAABAAB_sl;
-wire [7:0] n_AAABAAB_fa;
-wire [7:0] n_AAABAAB_fb;
-wire [7:0] n_AAABAAB_fm;
-assign n_AAABAAB_sl = (B_dependent && (n_AAABAA_fb > n_AAABAA_ready)) ?
-                     n_AAABAA_fb : n_AAABAA_ready;
-assign n_AAABAAB_fa = n_AAABAA_fa;
-assign n_AAABAAB_fb = n_AAABAAB_sl + B_lat_ext[1];
-assign n_AAABAAB_fm = (n_AAABAAB_fb > n_AAABAA_fm) ?
-                     n_AAABAAB_fb : n_AAABAA_fm;
-
-// n_AAABABA
-wire [7:0] n_AAABABA_sl;
-wire [7:0] n_AAABABA_fa;
-wire [7:0] n_AAABABA_fb;
-wire [7:0] n_AAABABA_fm;
-assign n_AAABABA_sl = (A_dependent && (n_AAABAB_fa > n_AAABAB_ready)) ?
-                     n_AAABAB_fa : n_AAABAB_ready;
-assign n_AAABABA_fa = n_AAABABA_sl + A_lat_ext[4];
-assign n_AAABABA_fb = n_AAABAB_fb;
-assign n_AAABABA_fm = (n_AAABABA_fa > n_AAABAB_fm) ?
-                     n_AAABABA_fa : n_AAABAB_fm;
-
-// n_AAABABB
-wire [7:0] n_AAABABB_sl;
-wire [7:0] n_AAABABB_fa;
-wire [7:0] n_AAABABB_fb;
-wire [7:0] n_AAABABB_fm;
-assign n_AAABABB_sl = n_AAABAB_sl + B_step_1;
-assign n_AAABABB_fa = n_AAABAB_fa;
-assign n_AAABABB_fb = n_AAABAB_sl + B_pair_1;
-assign n_AAABABB_fm = (n_AAABABB_fb > n_AAABAB_fm) ?
-                     n_AAABABB_fb : n_AAABAB_fm;
-
-// n_AAABBAA
-wire [7:0] n_AAABBAA_sl;
-wire [7:0] n_AAABBAA_fa;
-wire [7:0] n_AAABBAA_fb;
-wire [7:0] n_AAABBAA_fm;
-assign n_AAABBAA_sl = n_AAABBA_sl + A_step_3;
-assign n_AAABBAA_fa = n_AAABBA_sl + A_pair_3;
-assign n_AAABBAA_fb = n_AAABBA_fb;
-assign n_AAABBAA_fm = (n_AAABBAA_fa > n_AAABBA_fm) ?
-                     n_AAABBAA_fa : n_AAABBA_fm;
-
-// n_AAABBAB
-wire [7:0] n_AAABBAB_sl;
-wire [7:0] n_AAABBAB_fa;
-wire [7:0] n_AAABBAB_fb;
-wire [7:0] n_AAABBAB_fm;
-assign n_AAABBAB_sl = (B_dependent && (n_AAABBA_fb > n_AAABBA_ready)) ?
-                     n_AAABBA_fb : n_AAABBA_ready;
-assign n_AAABBAB_fa = n_AAABBA_fa;
-assign n_AAABBAB_fb = n_AAABBAB_sl + B_lat_ext[2];
-assign n_AAABBAB_fm = (n_AAABBAB_fb > n_AAABBA_fm) ?
-                     n_AAABBAB_fb : n_AAABBA_fm;
-
-// n_AAABBBA
-wire [7:0] n_AAABBBA_sl;
-wire [7:0] n_AAABBBA_fa;
-wire [7:0] n_AAABBBA_fb;
-wire [7:0] n_AAABBBA_fm;
-assign n_AAABBBA_sl = (A_dependent && (n_AAABBB_fa > n_AAABBB_ready)) ?
-                     n_AAABBB_fa : n_AAABBB_ready;
-assign n_AAABBBA_fa = n_AAABBBA_sl + A_lat_ext[3];
-assign n_AAABBBA_fb = n_AAABBB_fb;
-assign n_AAABBBA_fm = (n_AAABBBA_fa > n_AAABBB_fm) ?
-                     n_AAABBBA_fa : n_AAABBB_fm;
-
-// n_AABAAAA
-wire [7:0] n_AABAAAA_sl;
-wire [8:0] n_AABAAAA_fa;
-wire [6:0] n_AABAAAA_fb;
-wire [8:0] n_AABAAAA_fm;
-assign n_AABAAAA_sl = n_AABAAA_sl + A_step_4;
-assign n_AABAAAA_fa = n_AABAAA_sl + A_pair_4;
-assign n_AABAAAA_fb = n_AABAAA_fb;
-assign n_AABAAAA_fm = (n_AABAAAA_fa > n_AABAAA_fm) ?
-                     n_AABAAAA_fa : n_AABAAA_fm;
-
-// n_AABAAAB
-wire [7:0] n_AABAAAB_sl;
-wire [7:0] n_AABAAAB_fa;
-wire [7:0] n_AABAAAB_fb;
-wire [7:0] n_AABAAAB_fm;
-assign n_AABAAAB_sl = (B_dependent && (n_AABAAA_fb > n_AABAAA_ready)) ?
-                     n_AABAAA_fb : n_AABAAA_ready;
-assign n_AABAAAB_fa = n_AABAAA_fa;
-assign n_AABAAAB_fb = n_AABAAAB_sl + B_lat_ext[1];
-assign n_AABAAAB_fm = (n_AABAAAB_fb > n_AABAAA_fm) ?
-                     n_AABAAAB_fb : n_AABAAA_fm;
-
-// n_AABAABA
-wire [7:0] n_AABAABA_sl;
-wire [7:0] n_AABAABA_fa;
-wire [7:0] n_AABAABA_fb;
-wire [7:0] n_AABAABA_fm;
-assign n_AABAABA_sl = (A_dependent && (n_AABAAB_fa > n_AABAAB_ready)) ?
-                     n_AABAAB_fa : n_AABAAB_ready;
-assign n_AABAABA_fa = n_AABAABA_sl + A_lat_ext[4];
-assign n_AABAABA_fb = n_AABAAB_fb;
-assign n_AABAABA_fm = (n_AABAABA_fa > n_AABAAB_fm) ?
-                     n_AABAABA_fa : n_AABAAB_fm;
-
-// n_AABAABB
-wire [7:0] n_AABAABB_sl;
-wire [7:0] n_AABAABB_fa;
-wire [7:0] n_AABAABB_fb;
-wire [7:0] n_AABAABB_fm;
-assign n_AABAABB_sl = n_AABAAB_sl + B_step_1;
-assign n_AABAABB_fa = n_AABAAB_fa;
-assign n_AABAABB_fb = n_AABAAB_sl + B_pair_1;
-assign n_AABAABB_fm = (n_AABAABB_fb > n_AABAAB_fm) ?
-                     n_AABAABB_fb : n_AABAAB_fm;
-
-// n_AABABAA
-wire [7:0] n_AABABAA_sl;
-wire [7:0] n_AABABAA_fa;
-wire [7:0] n_AABABAA_fb;
-wire [7:0] n_AABABAA_fm;
-assign n_AABABAA_sl = n_AABABA_sl + A_step_3;
-assign n_AABABAA_fa = n_AABABA_sl + A_pair_3;
-assign n_AABABAA_fb = n_AABABA_fb;
-assign n_AABABAA_fm = (n_AABABAA_fa > n_AABABA_fm) ?
-                     n_AABABAA_fa : n_AABABA_fm;
-
-// n_AABABAB
-wire [7:0] n_AABABAB_sl;
-wire [7:0] n_AABABAB_fa;
-wire [7:0] n_AABABAB_fb;
-wire [7:0] n_AABABAB_fm;
-assign n_AABABAB_sl = (B_dependent && (n_AABABA_fb > n_AABABA_ready)) ?
-                     n_AABABA_fb : n_AABABA_ready;
-assign n_AABABAB_fa = n_AABABA_fa;
-assign n_AABABAB_fb = n_AABABAB_sl + B_lat_ext[2];
-assign n_AABABAB_fm = (n_AABABAB_fb > n_AABABA_fm) ?
-                     n_AABABAB_fb : n_AABABA_fm;
-
-// n_AABABBA
-wire [7:0] n_AABABBA_sl;
-wire [7:0] n_AABABBA_fa;
-wire [7:0] n_AABABBA_fb;
-wire [7:0] n_AABABBA_fm;
-assign n_AABABBA_sl = (A_dependent && (n_AABABB_fa > n_AABABB_ready)) ?
-                     n_AABABB_fa : n_AABABB_ready;
-assign n_AABABBA_fa = n_AABABBA_sl + A_lat_ext[3];
-assign n_AABABBA_fb = n_AABABB_fb;
-assign n_AABABBA_fm = (n_AABABBA_fa > n_AABABB_fm) ?
-                     n_AABABBA_fa : n_AABABB_fm;
-
-// n_AABBAAA
-wire [7:0] n_AABBAAA_sl;
-wire [7:0] n_AABBAAA_fa;
-wire [7:0] n_AABBAAA_fb;
-wire [7:0] n_AABBAAA_fm;
-assign n_AABBAAA_sl = n_AABBAA_sl + A_step_3;
-assign n_AABBAAA_fa = n_AABBAA_sl + A_pair_3;
-assign n_AABBAAA_fb = n_AABBAA_fb;
-assign n_AABBAAA_fm = (n_AABBAAA_fa > n_AABBAA_fm) ?
-                     n_AABBAAA_fa : n_AABBAA_fm;
-
-// n_AABBAAB
-wire [7:0] n_AABBAAB_sl;
-wire [7:0] n_AABBAAB_fa;
-wire [7:0] n_AABBAAB_fb;
-wire [7:0] n_AABBAAB_fm;
-assign n_AABBAAB_sl = (B_dependent && (n_AABBAA_fb > n_AABBAA_ready)) ?
-                     n_AABBAA_fb : n_AABBAA_ready;
-assign n_AABBAAB_fa = n_AABBAA_fa;
-assign n_AABBAAB_fb = n_AABBAAB_sl + B_lat_ext[2];
-assign n_AABBAAB_fm = (n_AABBAAB_fb > n_AABBAA_fm) ?
-                     n_AABBAAB_fb : n_AABBAA_fm;
-
-// n_AABBABA
-wire [7:0] n_AABBABA_sl;
-wire [7:0] n_AABBABA_fa;
-wire [7:0] n_AABBABA_fb;
-wire [7:0] n_AABBABA_fm;
-assign n_AABBABA_sl = (A_dependent && (n_AABBAB_fa > n_AABBAB_ready)) ?
-                     n_AABBAB_fa : n_AABBAB_ready;
-assign n_AABBABA_fa = n_AABBABA_sl + A_lat_ext[3];
-assign n_AABBABA_fb = n_AABBAB_fb;
-assign n_AABBABA_fm = (n_AABBABA_fa > n_AABBAB_fm) ?
-                     n_AABBABA_fa : n_AABBAB_fm;
-
-// n_AABBBAA
-wire [7:0] n_AABBBAA_sl;
-wire [7:0] n_AABBBAA_fa;
-wire [7:0] n_AABBBAA_fb;
-wire [7:0] n_AABBBAA_fm;
-assign n_AABBBAA_sl = n_AABBBA_sl + A_step_2;
-assign n_AABBBAA_fa = n_AABBBA_sl + A_pair_2;
-assign n_AABBBAA_fb = n_AABBBA_fb;
-assign n_AABBBAA_fm = (n_AABBBAA_fa > n_AABBBA_fm) ?
-                     n_AABBBAA_fa : n_AABBBA_fm;
-
-// n_ABAAAAA
-wire [7:0] n_ABAAAAA_sl;
-wire [8:0] n_ABAAAAA_fa;
-wire [5:0] n_ABAAAAA_fb;
-wire [8:0] n_ABAAAAA_fm;
-assign n_ABAAAAA_sl = n_ABAAAA_sl + A_step_4;
-assign n_ABAAAAA_fa = n_ABAAAA_sl + A_pair_4;
-assign n_ABAAAAA_fb = n_ABAAAA_fb;
-assign n_ABAAAAA_fm = (n_ABAAAAA_fa > n_ABAAAA_fm) ?
-                     n_ABAAAAA_fa : n_ABAAAA_fm;
-
-// n_ABAAAAB
-wire [7:0] n_ABAAAAB_sl;
-wire [7:0] n_ABAAAAB_fa;
-wire [7:0] n_ABAAAAB_fb;
-wire [7:0] n_ABAAAAB_fm;
-assign n_ABAAAAB_sl = (B_dependent && (n_ABAAAA_fb > n_ABAAAA_ready)) ?
-                     n_ABAAAA_fb : n_ABAAAA_ready;
-assign n_ABAAAAB_fa = n_ABAAAA_fa;
-assign n_ABAAAAB_fb = n_ABAAAAB_sl + B_lat_ext[1];
-assign n_ABAAAAB_fm = (n_ABAAAAB_fb > n_ABAAAA_fm) ?
-                     n_ABAAAAB_fb : n_ABAAAA_fm;
-
-// n_ABAAABA
-wire [7:0] n_ABAAABA_sl;
-wire [7:0] n_ABAAABA_fa;
-wire [7:0] n_ABAAABA_fb;
-wire [7:0] n_ABAAABA_fm;
-assign n_ABAAABA_sl = (A_dependent && (n_ABAAAB_fa > n_ABAAAB_ready)) ?
-                     n_ABAAAB_fa : n_ABAAAB_ready;
-assign n_ABAAABA_fa = n_ABAAABA_sl + A_lat_ext[4];
-assign n_ABAAABA_fb = n_ABAAAB_fb;
-assign n_ABAAABA_fm = (n_ABAAABA_fa > n_ABAAAB_fm) ?
-                     n_ABAAABA_fa : n_ABAAAB_fm;
-
-// n_ABAAABB
-wire [7:0] n_ABAAABB_sl;
-wire [7:0] n_ABAAABB_fa;
-wire [7:0] n_ABAAABB_fb;
-wire [7:0] n_ABAAABB_fm;
-assign n_ABAAABB_sl = n_ABAAAB_sl + B_step_1;
-assign n_ABAAABB_fa = n_ABAAAB_fa;
-assign n_ABAAABB_fb = n_ABAAAB_sl + B_pair_1;
-assign n_ABAAABB_fm = (n_ABAAABB_fb > n_ABAAAB_fm) ?
-                     n_ABAAABB_fb : n_ABAAAB_fm;
-
-// n_ABAABAA
-wire [7:0] n_ABAABAA_sl;
-wire [7:0] n_ABAABAA_fa;
-wire [7:0] n_ABAABAA_fb;
-wire [7:0] n_ABAABAA_fm;
-assign n_ABAABAA_sl = n_ABAABA_sl + A_step_3;
-assign n_ABAABAA_fa = n_ABAABA_sl + A_pair_3;
-assign n_ABAABAA_fb = n_ABAABA_fb;
-assign n_ABAABAA_fm = (n_ABAABAA_fa > n_ABAABA_fm) ?
-                     n_ABAABAA_fa : n_ABAABA_fm;
-
-// n_ABAABAB
-wire [7:0] n_ABAABAB_sl;
-wire [7:0] n_ABAABAB_fa;
-wire [7:0] n_ABAABAB_fb;
-wire [7:0] n_ABAABAB_fm;
-assign n_ABAABAB_sl = (B_dependent && (n_ABAABA_fb > n_ABAABA_ready)) ?
-                     n_ABAABA_fb : n_ABAABA_ready;
-assign n_ABAABAB_fa = n_ABAABA_fa;
-assign n_ABAABAB_fb = n_ABAABAB_sl + B_lat_ext[2];
-assign n_ABAABAB_fm = (n_ABAABAB_fb > n_ABAABA_fm) ?
-                     n_ABAABAB_fb : n_ABAABA_fm;
-
-// n_ABAABBA
-wire [7:0] n_ABAABBA_sl;
-wire [7:0] n_ABAABBA_fa;
-wire [7:0] n_ABAABBA_fb;
-wire [7:0] n_ABAABBA_fm;
-assign n_ABAABBA_sl = (A_dependent && (n_ABAABB_fa > n_ABAABB_ready)) ?
-                     n_ABAABB_fa : n_ABAABB_ready;
-assign n_ABAABBA_fa = n_ABAABBA_sl + A_lat_ext[3];
-assign n_ABAABBA_fb = n_ABAABB_fb;
-assign n_ABAABBA_fm = (n_ABAABBA_fa > n_ABAABB_fm) ?
-                     n_ABAABBA_fa : n_ABAABB_fm;
-
-// n_ABABAAA
-wire [7:0] n_ABABAAA_sl;
-wire [7:0] n_ABABAAA_fa;
-wire [6:0] n_ABABAAA_fb;
-wire [7:0] n_ABABAAA_fm;
-assign n_ABABAAA_sl = n_ABABAA_sl + A_step_3;
-assign n_ABABAAA_fa = n_ABABAA_sl + A_pair_3;
-assign n_ABABAAA_fb = n_ABABAA_fb;
-assign n_ABABAAA_fm = (n_ABABAAA_fa > n_ABABAA_fm) ?
-                     n_ABABAAA_fa : n_ABABAA_fm;
-
-// n_ABABAAB
-wire [7:0] n_ABABAAB_sl;
-wire [7:0] n_ABABAAB_fa;
-wire [7:0] n_ABABAAB_fb;
-wire [7:0] n_ABABAAB_fm;
-assign n_ABABAAB_sl = (B_dependent && (n_ABABAA_fb > n_ABABAA_ready)) ?
-                     n_ABABAA_fb : n_ABABAA_ready;
-assign n_ABABAAB_fa = n_ABABAA_fa;
-assign n_ABABAAB_fb = n_ABABAAB_sl + B_lat_ext[2];
-assign n_ABABAAB_fm = (n_ABABAAB_fb > n_ABABAA_fm) ?
-                     n_ABABAAB_fb : n_ABABAA_fm;
-
-// n_ABABABA
-wire [7:0] n_ABABABA_sl;
-wire [7:0] n_ABABABA_fa;
-wire [7:0] n_ABABABA_fb;
-wire [7:0] n_ABABABA_fm;
-assign n_ABABABA_sl = (A_dependent && (n_ABABAB_fa > n_ABABAB_ready)) ?
-                     n_ABABAB_fa : n_ABABAB_ready;
-assign n_ABABABA_fa = n_ABABABA_sl + A_lat_ext[3];
-assign n_ABABABA_fb = n_ABABAB_fb;
-assign n_ABABABA_fm = (n_ABABABA_fa > n_ABABAB_fm) ?
-                     n_ABABABA_fa : n_ABABAB_fm;
-
-// n_ABABBAA
-wire [7:0] n_ABABBAA_sl;
-wire [7:0] n_ABABBAA_fa;
-wire [7:0] n_ABABBAA_fb;
-wire [7:0] n_ABABBAA_fm;
-assign n_ABABBAA_sl = n_ABABBA_sl + A_step_2;
-assign n_ABABBAA_fa = n_ABABBA_sl + A_pair_2;
-assign n_ABABBAA_fb = n_ABABBA_fb;
-assign n_ABABBAA_fm = (n_ABABBAA_fa > n_ABABBA_fm) ?
-                     n_ABABBAA_fa : n_ABABBA_fm;
-
-// n_ABBAAAA
-wire [7:0] n_ABBAAAA_sl;
-wire [7:0] n_ABBAAAA_fa;
-wire [6:0] n_ABBAAAA_fb;
-wire [7:0] n_ABBAAAA_fm;
-assign n_ABBAAAA_sl = n_ABBAAA_sl + A_step_3;
-assign n_ABBAAAA_fa = n_ABBAAA_sl + A_pair_3;
-assign n_ABBAAAA_fb = n_ABBAAA_fb;
-assign n_ABBAAAA_fm = (n_ABBAAAA_fa > n_ABBAAA_fm) ?
-                     n_ABBAAAA_fa : n_ABBAAA_fm;
-
-// n_ABBAAAB
-wire [7:0] n_ABBAAAB_sl;
-wire [7:0] n_ABBAAAB_fa;
-wire [7:0] n_ABBAAAB_fb;
-wire [7:0] n_ABBAAAB_fm;
-assign n_ABBAAAB_sl = (B_dependent && (n_ABBAAA_fb > n_ABBAAA_ready)) ?
-                     n_ABBAAA_fb : n_ABBAAA_ready;
-assign n_ABBAAAB_fa = n_ABBAAA_fa;
-assign n_ABBAAAB_fb = n_ABBAAAB_sl + B_lat_ext[2];
-assign n_ABBAAAB_fm = (n_ABBAAAB_fb > n_ABBAAA_fm) ?
-                     n_ABBAAAB_fb : n_ABBAAA_fm;
-
-// n_ABBAABA
-wire [7:0] n_ABBAABA_sl;
-wire [7:0] n_ABBAABA_fa;
-wire [7:0] n_ABBAABA_fb;
-wire [7:0] n_ABBAABA_fm;
-assign n_ABBAABA_sl = (A_dependent && (n_ABBAAB_fa > n_ABBAAB_ready)) ?
-                     n_ABBAAB_fa : n_ABBAAB_ready;
-assign n_ABBAABA_fa = n_ABBAABA_sl + A_lat_ext[3];
-assign n_ABBAABA_fb = n_ABBAAB_fb;
-assign n_ABBAABA_fm = (n_ABBAABA_fa > n_ABBAAB_fm) ?
-                     n_ABBAABA_fa : n_ABBAAB_fm;
-
-// n_ABBABAA
-wire [7:0] n_ABBABAA_sl;
-wire [7:0] n_ABBABAA_fa;
-wire [7:0] n_ABBABAA_fb;
-wire [7:0] n_ABBABAA_fm;
-assign n_ABBABAA_sl = n_ABBABA_sl + A_step_2;
-assign n_ABBABAA_fa = n_ABBABA_sl + A_pair_2;
-assign n_ABBABAA_fb = n_ABBABA_fb;
-assign n_ABBABAA_fm = (n_ABBABAA_fa > n_ABBABA_fm) ?
-                     n_ABBABAA_fa : n_ABBABA_fm;
-
-// n_ABBBAAA
-wire [7:0] n_ABBBAAA_sl;
-wire [7:0] n_ABBBAAA_fa;
-wire [7:0] n_ABBBAAA_fb;
-wire [7:0] n_ABBBAAA_fm;
-assign n_ABBBAAA_sl = n_ABBBAA_sl + A_step_2;
-assign n_ABBBAAA_fa = n_ABBBAA_sl + A_pair_2;
-assign n_ABBBAAA_fb = n_ABBBAA_fb;
-assign n_ABBBAAA_fm = (n_ABBBAAA_fa > n_ABBBAA_fm) ?
-                     n_ABBBAAA_fa : n_ABBBAA_fm;
-
-// n_BAAAAAA
-wire [7:0] n_BAAAAAA_sl;
-wire [8:0] n_BAAAAAA_fa;
-wire [5:0] n_BAAAAAA_fb;
-wire [8:0] n_BAAAAAA_fm;
-assign n_BAAAAAA_sl = n_BAAAAA_sl + A_step_4;
-assign n_BAAAAAA_fa = n_BAAAAA_sl + A_pair_4;
-assign n_BAAAAAA_fb = n_BAAAAA_fb;
-assign n_BAAAAAA_fm = (n_BAAAAAA_fa > n_BAAAAA_fm) ?
-                     n_BAAAAAA_fa : n_BAAAAA_fm;
-
-// n_BAAAAAB
-wire [7:0] n_BAAAAAB_sl;
-wire [7:0] n_BAAAAAB_fa;
-wire [7:0] n_BAAAAAB_fb;
-wire [7:0] n_BAAAAAB_fm;
-assign n_BAAAAAB_sl = (B_dependent && (n_BAAAAA_fb > n_BAAAAA_ready)) ?
-                     n_BAAAAA_fb : n_BAAAAA_ready;
-assign n_BAAAAAB_fa = n_BAAAAA_fa;
-assign n_BAAAAAB_fb = n_BAAAAAB_sl + B_lat_ext[1];
-assign n_BAAAAAB_fm = (n_BAAAAAB_fb > n_BAAAAA_fm) ?
-                     n_BAAAAAB_fb : n_BAAAAA_fm;
-
-// n_BAAAABA
-wire [7:0] n_BAAAABA_sl;
-wire [7:0] n_BAAAABA_fa;
-wire [7:0] n_BAAAABA_fb;
-wire [7:0] n_BAAAABA_fm;
-assign n_BAAAABA_sl = (A_dependent && (n_BAAAAB_fa > n_BAAAAB_ready)) ?
-                     n_BAAAAB_fa : n_BAAAAB_ready;
-assign n_BAAAABA_fa = n_BAAAABA_sl + A_lat_ext[4];
-assign n_BAAAABA_fb = n_BAAAAB_fb;
-assign n_BAAAABA_fm = (n_BAAAABA_fa > n_BAAAAB_fm) ?
-                     n_BAAAABA_fa : n_BAAAAB_fm;
-
-// n_BAAAABB
-wire [7:0] n_BAAAABB_sl;
-wire [7:0] n_BAAAABB_fa;
-wire [7:0] n_BAAAABB_fb;
-wire [7:0] n_BAAAABB_fm;
-assign n_BAAAABB_sl = n_BAAAAB_sl + B_step_1;
-assign n_BAAAABB_fa = n_BAAAAB_fa;
-assign n_BAAAABB_fb = n_BAAAAB_sl + B_pair_1;
-assign n_BAAAABB_fm = (n_BAAAABB_fb > n_BAAAAB_fm) ?
-                     n_BAAAABB_fb : n_BAAAAB_fm;
-
-// n_BAAABAA
-wire [7:0] n_BAAABAA_sl;
-wire [7:0] n_BAAABAA_fa;
-wire [7:0] n_BAAABAA_fb;
-wire [7:0] n_BAAABAA_fm;
-assign n_BAAABAA_sl = n_BAAABA_sl + A_step_3;
-assign n_BAAABAA_fa = n_BAAABA_sl + A_pair_3;
-assign n_BAAABAA_fb = n_BAAABA_fb;
-assign n_BAAABAA_fm = (n_BAAABAA_fa > n_BAAABA_fm) ?
-                     n_BAAABAA_fa : n_BAAABA_fm;
-
-// n_BAAABAB
-wire [7:0] n_BAAABAB_sl;
-wire [7:0] n_BAAABAB_fa;
-wire [7:0] n_BAAABAB_fb;
-wire [7:0] n_BAAABAB_fm;
-assign n_BAAABAB_sl = (B_dependent && (n_BAAABA_fb > n_BAAABA_ready)) ?
-                     n_BAAABA_fb : n_BAAABA_ready;
-assign n_BAAABAB_fa = n_BAAABA_fa;
-assign n_BAAABAB_fb = n_BAAABAB_sl + B_lat_ext[2];
-assign n_BAAABAB_fm = (n_BAAABAB_fb > n_BAAABA_fm) ?
-                     n_BAAABAB_fb : n_BAAABA_fm;
-
-// n_BAAABBA
-wire [7:0] n_BAAABBA_sl;
-wire [7:0] n_BAAABBA_fa;
-wire [7:0] n_BAAABBA_fb;
-wire [7:0] n_BAAABBA_fm;
-assign n_BAAABBA_sl = (A_dependent && (n_BAAABB_fa > n_BAAABB_ready)) ?
-                     n_BAAABB_fa : n_BAAABB_ready;
-assign n_BAAABBA_fa = n_BAAABBA_sl + A_lat_ext[3];
-assign n_BAAABBA_fb = n_BAAABB_fb;
-assign n_BAAABBA_fm = (n_BAAABBA_fa > n_BAAABB_fm) ?
-                     n_BAAABBA_fa : n_BAAABB_fm;
-
-// n_BAABAAA
-wire [7:0] n_BAABAAA_sl;
-wire [7:0] n_BAABAAA_fa;
-wire [6:0] n_BAABAAA_fb;
-wire [7:0] n_BAABAAA_fm;
-assign n_BAABAAA_sl = n_BAABAA_sl + A_step_3;
-assign n_BAABAAA_fa = n_BAABAA_sl + A_pair_3;
-assign n_BAABAAA_fb = n_BAABAA_fb;
-assign n_BAABAAA_fm = (n_BAABAAA_fa > n_BAABAA_fm) ?
-                     n_BAABAAA_fa : n_BAABAA_fm;
-
-// n_BAABAAB
-wire [7:0] n_BAABAAB_sl;
-wire [7:0] n_BAABAAB_fa;
-wire [7:0] n_BAABAAB_fb;
-wire [7:0] n_BAABAAB_fm;
-assign n_BAABAAB_sl = (B_dependent && (n_BAABAA_fb > n_BAABAA_ready)) ?
-                     n_BAABAA_fb : n_BAABAA_ready;
-assign n_BAABAAB_fa = n_BAABAA_fa;
-assign n_BAABAAB_fb = n_BAABAAB_sl + B_lat_ext[2];
-assign n_BAABAAB_fm = (n_BAABAAB_fb > n_BAABAA_fm) ?
-                     n_BAABAAB_fb : n_BAABAA_fm;
-
-// n_BAABABA
-wire [7:0] n_BAABABA_sl;
-wire [7:0] n_BAABABA_fa;
-wire [7:0] n_BAABABA_fb;
-wire [7:0] n_BAABABA_fm;
-assign n_BAABABA_sl = (A_dependent && (n_BAABAB_fa > n_BAABAB_ready)) ?
-                     n_BAABAB_fa : n_BAABAB_ready;
-assign n_BAABABA_fa = n_BAABABA_sl + A_lat_ext[3];
-assign n_BAABABA_fb = n_BAABAB_fb;
-assign n_BAABABA_fm = (n_BAABABA_fa > n_BAABAB_fm) ?
-                     n_BAABABA_fa : n_BAABAB_fm;
-
-// n_BAABBAA
-wire [7:0] n_BAABBAA_sl;
-wire [7:0] n_BAABBAA_fa;
-wire [7:0] n_BAABBAA_fb;
-wire [7:0] n_BAABBAA_fm;
-assign n_BAABBAA_sl = n_BAABBA_sl + A_step_2;
-assign n_BAABBAA_fa = n_BAABBA_sl + A_pair_2;
-assign n_BAABBAA_fb = n_BAABBA_fb;
-assign n_BAABBAA_fm = (n_BAABBAA_fa > n_BAABBA_fm) ?
-                     n_BAABBAA_fa : n_BAABBA_fm;
-
-// n_BABAAAA
-wire [7:0] n_BABAAAA_sl;
-wire [7:0] n_BABAAAA_fa;
-wire [6:0] n_BABAAAA_fb;
-wire [7:0] n_BABAAAA_fm;
-assign n_BABAAAA_sl = n_BABAAA_sl + A_step_3;
-assign n_BABAAAA_fa = n_BABAAA_sl + A_pair_3;
-assign n_BABAAAA_fb = n_BABAAA_fb;
-assign n_BABAAAA_fm = (n_BABAAAA_fa > n_BABAAA_fm) ?
-                     n_BABAAAA_fa : n_BABAAA_fm;
-
-// n_BABAAAB
-wire [7:0] n_BABAAAB_sl;
-wire [7:0] n_BABAAAB_fa;
-wire [7:0] n_BABAAAB_fb;
-wire [7:0] n_BABAAAB_fm;
-assign n_BABAAAB_sl = (B_dependent && (n_BABAAA_fb > n_BABAAA_ready)) ?
-                     n_BABAAA_fb : n_BABAAA_ready;
-assign n_BABAAAB_fa = n_BABAAA_fa;
-assign n_BABAAAB_fb = n_BABAAAB_sl + B_lat_ext[2];
-assign n_BABAAAB_fm = (n_BABAAAB_fb > n_BABAAA_fm) ?
-                     n_BABAAAB_fb : n_BABAAA_fm;
-
-// n_BABAABA
-wire [7:0] n_BABAABA_sl;
-wire [7:0] n_BABAABA_fa;
-wire [7:0] n_BABAABA_fb;
-wire [7:0] n_BABAABA_fm;
-assign n_BABAABA_sl = (A_dependent && (n_BABAAB_fa > n_BABAAB_ready)) ?
-                     n_BABAAB_fa : n_BABAAB_ready;
-assign n_BABAABA_fa = n_BABAABA_sl + A_lat_ext[3];
-assign n_BABAABA_fb = n_BABAAB_fb;
-assign n_BABAABA_fm = (n_BABAABA_fa > n_BABAAB_fm) ?
-                     n_BABAABA_fa : n_BABAAB_fm;
-
-// n_BABABAA
-wire [7:0] n_BABABAA_sl;
-wire [7:0] n_BABABAA_fa;
-wire [7:0] n_BABABAA_fb;
-wire [7:0] n_BABABAA_fm;
-assign n_BABABAA_sl = n_BABABA_sl + A_step_2;
-assign n_BABABAA_fa = n_BABABA_sl + A_pair_2;
-assign n_BABABAA_fb = n_BABABA_fb;
-assign n_BABABAA_fm = (n_BABABAA_fa > n_BABABA_fm) ?
-                     n_BABABAA_fa : n_BABABA_fm;
-
-// n_BABBAAA
-wire [7:0] n_BABBAAA_sl;
-wire [7:0] n_BABBAAA_fa;
-wire [7:0] n_BABBAAA_fb;
-wire [7:0] n_BABBAAA_fm;
-assign n_BABBAAA_sl = n_BABBAA_sl + A_step_2;
-assign n_BABBAAA_fa = n_BABBAA_sl + A_pair_2;
-assign n_BABBAAA_fb = n_BABBAA_fb;
-assign n_BABBAAA_fm = (n_BABBAAA_fa > n_BABBAA_fm) ?
-                     n_BABBAAA_fa : n_BABBAA_fm;
-
-// n_BBAAAAA
-wire [7:0] n_BBAAAAA_sl;
-wire [8:0] n_BBAAAAA_fa;
-wire [6:0] n_BBAAAAA_fb;
-wire [8:0] n_BBAAAAA_fm;
-assign n_BBAAAAA_sl = n_BBAAAA_sl + A_step_3;
-assign n_BBAAAAA_fa = n_BBAAAA_sl + A_pair_3;
-assign n_BBAAAAA_fb = n_BBAAAA_fb;
-assign n_BBAAAAA_fm = (n_BBAAAAA_fa > n_BBAAAA_fm) ?
-                     n_BBAAAAA_fa : n_BBAAAA_fm;
-
-// n_BBAAAAB
-wire [7:0] n_BBAAAAB_sl;
-wire [7:0] n_BBAAAAB_fa;
-wire [7:0] n_BBAAAAB_fb;
-wire [7:0] n_BBAAAAB_fm;
-assign n_BBAAAAB_sl = (B_dependent && (n_BBAAAA_fb > n_BBAAAA_ready)) ?
-                     n_BBAAAA_fb : n_BBAAAA_ready;
-assign n_BBAAAAB_fa = n_BBAAAA_fa;
-assign n_BBAAAAB_fb = n_BBAAAAB_sl + B_lat_ext[2];
-assign n_BBAAAAB_fm = (n_BBAAAAB_fb > n_BBAAAA_fm) ?
-                     n_BBAAAAB_fb : n_BBAAAA_fm;
-
-// n_BBAAABA
-wire [7:0] n_BBAAABA_sl;
-wire [7:0] n_BBAAABA_fa;
-wire [7:0] n_BBAAABA_fb;
-wire [7:0] n_BBAAABA_fm;
-assign n_BBAAABA_sl = (A_dependent && (n_BBAAAB_fa > n_BBAAAB_ready)) ?
-                     n_BBAAAB_fa : n_BBAAAB_ready;
-assign n_BBAAABA_fa = n_BBAAABA_sl + A_lat_ext[3];
-assign n_BBAAABA_fb = n_BBAAAB_fb;
-assign n_BBAAABA_fm = (n_BBAAABA_fa > n_BBAAAB_fm) ?
-                     n_BBAAABA_fa : n_BBAAAB_fm;
-
-// n_BBAABAA
-wire [7:0] n_BBAABAA_sl;
-wire [7:0] n_BBAABAA_fa;
-wire [7:0] n_BBAABAA_fb;
-wire [7:0] n_BBAABAA_fm;
-assign n_BBAABAA_sl = n_BBAABA_sl + A_step_2;
-assign n_BBAABAA_fa = n_BBAABA_sl + A_pair_2;
-assign n_BBAABAA_fb = n_BBAABA_fb;
-assign n_BBAABAA_fm = (n_BBAABAA_fa > n_BBAABA_fm) ?
-                     n_BBAABAA_fa : n_BBAABA_fm;
-
-// n_BBABAAA
-wire [7:0] n_BBABAAA_sl;
-wire [7:0] n_BBABAAA_fa;
-wire [7:0] n_BBABAAA_fb;
-wire [7:0] n_BBABAAA_fm;
-assign n_BBABAAA_sl = n_BBABAA_sl + A_step_2;
-assign n_BBABAAA_fa = n_BBABAA_sl + A_pair_2;
-assign n_BBABAAA_fb = n_BBABAA_fb;
-assign n_BBABAAA_fm = (n_BBABAAA_fa > n_BBABAA_fm) ?
-                     n_BBABAAA_fa : n_BBABAA_fm;
-
-// n_BBBAAAA
-wire [7:0] n_BBBAAAA_sl;
-wire [8:0] n_BBBAAAA_fa;
-wire [7:0] n_BBBAAAA_fb;
-wire [8:0] n_BBBAAAA_fm;
-assign n_BBBAAAA_sl = n_BBBAAA_sl + A_step_2;
-assign n_BBBAAAA_fa = n_BBBAAA_sl + A_pair_2;
-assign n_BBBAAAA_fb = n_BBBAAA_fb;
-assign n_BBBAAAA_fm = (n_BBBAAAA_fa > n_BBBAAA_fm) ?
-                     n_BBBAAAA_fa : n_BBBAAA_fm;
+// Backward suffix tree for OISS scheduling.
+// Each node keeps RA/RB: longest distance from the first A/B in this suffix to final completion.
+// Paths are written in forward issue order, while construction prepends instructions from right to left.
+
+//////// BACKWARD DEPTH 1 ////////
+// bw_A
+wire [5:0] bw_A_ra;
+wire [0:0] bw_A_rb;
+assign bw_A_ra = A_rev_lat[0];
+assign bw_A_rb = 1'b0;
+
+// bw_B
+wire [0:0] bw_B_ra;
+wire [5:0] bw_B_rb;
+assign bw_B_ra = 1'b0;
+assign bw_B_rb = B_rev_lat[0];
+
+
+//////// BACKWARD DEPTH 2 ////////
+// bw_AA
+wire [6:0] bw_AA_ra;
+wire [0:0] bw_AA_rb;
+wire [5:0] bw_AA_step = A_dependent ? A_rev_lat[1] : 6'd1;
+wire [6:0] bw_AA_path = {{1{1'b0}}, bw_A_ra} + {{1{1'b0}}, bw_AA_step};
+assign bw_AA_ra = (bw_AA_path > {{1{1'b0}}, A_rev_lat[1]}) ? bw_AA_path : {{1{1'b0}}, A_rev_lat[1]};
+assign bw_AA_rb = bw_A_rb;
+
+// bw_AB
+wire [5:0] bw_AB_ra;
+wire [5:0] bw_AB_rb;
+wire [5:0] bw_AB_issue = bw_B_rb + 6'd1;
+wire [5:0] bw_AB_dep = A_rev_lat[0] + (A_dependent ? {{5{1'b0}}, bw_B_ra} : 6'd0);
+assign bw_AB_ra = (bw_AB_issue > bw_AB_dep) ? bw_AB_issue : bw_AB_dep;
+assign bw_AB_rb = bw_B_rb;
+
+// bw_BA
+wire [5:0] bw_BA_ra;
+wire [5:0] bw_BA_rb;
+wire [5:0] bw_BA_issue = bw_A_ra + 6'd1;
+wire [5:0] bw_BA_dep = B_rev_lat[0] + (B_dependent ? {{5{1'b0}}, bw_A_rb} : 6'd0);
+assign bw_BA_rb = (bw_BA_issue > bw_BA_dep) ? bw_BA_issue : bw_BA_dep;
+assign bw_BA_ra = bw_A_ra;
+
+// bw_BB
+wire [0:0] bw_BB_ra;
+wire [6:0] bw_BB_rb;
+wire [5:0] bw_BB_step = B_dependent ? B_rev_lat[1] : 6'd1;
+wire [6:0] bw_BB_path = {{1{1'b0}}, bw_B_rb} + {{1{1'b0}}, bw_BB_step};
+assign bw_BB_rb = (bw_BB_path > {{1{1'b0}}, B_rev_lat[1]}) ? bw_BB_path : {{1{1'b0}}, B_rev_lat[1]};
+assign bw_BB_ra = bw_B_ra;
+
+
+//////// BACKWARD DEPTH 3 ////////
+// bw_AAA
+wire [7:0] bw_AAA_ra;
+wire [0:0] bw_AAA_rb;
+wire [5:0] bw_AAA_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AAA_path = {{1{1'b0}}, bw_AA_ra} + {{2{1'b0}}, bw_AAA_step};
+assign bw_AAA_ra = (bw_AAA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAA_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AAA_rb = bw_AA_rb;
+
+// bw_AAB
+wire [6:0] bw_AAB_ra;
+wire [5:0] bw_AAB_rb;
+wire [5:0] bw_AAB_step = A_dependent ? A_rev_lat[1] : 6'd1;
+wire [6:0] bw_AAB_path = {{1{1'b0}}, bw_AB_ra} + {{1{1'b0}}, bw_AAB_step};
+assign bw_AAB_ra = (bw_AAB_path > {{1{1'b0}}, A_rev_lat[1]}) ? bw_AAB_path : {{1{1'b0}}, A_rev_lat[1]};
+assign bw_AAB_rb = bw_AB_rb;
+
+// bw_ABA
+wire [6:0] bw_ABA_ra;
+wire [5:0] bw_ABA_rb;
+wire [5:0] bw_ABA_issue = bw_BA_rb + 6'd1;
+wire [6:0] bw_ABA_dep = {{1{1'b0}}, A_rev_lat[1]} + (A_dependent ? {{1{1'b0}}, bw_BA_ra} : 7'd0);
+assign bw_ABA_ra = ({{1{1'b0}}, bw_ABA_issue} > bw_ABA_dep) ? {{1{1'b0}}, bw_ABA_issue} : bw_ABA_dep;
+assign bw_ABA_rb = bw_BA_rb;
+
+// bw_ABB
+wire [6:0] bw_ABB_ra;
+wire [6:0] bw_ABB_rb;
+wire [6:0] bw_ABB_issue = bw_BB_rb + 7'd1;
+wire [5:0] bw_ABB_dep = A_rev_lat[0] + (A_dependent ? {{5{1'b0}}, bw_BB_ra} : 6'd0);
+assign bw_ABB_ra = (bw_ABB_issue > {{1{1'b0}}, bw_ABB_dep}) ? bw_ABB_issue : {{1{1'b0}}, bw_ABB_dep};
+assign bw_ABB_rb = bw_BB_rb;
+
+// bw_BAA
+wire [6:0] bw_BAA_ra;
+wire [6:0] bw_BAA_rb;
+wire [6:0] bw_BAA_issue = bw_AA_ra + 7'd1;
+wire [5:0] bw_BAA_dep = B_rev_lat[0] + (B_dependent ? {{5{1'b0}}, bw_AA_rb} : 6'd0);
+assign bw_BAA_rb = (bw_BAA_issue > {{1{1'b0}}, bw_BAA_dep}) ? bw_BAA_issue : {{1{1'b0}}, bw_BAA_dep};
+assign bw_BAA_ra = bw_AA_ra;
+
+// bw_BAB
+wire [5:0] bw_BAB_ra;
+wire [6:0] bw_BAB_rb;
+wire [5:0] bw_BAB_issue = bw_AB_ra + 6'd1;
+wire [6:0] bw_BAB_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AB_rb} : 7'd0);
+assign bw_BAB_rb = ({{1{1'b0}}, bw_BAB_issue} > bw_BAB_dep) ? {{1{1'b0}}, bw_BAB_issue} : bw_BAB_dep;
+assign bw_BAB_ra = bw_AB_ra;
+
+// bw_BBA
+wire [5:0] bw_BBA_ra;
+wire [6:0] bw_BBA_rb;
+wire [5:0] bw_BBA_step = B_dependent ? B_rev_lat[1] : 6'd1;
+wire [6:0] bw_BBA_path = {{1{1'b0}}, bw_BA_rb} + {{1{1'b0}}, bw_BBA_step};
+assign bw_BBA_rb = (bw_BBA_path > {{1{1'b0}}, B_rev_lat[1]}) ? bw_BBA_path : {{1{1'b0}}, B_rev_lat[1]};
+assign bw_BBA_ra = bw_BA_ra;
+
+// bw_BBB
+wire [0:0] bw_BBB_ra;
+wire [7:0] bw_BBB_rb;
+wire [5:0] bw_BBB_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBB_path = {{1{1'b0}}, bw_BB_rb} + {{2{1'b0}}, bw_BBB_step};
+assign bw_BBB_rb = (bw_BBB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBB_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBB_ra = bw_BB_ra;
+
+
+//////// BACKWARD DEPTH 4 ////////
+// bw_AAAA
+wire [7:0] bw_AAAA_ra;
+wire [0:0] bw_AAAA_rb;
+wire [5:0] bw_AAAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAAA_path = bw_AAA_ra + {{2{1'b0}}, bw_AAAA_step};
+assign bw_AAAA_ra = (bw_AAAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAAA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAAA_rb = bw_AAA_rb;
+
+// bw_AAAB
+wire [7:0] bw_AAAB_ra;
+wire [5:0] bw_AAAB_rb;
+wire [5:0] bw_AAAB_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AAAB_path = {{1{1'b0}}, bw_AAB_ra} + {{2{1'b0}}, bw_AAAB_step};
+assign bw_AAAB_ra = (bw_AAAB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAAB_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AAAB_rb = bw_AAB_rb;
+
+// bw_AABA
+wire [7:0] bw_AABA_ra;
+wire [5:0] bw_AABA_rb;
+wire [5:0] bw_AABA_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AABA_path = {{1{1'b0}}, bw_ABA_ra} + {{2{1'b0}}, bw_AABA_step};
+assign bw_AABA_ra = (bw_AABA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABA_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AABA_rb = bw_ABA_rb;
+
+// bw_AABB
+wire [7:0] bw_AABB_ra;
+wire [6:0] bw_AABB_rb;
+wire [5:0] bw_AABB_step = A_dependent ? A_rev_lat[1] : 6'd1;
+wire [7:0] bw_AABB_path = {{1{1'b0}}, bw_ABB_ra} + {{2{1'b0}}, bw_AABB_step};
+assign bw_AABB_ra = (bw_AABB_path > {{2{1'b0}}, A_rev_lat[1]}) ? bw_AABB_path : {{2{1'b0}}, A_rev_lat[1]};
+assign bw_AABB_rb = bw_ABB_rb;
+
+// bw_ABAA
+wire [7:0] bw_ABAA_ra;
+wire [6:0] bw_ABAA_rb;
+wire [6:0] bw_ABAA_issue = bw_BAA_rb + 7'd1;
+wire [7:0] bw_ABAA_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BAA_ra} : 8'd0);
+assign bw_ABAA_ra = ({{1{1'b0}}, bw_ABAA_issue} > bw_ABAA_dep) ? {{1{1'b0}}, bw_ABAA_issue} : bw_ABAA_dep;
+assign bw_ABAA_rb = bw_BAA_rb;
+
+// bw_ABAB
+wire [6:0] bw_ABAB_ra;
+wire [6:0] bw_ABAB_rb;
+wire [6:0] bw_ABAB_issue = bw_BAB_rb + 7'd1;
+wire [6:0] bw_ABAB_dep = {{1{1'b0}}, A_rev_lat[1]} + (A_dependent ? {{1{1'b0}}, bw_BAB_ra} : 7'd0);
+assign bw_ABAB_ra = (bw_ABAB_issue > bw_ABAB_dep) ? bw_ABAB_issue : bw_ABAB_dep;
+assign bw_ABAB_rb = bw_BAB_rb;
+
+// bw_ABBA
+wire [6:0] bw_ABBA_ra;
+wire [6:0] bw_ABBA_rb;
+wire [6:0] bw_ABBA_issue = bw_BBA_rb + 7'd1;
+wire [6:0] bw_ABBA_dep = {{1{1'b0}}, A_rev_lat[1]} + (A_dependent ? {{1{1'b0}}, bw_BBA_ra} : 7'd0);
+assign bw_ABBA_ra = (bw_ABBA_issue > bw_ABBA_dep) ? bw_ABBA_issue : bw_ABBA_dep;
+assign bw_ABBA_rb = bw_BBA_rb;
+
+// bw_ABBB
+wire [7:0] bw_ABBB_ra;
+wire [7:0] bw_ABBB_rb;
+wire [7:0] bw_ABBB_issue = bw_BBB_rb + 8'd1;
+wire [5:0] bw_ABBB_dep = A_rev_lat[0] + (A_dependent ? {{5{1'b0}}, bw_BBB_ra} : 6'd0);
+assign bw_ABBB_ra = (bw_ABBB_issue > {{2{1'b0}}, bw_ABBB_dep}) ? bw_ABBB_issue : {{2{1'b0}}, bw_ABBB_dep};
+assign bw_ABBB_rb = bw_BBB_rb;
+
+// bw_BAAA
+wire [7:0] bw_BAAA_ra;
+wire [7:0] bw_BAAA_rb;
+wire [7:0] bw_BAAA_issue = bw_AAA_ra + 8'd1;
+wire [5:0] bw_BAAA_dep = B_rev_lat[0] + (B_dependent ? {{5{1'b0}}, bw_AAA_rb} : 6'd0);
+assign bw_BAAA_rb = (bw_BAAA_issue > {{2{1'b0}}, bw_BAAA_dep}) ? bw_BAAA_issue : {{2{1'b0}}, bw_BAAA_dep};
+assign bw_BAAA_ra = bw_AAA_ra;
+
+// bw_BAAB
+wire [6:0] bw_BAAB_ra;
+wire [6:0] bw_BAAB_rb;
+wire [6:0] bw_BAAB_issue = bw_AAB_ra + 7'd1;
+wire [6:0] bw_BAAB_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AAB_rb} : 7'd0);
+assign bw_BAAB_rb = (bw_BAAB_issue > bw_BAAB_dep) ? bw_BAAB_issue : bw_BAAB_dep;
+assign bw_BAAB_ra = bw_AAB_ra;
+
+// bw_BABA
+wire [6:0] bw_BABA_ra;
+wire [6:0] bw_BABA_rb;
+wire [6:0] bw_BABA_issue = bw_ABA_ra + 7'd1;
+wire [6:0] bw_BABA_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_ABA_rb} : 7'd0);
+assign bw_BABA_rb = (bw_BABA_issue > bw_BABA_dep) ? bw_BABA_issue : bw_BABA_dep;
+assign bw_BABA_ra = bw_ABA_ra;
+
+// bw_BABB
+wire [6:0] bw_BABB_ra;
+wire [7:0] bw_BABB_rb;
+wire [6:0] bw_BABB_issue = bw_ABB_ra + 7'd1;
+wire [7:0] bw_BABB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_ABB_rb} : 8'd0);
+assign bw_BABB_rb = ({{1{1'b0}}, bw_BABB_issue} > bw_BABB_dep) ? {{1{1'b0}}, bw_BABB_issue} : bw_BABB_dep;
+assign bw_BABB_ra = bw_ABB_ra;
+
+// bw_BBAA
+wire [6:0] bw_BBAA_ra;
+wire [7:0] bw_BBAA_rb;
+wire [5:0] bw_BBAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
+wire [7:0] bw_BBAA_path = {{1{1'b0}}, bw_BAA_rb} + {{2{1'b0}}, bw_BBAA_step};
+assign bw_BBAA_rb = (bw_BBAA_path > {{2{1'b0}}, B_rev_lat[1]}) ? bw_BBAA_path : {{2{1'b0}}, B_rev_lat[1]};
+assign bw_BBAA_ra = bw_BAA_ra;
+
+// bw_BBAB
+wire [5:0] bw_BBAB_ra;
+wire [7:0] bw_BBAB_rb;
+wire [5:0] bw_BBAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBAB_path = {{1{1'b0}}, bw_BAB_rb} + {{2{1'b0}}, bw_BBAB_step};
+assign bw_BBAB_rb = (bw_BBAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAB_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBAB_ra = bw_BAB_ra;
+
+// bw_BBBA
+wire [5:0] bw_BBBA_ra;
+wire [7:0] bw_BBBA_rb;
+wire [5:0] bw_BBBA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBBA_path = {{1{1'b0}}, bw_BBA_rb} + {{2{1'b0}}, bw_BBBA_step};
+assign bw_BBBA_rb = (bw_BBBA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBBA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBBA_ra = bw_BBA_ra;
+
+
+//////// BACKWARD DEPTH 5 ////////
+// bw_AAAAA
+wire [7:0] bw_AAAAA_ra;
+wire [0:0] bw_AAAAA_rb;
+wire [5:0] bw_AAAAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAAAA_path = bw_AAAA_ra + {{2{1'b0}}, bw_AAAAA_step};
+assign bw_AAAAA_ra = (bw_AAAAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAAA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAAAA_rb = bw_AAAA_rb;
+
+// bw_AAAAB
+wire [7:0] bw_AAAAB_ra;
+wire [5:0] bw_AAAAB_rb;
+wire [5:0] bw_AAAAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAAAB_path = bw_AAAB_ra + {{2{1'b0}}, bw_AAAAB_step};
+assign bw_AAAAB_ra = (bw_AAAAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAAAB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAAAB_rb = bw_AAAB_rb;
+
+// bw_AAABA
+wire [7:0] bw_AAABA_ra;
+wire [5:0] bw_AAABA_rb;
+wire [5:0] bw_AAABA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAABA_path = bw_AABA_ra + {{2{1'b0}}, bw_AAABA_step};
+assign bw_AAABA_ra = (bw_AAABA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAABA_rb = bw_AABA_rb;
+
+// bw_AAABB
+wire [7:0] bw_AAABB_ra;
+wire [6:0] bw_AAABB_rb;
+wire [5:0] bw_AAABB_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AAABB_path = bw_AABB_ra + {{2{1'b0}}, bw_AAABB_step};
+assign bw_AAABB_ra = (bw_AAABB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAABB_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AAABB_rb = bw_AABB_rb;
+
+// bw_AABAA
+wire [7:0] bw_AABAA_ra;
+wire [6:0] bw_AABAA_rb;
+wire [5:0] bw_AABAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABAA_path = bw_ABAA_ra + {{2{1'b0}}, bw_AABAA_step};
+assign bw_AABAA_ra = (bw_AABAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABAA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABAA_rb = bw_ABAA_rb;
+
+// bw_AABAB
+wire [7:0] bw_AABAB_ra;
+wire [6:0] bw_AABAB_rb;
+wire [5:0] bw_AABAB_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AABAB_path = {{1{1'b0}}, bw_ABAB_ra} + {{2{1'b0}}, bw_AABAB_step};
+assign bw_AABAB_ra = (bw_AABAB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABAB_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AABAB_rb = bw_ABAB_rb;
+
+// bw_AABBA
+wire [7:0] bw_AABBA_ra;
+wire [6:0] bw_AABBA_rb;
+wire [5:0] bw_AABBA_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AABBA_path = {{1{1'b0}}, bw_ABBA_ra} + {{2{1'b0}}, bw_AABBA_step};
+assign bw_AABBA_ra = (bw_AABBA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABBA_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AABBA_rb = bw_ABBA_rb;
+
+// bw_AABBB
+wire [7:0] bw_AABBB_ra;
+wire [7:0] bw_AABBB_rb;
+wire [5:0] bw_AABBB_step = A_dependent ? A_rev_lat[1] : 6'd1;
+wire [7:0] bw_AABBB_path = bw_ABBB_ra + {{2{1'b0}}, bw_AABBB_step};
+assign bw_AABBB_ra = (bw_AABBB_path > {{2{1'b0}}, A_rev_lat[1]}) ? bw_AABBB_path : {{2{1'b0}}, A_rev_lat[1]};
+assign bw_AABBB_rb = bw_ABBB_rb;
+
+// bw_ABAAA
+wire [7:0] bw_ABAAA_ra;
+wire [7:0] bw_ABAAA_rb;
+wire [7:0] bw_ABAAA_issue = bw_BAAA_rb + 8'd1;
+wire [7:0] bw_ABAAA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BAAA_ra : 8'd0);
+assign bw_ABAAA_ra = (bw_ABAAA_issue > bw_ABAAA_dep) ? bw_ABAAA_issue : bw_ABAAA_dep;
+assign bw_ABAAA_rb = bw_BAAA_rb;
+
+// bw_ABAAB
+wire [7:0] bw_ABAAB_ra;
+wire [6:0] bw_ABAAB_rb;
+wire [6:0] bw_ABAAB_issue = bw_BAAB_rb + 7'd1;
+wire [7:0] bw_ABAAB_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BAAB_ra} : 8'd0);
+assign bw_ABAAB_ra = ({{1{1'b0}}, bw_ABAAB_issue} > bw_ABAAB_dep) ? {{1{1'b0}}, bw_ABAAB_issue} : bw_ABAAB_dep;
+assign bw_ABAAB_rb = bw_BAAB_rb;
+
+// bw_ABABA
+wire [7:0] bw_ABABA_ra;
+wire [6:0] bw_ABABA_rb;
+wire [6:0] bw_ABABA_issue = bw_BABA_rb + 7'd1;
+wire [7:0] bw_ABABA_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BABA_ra} : 8'd0);
+assign bw_ABABA_ra = ({{1{1'b0}}, bw_ABABA_issue} > bw_ABABA_dep) ? {{1{1'b0}}, bw_ABABA_issue} : bw_ABABA_dep;
+assign bw_ABABA_rb = bw_BABA_rb;
+
+// bw_ABABB
+wire [7:0] bw_ABABB_ra;
+wire [7:0] bw_ABABB_rb;
+wire [7:0] bw_ABABB_issue = bw_BABB_rb + 8'd1;
+wire [7:0] bw_ABABB_dep = {{2{1'b0}}, A_rev_lat[1]} + (A_dependent ? {{1{1'b0}}, bw_BABB_ra} : 8'd0);
+assign bw_ABABB_ra = (bw_ABABB_issue > bw_ABABB_dep) ? bw_ABABB_issue : bw_ABABB_dep;
+assign bw_ABABB_rb = bw_BABB_rb;
+
+// bw_ABBAA
+wire [7:0] bw_ABBAA_ra;
+wire [7:0] bw_ABBAA_rb;
+wire [7:0] bw_ABBAA_issue = bw_BBAA_rb + 8'd1;
+wire [7:0] bw_ABBAA_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BBAA_ra} : 8'd0);
+assign bw_ABBAA_ra = (bw_ABBAA_issue > bw_ABBAA_dep) ? bw_ABBAA_issue : bw_ABBAA_dep;
+assign bw_ABBAA_rb = bw_BBAA_rb;
+
+// bw_ABBAB
+wire [7:0] bw_ABBAB_ra;
+wire [7:0] bw_ABBAB_rb;
+wire [7:0] bw_ABBAB_issue = bw_BBAB_rb + 8'd1;
+wire [6:0] bw_ABBAB_dep = {{1{1'b0}}, A_rev_lat[1]} + (A_dependent ? {{1{1'b0}}, bw_BBAB_ra} : 7'd0);
+assign bw_ABBAB_ra = (bw_ABBAB_issue > {{1{1'b0}}, bw_ABBAB_dep}) ? bw_ABBAB_issue : {{1{1'b0}}, bw_ABBAB_dep};
+assign bw_ABBAB_rb = bw_BBAB_rb;
+
+// bw_ABBBA
+wire [7:0] bw_ABBBA_ra;
+wire [7:0] bw_ABBBA_rb;
+wire [7:0] bw_ABBBA_issue = bw_BBBA_rb + 8'd1;
+wire [6:0] bw_ABBBA_dep = {{1{1'b0}}, A_rev_lat[1]} + (A_dependent ? {{1{1'b0}}, bw_BBBA_ra} : 7'd0);
+assign bw_ABBBA_ra = (bw_ABBBA_issue > {{1{1'b0}}, bw_ABBBA_dep}) ? bw_ABBBA_issue : {{1{1'b0}}, bw_ABBBA_dep};
+assign bw_ABBBA_rb = bw_BBBA_rb;
+
+// bw_BAAAA
+wire [7:0] bw_BAAAA_ra;
+wire [7:0] bw_BAAAA_rb;
+wire [7:0] bw_BAAAA_issue = bw_AAAA_ra + 8'd1;
+wire [5:0] bw_BAAAA_dep = B_rev_lat[0] + (B_dependent ? {{5{1'b0}}, bw_AAAA_rb} : 6'd0);
+assign bw_BAAAA_rb = (bw_BAAAA_issue > {{2{1'b0}}, bw_BAAAA_dep}) ? bw_BAAAA_issue : {{2{1'b0}}, bw_BAAAA_dep};
+assign bw_BAAAA_ra = bw_AAAA_ra;
+
+// bw_BAAAB
+wire [7:0] bw_BAAAB_ra;
+wire [7:0] bw_BAAAB_rb;
+wire [7:0] bw_BAAAB_issue = bw_AAAB_ra + 8'd1;
+wire [6:0] bw_BAAAB_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AAAB_rb} : 7'd0);
+assign bw_BAAAB_rb = (bw_BAAAB_issue > {{1{1'b0}}, bw_BAAAB_dep}) ? bw_BAAAB_issue : {{1{1'b0}}, bw_BAAAB_dep};
+assign bw_BAAAB_ra = bw_AAAB_ra;
+
+// bw_BAABA
+wire [7:0] bw_BAABA_ra;
+wire [7:0] bw_BAABA_rb;
+wire [7:0] bw_BAABA_issue = bw_AABA_ra + 8'd1;
+wire [6:0] bw_BAABA_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AABA_rb} : 7'd0);
+assign bw_BAABA_rb = (bw_BAABA_issue > {{1{1'b0}}, bw_BAABA_dep}) ? bw_BAABA_issue : {{1{1'b0}}, bw_BAABA_dep};
+assign bw_BAABA_ra = bw_AABA_ra;
+
+// bw_BAABB
+wire [7:0] bw_BAABB_ra;
+wire [7:0] bw_BAABB_rb;
+wire [7:0] bw_BAABB_issue = bw_AABB_ra + 8'd1;
+wire [7:0] bw_BAABB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AABB_rb} : 8'd0);
+assign bw_BAABB_rb = (bw_BAABB_issue > bw_BAABB_dep) ? bw_BAABB_issue : bw_BAABB_dep;
+assign bw_BAABB_ra = bw_AABB_ra;
+
+// bw_BABAA
+wire [7:0] bw_BABAA_ra;
+wire [7:0] bw_BABAA_rb;
+wire [7:0] bw_BABAA_issue = bw_ABAA_ra + 8'd1;
+wire [7:0] bw_BABAA_dep = {{2{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_ABAA_rb} : 8'd0);
+assign bw_BABAA_rb = (bw_BABAA_issue > bw_BABAA_dep) ? bw_BABAA_issue : bw_BABAA_dep;
+assign bw_BABAA_ra = bw_ABAA_ra;
+
+// bw_BABAB
+wire [6:0] bw_BABAB_ra;
+wire [7:0] bw_BABAB_rb;
+wire [6:0] bw_BABAB_issue = bw_ABAB_ra + 7'd1;
+wire [7:0] bw_BABAB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_ABAB_rb} : 8'd0);
+assign bw_BABAB_rb = ({{1{1'b0}}, bw_BABAB_issue} > bw_BABAB_dep) ? {{1{1'b0}}, bw_BABAB_issue} : bw_BABAB_dep;
+assign bw_BABAB_ra = bw_ABAB_ra;
+
+// bw_BABBA
+wire [6:0] bw_BABBA_ra;
+wire [7:0] bw_BABBA_rb;
+wire [6:0] bw_BABBA_issue = bw_ABBA_ra + 7'd1;
+wire [7:0] bw_BABBA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_ABBA_rb} : 8'd0);
+assign bw_BABBA_rb = ({{1{1'b0}}, bw_BABBA_issue} > bw_BABBA_dep) ? {{1{1'b0}}, bw_BABBA_issue} : bw_BABBA_dep;
+assign bw_BABBA_ra = bw_ABBA_ra;
+
+// bw_BBAAA
+wire [7:0] bw_BBAAA_ra;
+wire [7:0] bw_BBAAA_rb;
+wire [5:0] bw_BBAAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
+wire [7:0] bw_BBAAA_path = bw_BAAA_rb + {{2{1'b0}}, bw_BBAAA_step};
+assign bw_BBAAA_rb = (bw_BBAAA_path > {{2{1'b0}}, B_rev_lat[1]}) ? bw_BBAAA_path : {{2{1'b0}}, B_rev_lat[1]};
+assign bw_BBAAA_ra = bw_BAAA_ra;
+
+// bw_BBAAB
+wire [6:0] bw_BBAAB_ra;
+wire [7:0] bw_BBAAB_rb;
+wire [5:0] bw_BBAAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBAAB_path = {{1{1'b0}}, bw_BAAB_rb} + {{2{1'b0}}, bw_BBAAB_step};
+assign bw_BBAAB_rb = (bw_BBAAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAB_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBAAB_ra = bw_BAAB_ra;
+
+// bw_BBABA
+wire [6:0] bw_BBABA_ra;
+wire [7:0] bw_BBABA_rb;
+wire [5:0] bw_BBABA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBABA_path = {{1{1'b0}}, bw_BABA_rb} + {{2{1'b0}}, bw_BBABA_step};
+assign bw_BBABA_rb = (bw_BBABA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBABA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBABA_ra = bw_BABA_ra;
+
+// bw_BBBAA
+wire [6:0] bw_BBBAA_ra;
+wire [7:0] bw_BBBAA_rb;
+wire [5:0] bw_BBBAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBBAA_path = bw_BBAA_rb + {{2{1'b0}}, bw_BBBAA_step};
+assign bw_BBBAA_rb = (bw_BBBAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBBAA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBBAA_ra = bw_BBAA_ra;
+
+
+//////// BACKWARD DEPTH 6 ////////
+// bw_AAAAAA
+wire [8:0] bw_AAAAAA_ra;
+wire [0:0] bw_AAAAAA_rb;
+wire [5:0] bw_AAAAAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
+wire [8:0] bw_AAAAAA_path = {{1{1'b0}}, bw_AAAAA_ra} + {{3{1'b0}}, bw_AAAAAA_step};
+assign bw_AAAAAA_ra = (bw_AAAAAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAAAA_path : {{3{1'b0}}, A_rev_lat[5]};
+assign bw_AAAAAA_rb = bw_AAAAA_rb;
+
+// bw_AAAAAB
+wire [7:0] bw_AAAAAB_ra;
+wire [5:0] bw_AAAAAB_rb;
+wire [5:0] bw_AAAAAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAAAAB_path = bw_AAAAB_ra + {{2{1'b0}}, bw_AAAAAB_step};
+assign bw_AAAAAB_ra = (bw_AAAAAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAAAB_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAAAAB_rb = bw_AAAAB_rb;
+
+// bw_AAAABA
+wire [7:0] bw_AAAABA_ra;
+wire [5:0] bw_AAAABA_rb;
+wire [5:0] bw_AAAABA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAAABA_path = bw_AAABA_ra + {{2{1'b0}}, bw_AAAABA_step};
+assign bw_AAAABA_ra = (bw_AAAABA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAABA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAAABA_rb = bw_AAABA_rb;
+
+// bw_AAAABB
+wire [7:0] bw_AAAABB_ra;
+wire [6:0] bw_AAAABB_rb;
+wire [5:0] bw_AAAABB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAAABB_path = bw_AAABB_ra + {{2{1'b0}}, bw_AAAABB_step};
+assign bw_AAAABB_ra = (bw_AAAABB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAAABB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAAABB_rb = bw_AAABB_rb;
+
+// bw_AAABAA
+wire [7:0] bw_AAABAA_ra;
+wire [6:0] bw_AAABAA_rb;
+wire [5:0] bw_AAABAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAABAA_path = bw_AABAA_ra + {{2{1'b0}}, bw_AAABAA_step};
+assign bw_AAABAA_ra = (bw_AAABAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABAA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAABAA_rb = bw_AABAA_rb;
+
+// bw_AAABAB
+wire [7:0] bw_AAABAB_ra;
+wire [6:0] bw_AAABAB_rb;
+wire [5:0] bw_AAABAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAABAB_path = bw_AABAB_ra + {{2{1'b0}}, bw_AAABAB_step};
+assign bw_AAABAB_ra = (bw_AAABAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABAB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAABAB_rb = bw_AABAB_rb;
+
+// bw_AAABBA
+wire [7:0] bw_AAABBA_ra;
+wire [6:0] bw_AAABBA_rb;
+wire [5:0] bw_AAABBA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAABBA_path = bw_AABBA_ra + {{2{1'b0}}, bw_AAABBA_step};
+assign bw_AAABBA_ra = (bw_AAABBA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABBA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAABBA_rb = bw_AABBA_rb;
+
+// bw_AAABBB
+wire [7:0] bw_AAABBB_ra;
+wire [7:0] bw_AAABBB_rb;
+wire [5:0] bw_AAABBB_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AAABBB_path = bw_AABBB_ra + {{2{1'b0}}, bw_AAABBB_step};
+assign bw_AAABBB_ra = (bw_AAABBB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAABBB_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AAABBB_rb = bw_AABBB_rb;
+
+// bw_AABAAA
+wire [7:0] bw_AABAAA_ra;
+wire [7:0] bw_AABAAA_rb;
+wire [5:0] bw_AABAAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AABAAA_path = bw_ABAAA_ra + {{2{1'b0}}, bw_AABAAA_step};
+assign bw_AABAAA_ra = (bw_AABAAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABAAA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AABAAA_rb = bw_ABAAA_rb;
+
+// bw_AABAAB
+wire [7:0] bw_AABAAB_ra;
+wire [6:0] bw_AABAAB_rb;
+wire [5:0] bw_AABAAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABAAB_path = bw_ABAAB_ra + {{2{1'b0}}, bw_AABAAB_step};
+assign bw_AABAAB_ra = (bw_AABAAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABAAB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABAAB_rb = bw_ABAAB_rb;
+
+// bw_AABABA
+wire [7:0] bw_AABABA_ra;
+wire [6:0] bw_AABABA_rb;
+wire [5:0] bw_AABABA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABABA_path = bw_ABABA_ra + {{2{1'b0}}, bw_AABABA_step};
+assign bw_AABABA_ra = (bw_AABABA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABABA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABABA_rb = bw_ABABA_rb;
+
+// bw_AABABB
+wire [7:0] bw_AABABB_ra;
+wire [7:0] bw_AABABB_rb;
+wire [5:0] bw_AABABB_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AABABB_path = bw_ABABB_ra + {{2{1'b0}}, bw_AABABB_step};
+assign bw_AABABB_ra = (bw_AABABB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABABB_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AABABB_rb = bw_ABABB_rb;
+
+// bw_AABBAA
+wire [7:0] bw_AABBAA_ra;
+wire [7:0] bw_AABBAA_rb;
+wire [5:0] bw_AABBAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABBAA_path = bw_ABBAA_ra + {{2{1'b0}}, bw_AABBAA_step};
+assign bw_AABBAA_ra = (bw_AABBAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBAA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABBAA_rb = bw_ABBAA_rb;
+
+// bw_AABBAB
+wire [7:0] bw_AABBAB_ra;
+wire [7:0] bw_AABBAB_rb;
+wire [5:0] bw_AABBAB_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AABBAB_path = bw_ABBAB_ra + {{2{1'b0}}, bw_AABBAB_step};
+assign bw_AABBAB_ra = (bw_AABBAB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABBAB_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AABBAB_rb = bw_ABBAB_rb;
+
+// bw_AABBBA
+wire [7:0] bw_AABBBA_ra;
+wire [7:0] bw_AABBBA_rb;
+wire [5:0] bw_AABBBA_step = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [7:0] bw_AABBBA_path = bw_ABBBA_ra + {{2{1'b0}}, bw_AABBBA_step};
+assign bw_AABBBA_ra = (bw_AABBBA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABBBA_path : {{2{1'b0}}, A_rev_lat[2]};
+assign bw_AABBBA_rb = bw_ABBBA_rb;
+
+// bw_ABAAAA
+wire [7:0] bw_ABAAAA_ra;
+wire [7:0] bw_ABAAAA_rb;
+wire [7:0] bw_ABAAAA_issue = bw_BAAAA_rb + 8'd1;
+wire [7:0] bw_ABAAAA_dep = {{2{1'b0}}, A_rev_lat[4]} + (A_dependent ? bw_BAAAA_ra : 8'd0);
+assign bw_ABAAAA_ra = (bw_ABAAAA_issue > bw_ABAAAA_dep) ? bw_ABAAAA_issue : bw_ABAAAA_dep;
+assign bw_ABAAAA_rb = bw_BAAAA_rb;
+
+// bw_ABAAAB
+wire [7:0] bw_ABAAAB_ra;
+wire [7:0] bw_ABAAAB_rb;
+wire [7:0] bw_ABAAAB_issue = bw_BAAAB_rb + 8'd1;
+wire [7:0] bw_ABAAAB_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BAAAB_ra : 8'd0);
+assign bw_ABAAAB_ra = (bw_ABAAAB_issue > bw_ABAAAB_dep) ? bw_ABAAAB_issue : bw_ABAAAB_dep;
+assign bw_ABAAAB_rb = bw_BAAAB_rb;
+
+// bw_ABAABA
+wire [7:0] bw_ABAABA_ra;
+wire [7:0] bw_ABAABA_rb;
+wire [7:0] bw_ABAABA_issue = bw_BAABA_rb + 8'd1;
+wire [7:0] bw_ABAABA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BAABA_ra : 8'd0);
+assign bw_ABAABA_ra = (bw_ABAABA_issue > bw_ABAABA_dep) ? bw_ABAABA_issue : bw_ABAABA_dep;
+assign bw_ABAABA_rb = bw_BAABA_rb;
+
+// bw_ABAABB
+wire [7:0] bw_ABAABB_ra;
+wire [7:0] bw_ABAABB_rb;
+wire [7:0] bw_ABAABB_issue = bw_BAABB_rb + 8'd1;
+wire [7:0] bw_ABAABB_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? bw_BAABB_ra : 8'd0);
+assign bw_ABAABB_ra = (bw_ABAABB_issue > bw_ABAABB_dep) ? bw_ABAABB_issue : bw_ABAABB_dep;
+assign bw_ABAABB_rb = bw_BAABB_rb;
+
+// bw_ABABAA
+wire [7:0] bw_ABABAA_ra;
+wire [7:0] bw_ABABAA_rb;
+wire [7:0] bw_ABABAA_issue = bw_BABAA_rb + 8'd1;
+wire [7:0] bw_ABABAA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BABAA_ra : 8'd0);
+assign bw_ABABAA_ra = (bw_ABABAA_issue > bw_ABABAA_dep) ? bw_ABABAA_issue : bw_ABABAA_dep;
+assign bw_ABABAA_rb = bw_BABAA_rb;
+
+// bw_ABABAB
+wire [7:0] bw_ABABAB_ra;
+wire [7:0] bw_ABABAB_rb;
+wire [7:0] bw_ABABAB_issue = bw_BABAB_rb + 8'd1;
+wire [7:0] bw_ABABAB_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BABAB_ra} : 8'd0);
+assign bw_ABABAB_ra = (bw_ABABAB_issue > bw_ABABAB_dep) ? bw_ABABAB_issue : bw_ABABAB_dep;
+assign bw_ABABAB_rb = bw_BABAB_rb;
+
+// bw_ABABBA
+wire [7:0] bw_ABABBA_ra;
+wire [7:0] bw_ABABBA_rb;
+wire [7:0] bw_ABABBA_issue = bw_BABBA_rb + 8'd1;
+wire [7:0] bw_ABABBA_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BABBA_ra} : 8'd0);
+assign bw_ABABBA_ra = (bw_ABABBA_issue > bw_ABABBA_dep) ? bw_ABABBA_issue : bw_ABABBA_dep;
+assign bw_ABABBA_rb = bw_BABBA_rb;
+
+// bw_ABBAAA
+wire [7:0] bw_ABBAAA_ra;
+wire [7:0] bw_ABBAAA_rb;
+wire [7:0] bw_ABBAAA_issue = bw_BBAAA_rb + 8'd1;
+wire [7:0] bw_ABBAAA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BBAAA_ra : 8'd0);
+assign bw_ABBAAA_ra = (bw_ABBAAA_issue > bw_ABBAAA_dep) ? bw_ABBAAA_issue : bw_ABBAAA_dep;
+assign bw_ABBAAA_rb = bw_BBAAA_rb;
+
+// bw_ABBAAB
+wire [7:0] bw_ABBAAB_ra;
+wire [7:0] bw_ABBAAB_rb;
+wire [7:0] bw_ABBAAB_issue = bw_BBAAB_rb + 8'd1;
+wire [7:0] bw_ABBAAB_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BBAAB_ra} : 8'd0);
+assign bw_ABBAAB_ra = (bw_ABBAAB_issue > bw_ABBAAB_dep) ? bw_ABBAAB_issue : bw_ABBAAB_dep;
+assign bw_ABBAAB_rb = bw_BBAAB_rb;
+
+// bw_ABBABA
+wire [7:0] bw_ABBABA_ra;
+wire [7:0] bw_ABBABA_rb;
+wire [7:0] bw_ABBABA_issue = bw_BBABA_rb + 8'd1;
+wire [7:0] bw_ABBABA_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BBABA_ra} : 8'd0);
+assign bw_ABBABA_ra = (bw_ABBABA_issue > bw_ABBABA_dep) ? bw_ABBABA_issue : bw_ABBABA_dep;
+assign bw_ABBABA_rb = bw_BBABA_rb;
+
+// bw_ABBBAA
+wire [7:0] bw_ABBBAA_ra;
+wire [7:0] bw_ABBBAA_rb;
+wire [7:0] bw_ABBBAA_issue = bw_BBBAA_rb + 8'd1;
+wire [7:0] bw_ABBBAA_dep = {{2{1'b0}}, A_rev_lat[2]} + (A_dependent ? {{1{1'b0}}, bw_BBBAA_ra} : 8'd0);
+assign bw_ABBBAA_ra = (bw_ABBBAA_issue > bw_ABBBAA_dep) ? bw_ABBBAA_issue : bw_ABBBAA_dep;
+assign bw_ABBBAA_rb = bw_BBBAA_rb;
+
+// bw_BAAAAA
+wire [7:0] bw_BAAAAA_ra;
+wire [7:0] bw_BAAAAA_rb;
+wire [7:0] bw_BAAAAA_issue = bw_AAAAA_ra + 8'd1;
+wire [5:0] bw_BAAAAA_dep = B_rev_lat[0] + (B_dependent ? {{5{1'b0}}, bw_AAAAA_rb} : 6'd0);
+assign bw_BAAAAA_rb = (bw_BAAAAA_issue > {{2{1'b0}}, bw_BAAAAA_dep}) ? bw_BAAAAA_issue : {{2{1'b0}}, bw_BAAAAA_dep};
+assign bw_BAAAAA_ra = bw_AAAAA_ra;
+
+// bw_BAAAAB
+wire [7:0] bw_BAAAAB_ra;
+wire [7:0] bw_BAAAAB_rb;
+wire [7:0] bw_BAAAAB_issue = bw_AAAAB_ra + 8'd1;
+wire [6:0] bw_BAAAAB_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AAAAB_rb} : 7'd0);
+assign bw_BAAAAB_rb = (bw_BAAAAB_issue > {{1{1'b0}}, bw_BAAAAB_dep}) ? bw_BAAAAB_issue : {{1{1'b0}}, bw_BAAAAB_dep};
+assign bw_BAAAAB_ra = bw_AAAAB_ra;
+
+// bw_BAAABA
+wire [7:0] bw_BAAABA_ra;
+wire [7:0] bw_BAAABA_rb;
+wire [7:0] bw_BAAABA_issue = bw_AAABA_ra + 8'd1;
+wire [6:0] bw_BAAABA_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AAABA_rb} : 7'd0);
+assign bw_BAAABA_rb = (bw_BAAABA_issue > {{1{1'b0}}, bw_BAAABA_dep}) ? bw_BAAABA_issue : {{1{1'b0}}, bw_BAAABA_dep};
+assign bw_BAAABA_ra = bw_AAABA_ra;
+
+// bw_BAAABB
+wire [7:0] bw_BAAABB_ra;
+wire [7:0] bw_BAAABB_rb;
+wire [7:0] bw_BAAABB_issue = bw_AAABB_ra + 8'd1;
+wire [7:0] bw_BAAABB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AAABB_rb} : 8'd0);
+assign bw_BAAABB_rb = (bw_BAAABB_issue > bw_BAAABB_dep) ? bw_BAAABB_issue : bw_BAAABB_dep;
+assign bw_BAAABB_ra = bw_AAABB_ra;
+
+// bw_BAABAA
+wire [7:0] bw_BAABAA_ra;
+wire [7:0] bw_BAABAA_rb;
+wire [7:0] bw_BAABAA_issue = bw_AABAA_ra + 8'd1;
+wire [7:0] bw_BAABAA_dep = {{2{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AABAA_rb} : 8'd0);
+assign bw_BAABAA_rb = (bw_BAABAA_issue > bw_BAABAA_dep) ? bw_BAABAA_issue : bw_BAABAA_dep;
+assign bw_BAABAA_ra = bw_AABAA_ra;
+
+// bw_BAABAB
+wire [7:0] bw_BAABAB_ra;
+wire [7:0] bw_BAABAB_rb;
+wire [7:0] bw_BAABAB_issue = bw_AABAB_ra + 8'd1;
+wire [7:0] bw_BAABAB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AABAB_rb} : 8'd0);
+assign bw_BAABAB_rb = (bw_BAABAB_issue > bw_BAABAB_dep) ? bw_BAABAB_issue : bw_BAABAB_dep;
+assign bw_BAABAB_ra = bw_AABAB_ra;
+
+// bw_BAABBA
+wire [7:0] bw_BAABBA_ra;
+wire [7:0] bw_BAABBA_rb;
+wire [7:0] bw_BAABBA_issue = bw_AABBA_ra + 8'd1;
+wire [7:0] bw_BAABBA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AABBA_rb} : 8'd0);
+assign bw_BAABBA_rb = (bw_BAABBA_issue > bw_BAABBA_dep) ? bw_BAABBA_issue : bw_BAABBA_dep;
+assign bw_BAABBA_ra = bw_AABBA_ra;
+
+// bw_BABAAA
+wire [7:0] bw_BABAAA_ra;
+wire [7:0] bw_BABAAA_rb;
+wire [7:0] bw_BABAAA_issue = bw_ABAAA_ra + 8'd1;
+wire [7:0] bw_BABAAA_dep = {{2{1'b0}}, B_rev_lat[1]} + (B_dependent ? bw_ABAAA_rb : 8'd0);
+assign bw_BABAAA_rb = (bw_BABAAA_issue > bw_BABAAA_dep) ? bw_BABAAA_issue : bw_BABAAA_dep;
+assign bw_BABAAA_ra = bw_ABAAA_ra;
+
+// bw_BABAAB
+wire [7:0] bw_BABAAB_ra;
+wire [7:0] bw_BABAAB_rb;
+wire [7:0] bw_BABAAB_issue = bw_ABAAB_ra + 8'd1;
+wire [7:0] bw_BABAAB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_ABAAB_rb} : 8'd0);
+assign bw_BABAAB_rb = (bw_BABAAB_issue > bw_BABAAB_dep) ? bw_BABAAB_issue : bw_BABAAB_dep;
+assign bw_BABAAB_ra = bw_ABAAB_ra;
+
+// bw_BABABA
+wire [7:0] bw_BABABA_ra;
+wire [7:0] bw_BABABA_rb;
+wire [7:0] bw_BABABA_issue = bw_ABABA_ra + 8'd1;
+wire [7:0] bw_BABABA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_ABABA_rb} : 8'd0);
+assign bw_BABABA_rb = (bw_BABABA_issue > bw_BABABA_dep) ? bw_BABABA_issue : bw_BABABA_dep;
+assign bw_BABABA_ra = bw_ABABA_ra;
+
+// bw_BABBAA
+wire [7:0] bw_BABBAA_ra;
+wire [7:0] bw_BABBAA_rb;
+wire [7:0] bw_BABBAA_issue = bw_ABBAA_ra + 8'd1;
+wire [7:0] bw_BABBAA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? bw_ABBAA_rb : 8'd0);
+assign bw_BABBAA_rb = (bw_BABBAA_issue > bw_BABBAA_dep) ? bw_BABBAA_issue : bw_BABBAA_dep;
+assign bw_BABBAA_ra = bw_ABBAA_ra;
+
+// bw_BBAAAA
+wire [7:0] bw_BBAAAA_ra;
+wire [7:0] bw_BBAAAA_rb;
+wire [5:0] bw_BBAAAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
+wire [7:0] bw_BBAAAA_path = bw_BAAAA_rb + {{2{1'b0}}, bw_BBAAAA_step};
+assign bw_BBAAAA_rb = (bw_BBAAAA_path > {{2{1'b0}}, B_rev_lat[1]}) ? bw_BBAAAA_path : {{2{1'b0}}, B_rev_lat[1]};
+assign bw_BBAAAA_ra = bw_BAAAA_ra;
+
+// bw_BBAAAB
+wire [7:0] bw_BBAAAB_ra;
+wire [7:0] bw_BBAAAB_rb;
+wire [5:0] bw_BBAAAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBAAAB_path = bw_BAAAB_rb + {{2{1'b0}}, bw_BBAAAB_step};
+assign bw_BBAAAB_rb = (bw_BBAAAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAAB_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBAAAB_ra = bw_BAAAB_ra;
+
+// bw_BBAABA
+wire [7:0] bw_BBAABA_ra;
+wire [7:0] bw_BBAABA_rb;
+wire [5:0] bw_BBAABA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBAABA_path = bw_BAABA_rb + {{2{1'b0}}, bw_BBAABA_step};
+assign bw_BBAABA_rb = (bw_BBAABA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAABA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBAABA_ra = bw_BAABA_ra;
+
+// bw_BBABAA
+wire [7:0] bw_BBABAA_ra;
+wire [7:0] bw_BBABAA_rb;
+wire [5:0] bw_BBABAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBABAA_path = bw_BABAA_rb + {{2{1'b0}}, bw_BBABAA_step};
+assign bw_BBABAA_rb = (bw_BBABAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBABAA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBABAA_ra = bw_BABAA_ra;
+
+// bw_BBBAAA
+wire [7:0] bw_BBBAAA_ra;
+wire [7:0] bw_BBBAAA_rb;
+wire [5:0] bw_BBBAAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBBAAA_path = bw_BBAAA_rb + {{2{1'b0}}, bw_BBBAAA_step};
+assign bw_BBBAAA_rb = (bw_BBBAAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBBAAA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBBAAA_ra = bw_BBAAA_ra;
+
+
+//////// BACKWARD DEPTH 7 ////////
+// bw_AAAAAAA
+wire [8:0] bw_AAAAAAA_ra;
+wire [0:0] bw_AAAAAAA_rb;
+wire [5:0] bw_AAAAAAA_step = A_dependent ? A_rev_lat[6] : 6'd1;
+wire [8:0] bw_AAAAAAA_path = bw_AAAAAA_ra + {{3{1'b0}}, bw_AAAAAAA_step};
+assign bw_AAAAAAA_ra = (bw_AAAAAAA_path > {{3{1'b0}}, A_rev_lat[6]}) ? bw_AAAAAAA_path : {{3{1'b0}}, A_rev_lat[6]};
+assign bw_AAAAAAA_rb = bw_AAAAAA_rb;
+
+// bw_AAAAAAB
+wire [8:0] bw_AAAAAAB_ra;
+wire [5:0] bw_AAAAAAB_rb;
+wire [5:0] bw_AAAAAAB_step = A_dependent ? A_rev_lat[5] : 6'd1;
+wire [8:0] bw_AAAAAAB_path = {{1{1'b0}}, bw_AAAAAB_ra} + {{3{1'b0}}, bw_AAAAAAB_step};
+assign bw_AAAAAAB_ra = (bw_AAAAAAB_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAAAAB_path : {{3{1'b0}}, A_rev_lat[5]};
+assign bw_AAAAAAB_rb = bw_AAAAAB_rb;
+
+// bw_AAAAABA
+wire [8:0] bw_AAAAABA_ra;
+wire [5:0] bw_AAAAABA_rb;
+wire [5:0] bw_AAAAABA_step = A_dependent ? A_rev_lat[5] : 6'd1;
+wire [8:0] bw_AAAAABA_path = {{1{1'b0}}, bw_AAAABA_ra} + {{3{1'b0}}, bw_AAAAABA_step};
+assign bw_AAAAABA_ra = (bw_AAAAABA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAAABA_path : {{3{1'b0}}, A_rev_lat[5]};
+assign bw_AAAAABA_rb = bw_AAAABA_rb;
+
+// bw_AAAAABB
+wire [8:0] bw_AAAAABB_ra;
+wire [6:0] bw_AAAAABB_rb;
+wire [5:0] bw_AAAAABB_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [8:0] bw_AAAAABB_path = {{1{1'b0}}, bw_AAAABB_ra} + {{3{1'b0}}, bw_AAAAABB_step};
+assign bw_AAAAABB_ra = (bw_AAAAABB_path > {{3{1'b0}}, A_rev_lat[4]}) ? bw_AAAAABB_path : {{3{1'b0}}, A_rev_lat[4]};
+assign bw_AAAAABB_rb = bw_AAAABB_rb;
+
+// bw_AAAABAA
+wire [8:0] bw_AAAABAA_ra;
+wire [6:0] bw_AAAABAA_rb;
+wire [5:0] bw_AAAABAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
+wire [8:0] bw_AAAABAA_path = {{1{1'b0}}, bw_AAABAA_ra} + {{3{1'b0}}, bw_AAAABAA_step};
+assign bw_AAAABAA_ra = (bw_AAAABAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAABAA_path : {{3{1'b0}}, A_rev_lat[5]};
+assign bw_AAAABAA_rb = bw_AAABAA_rb;
+
+// bw_AAAABAB
+wire [7:0] bw_AAAABAB_ra;
+wire [6:0] bw_AAAABAB_rb;
+wire [5:0] bw_AAAABAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAAABAB_path = bw_AAABAB_ra + {{2{1'b0}}, bw_AAAABAB_step};
+assign bw_AAAABAB_ra = (bw_AAAABAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAABAB_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAAABAB_rb = bw_AAABAB_rb;
+
+// bw_AAAABBA
+wire [7:0] bw_AAAABBA_ra;
+wire [6:0] bw_AAAABBA_rb;
+wire [5:0] bw_AAAABBA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAAABBA_path = bw_AAABBA_ra + {{2{1'b0}}, bw_AAAABBA_step};
+assign bw_AAAABBA_ra = (bw_AAAABBA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAABBA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAAABBA_rb = bw_AAABBA_rb;
+
+// bw_AAAABBB
+wire [8:0] bw_AAAABBB_ra;
+wire [7:0] bw_AAAABBB_rb;
+wire [5:0] bw_AAAABBB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [8:0] bw_AAAABBB_path = {{1{1'b0}}, bw_AAABBB_ra} + {{3{1'b0}}, bw_AAAABBB_step};
+assign bw_AAAABBB_ra = (bw_AAAABBB_path > {{3{1'b0}}, A_rev_lat[3]}) ? bw_AAAABBB_path : {{3{1'b0}}, A_rev_lat[3]};
+assign bw_AAAABBB_rb = bw_AAABBB_rb;
+
+// bw_AAABAAA
+wire [8:0] bw_AAABAAA_ra;
+wire [7:0] bw_AAABAAA_rb;
+wire [5:0] bw_AAABAAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
+wire [8:0] bw_AAABAAA_path = {{1{1'b0}}, bw_AABAAA_ra} + {{3{1'b0}}, bw_AAABAAA_step};
+assign bw_AAABAAA_ra = (bw_AAABAAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAABAAA_path : {{3{1'b0}}, A_rev_lat[5]};
+assign bw_AAABAAA_rb = bw_AABAAA_rb;
+
+// bw_AAABAAB
+wire [7:0] bw_AAABAAB_ra;
+wire [6:0] bw_AAABAAB_rb;
+wire [5:0] bw_AAABAAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAABAAB_path = bw_AABAAB_ra + {{2{1'b0}}, bw_AAABAAB_step};
+assign bw_AAABAAB_ra = (bw_AAABAAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABAAB_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAABAAB_rb = bw_AABAAB_rb;
+
+// bw_AAABABA
+wire [7:0] bw_AAABABA_ra;
+wire [6:0] bw_AAABABA_rb;
+wire [5:0] bw_AAABABA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAABABA_path = bw_AABABA_ra + {{2{1'b0}}, bw_AAABABA_step};
+assign bw_AAABABA_ra = (bw_AAABABA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABABA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAABABA_rb = bw_AABABA_rb;
+
+// bw_AAABABB
+wire [7:0] bw_AAABABB_ra;
+wire [7:0] bw_AAABABB_rb;
+wire [5:0] bw_AAABABB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAABABB_path = bw_AABABB_ra + {{2{1'b0}}, bw_AAABABB_step};
+assign bw_AAABABB_ra = (bw_AAABABB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABABB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAABABB_rb = bw_AABABB_rb;
+
+// bw_AAABBAA
+wire [7:0] bw_AAABBAA_ra;
+wire [7:0] bw_AAABBAA_rb;
+wire [5:0] bw_AAABBAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AAABBAA_path = bw_AABBAA_ra + {{2{1'b0}}, bw_AAABBAA_step};
+assign bw_AAABBAA_ra = (bw_AAABBAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABBAA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AAABBAA_rb = bw_AABBAA_rb;
+
+// bw_AAABBAB
+wire [7:0] bw_AAABBAB_ra;
+wire [7:0] bw_AAABBAB_rb;
+wire [5:0] bw_AAABBAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAABBAB_path = bw_AABBAB_ra + {{2{1'b0}}, bw_AAABBAB_step};
+assign bw_AAABBAB_ra = (bw_AAABBAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABBAB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAABBAB_rb = bw_AABBAB_rb;
+
+// bw_AAABBBA
+wire [7:0] bw_AAABBBA_ra;
+wire [7:0] bw_AAABBBA_rb;
+wire [5:0] bw_AAABBBA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AAABBBA_path = bw_AABBBA_ra + {{2{1'b0}}, bw_AAABBBA_step};
+assign bw_AAABBBA_ra = (bw_AAABBBA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABBBA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AAABBBA_rb = bw_AABBBA_rb;
+
+// bw_AABAAAA
+wire [8:0] bw_AABAAAA_ra;
+wire [7:0] bw_AABAAAA_rb;
+wire [5:0] bw_AABAAAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
+wire [8:0] bw_AABAAAA_path = {{1{1'b0}}, bw_ABAAAA_ra} + {{3{1'b0}}, bw_AABAAAA_step};
+assign bw_AABAAAA_ra = (bw_AABAAAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AABAAAA_path : {{3{1'b0}}, A_rev_lat[5]};
+assign bw_AABAAAA_rb = bw_ABAAAA_rb;
+
+// bw_AABAAAB
+wire [7:0] bw_AABAAAB_ra;
+wire [7:0] bw_AABAAAB_rb;
+wire [5:0] bw_AABAAAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AABAAAB_path = bw_ABAAAB_ra + {{2{1'b0}}, bw_AABAAAB_step};
+assign bw_AABAAAB_ra = (bw_AABAAAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABAAAB_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AABAAAB_rb = bw_ABAAAB_rb;
+
+// bw_AABAABA
+wire [7:0] bw_AABAABA_ra;
+wire [7:0] bw_AABAABA_rb;
+wire [5:0] bw_AABAABA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AABAABA_path = bw_ABAABA_ra + {{2{1'b0}}, bw_AABAABA_step};
+assign bw_AABAABA_ra = (bw_AABAABA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABAABA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AABAABA_rb = bw_ABAABA_rb;
+
+// bw_AABAABB
+wire [7:0] bw_AABAABB_ra;
+wire [7:0] bw_AABAABB_rb;
+wire [5:0] bw_AABAABB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABAABB_path = bw_ABAABB_ra + {{2{1'b0}}, bw_AABAABB_step};
+assign bw_AABAABB_ra = (bw_AABAABB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABAABB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABAABB_rb = bw_ABAABB_rb;
+
+// bw_AABABAA
+wire [7:0] bw_AABABAA_ra;
+wire [7:0] bw_AABABAA_rb;
+wire [5:0] bw_AABABAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AABABAA_path = bw_ABABAA_ra + {{2{1'b0}}, bw_AABABAA_step};
+assign bw_AABABAA_ra = (bw_AABABAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABABAA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AABABAA_rb = bw_ABABAA_rb;
+
+// bw_AABABAB
+wire [7:0] bw_AABABAB_ra;
+wire [7:0] bw_AABABAB_rb;
+wire [5:0] bw_AABABAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABABAB_path = bw_ABABAB_ra + {{2{1'b0}}, bw_AABABAB_step};
+assign bw_AABABAB_ra = (bw_AABABAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABABAB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABABAB_rb = bw_ABABAB_rb;
+
+// bw_AABABBA
+wire [7:0] bw_AABABBA_ra;
+wire [7:0] bw_AABABBA_rb;
+wire [5:0] bw_AABABBA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABABBA_path = bw_ABABBA_ra + {{2{1'b0}}, bw_AABABBA_step};
+assign bw_AABABBA_ra = (bw_AABABBA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABABBA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABABBA_rb = bw_ABABBA_rb;
+
+// bw_AABBAAA
+wire [7:0] bw_AABBAAA_ra;
+wire [7:0] bw_AABBAAA_rb;
+wire [5:0] bw_AABBAAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [7:0] bw_AABBAAA_path = bw_ABBAAA_ra + {{2{1'b0}}, bw_AABBAAA_step};
+assign bw_AABBAAA_ra = (bw_AABBAAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABBAAA_path : {{2{1'b0}}, A_rev_lat[4]};
+assign bw_AABBAAA_rb = bw_ABBAAA_rb;
+
+// bw_AABBAAB
+wire [7:0] bw_AABBAAB_ra;
+wire [7:0] bw_AABBAAB_rb;
+wire [5:0] bw_AABBAAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABBAAB_path = bw_ABBAAB_ra + {{2{1'b0}}, bw_AABBAAB_step};
+assign bw_AABBAAB_ra = (bw_AABBAAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBAAB_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABBAAB_rb = bw_ABBAAB_rb;
+
+// bw_AABBABA
+wire [7:0] bw_AABBABA_ra;
+wire [7:0] bw_AABBABA_rb;
+wire [5:0] bw_AABBABA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABBABA_path = bw_ABBABA_ra + {{2{1'b0}}, bw_AABBABA_step};
+assign bw_AABBABA_ra = (bw_AABBABA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBABA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABBABA_rb = bw_ABBABA_rb;
+
+// bw_AABBBAA
+wire [7:0] bw_AABBBAA_ra;
+wire [7:0] bw_AABBBAA_rb;
+wire [5:0] bw_AABBBAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [7:0] bw_AABBBAA_path = bw_ABBBAA_ra + {{2{1'b0}}, bw_AABBBAA_step};
+assign bw_AABBBAA_ra = (bw_AABBBAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBBAA_path : {{2{1'b0}}, A_rev_lat[3]};
+assign bw_AABBBAA_rb = bw_ABBBAA_rb;
+
+// bw_ABAAAAA
+wire [8:0] bw_ABAAAAA_ra;
+wire [7:0] bw_ABAAAAA_rb;
+wire [7:0] bw_ABAAAAA_issue = bw_BAAAAA_rb + 8'd1;
+wire [8:0] bw_ABAAAAA_dep = {{3{1'b0}}, A_rev_lat[5]} + (A_dependent ? {{1{1'b0}}, bw_BAAAAA_ra} : 9'd0);
+assign bw_ABAAAAA_ra = ({{1{1'b0}}, bw_ABAAAAA_issue} > bw_ABAAAAA_dep) ? {{1{1'b0}}, bw_ABAAAAA_issue} : bw_ABAAAAA_dep;
+assign bw_ABAAAAA_rb = bw_BAAAAA_rb;
+
+// bw_ABAAAAB
+wire [7:0] bw_ABAAAAB_ra;
+wire [7:0] bw_ABAAAAB_rb;
+wire [7:0] bw_ABAAAAB_issue = bw_BAAAAB_rb + 8'd1;
+wire [7:0] bw_ABAAAAB_dep = {{2{1'b0}}, A_rev_lat[4]} + (A_dependent ? bw_BAAAAB_ra : 8'd0);
+assign bw_ABAAAAB_ra = (bw_ABAAAAB_issue > bw_ABAAAAB_dep) ? bw_ABAAAAB_issue : bw_ABAAAAB_dep;
+assign bw_ABAAAAB_rb = bw_BAAAAB_rb;
+
+// bw_ABAAABA
+wire [7:0] bw_ABAAABA_ra;
+wire [7:0] bw_ABAAABA_rb;
+wire [7:0] bw_ABAAABA_issue = bw_BAAABA_rb + 8'd1;
+wire [7:0] bw_ABAAABA_dep = {{2{1'b0}}, A_rev_lat[4]} + (A_dependent ? bw_BAAABA_ra : 8'd0);
+assign bw_ABAAABA_ra = (bw_ABAAABA_issue > bw_ABAAABA_dep) ? bw_ABAAABA_issue : bw_ABAAABA_dep;
+assign bw_ABAAABA_rb = bw_BAAABA_rb;
+
+// bw_ABAAABB
+wire [7:0] bw_ABAAABB_ra;
+wire [7:0] bw_ABAAABB_rb;
+wire [7:0] bw_ABAAABB_issue = bw_BAAABB_rb + 8'd1;
+wire [7:0] bw_ABAAABB_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BAAABB_ra : 8'd0);
+assign bw_ABAAABB_ra = (bw_ABAAABB_issue > bw_ABAAABB_dep) ? bw_ABAAABB_issue : bw_ABAAABB_dep;
+assign bw_ABAAABB_rb = bw_BAAABB_rb;
+
+// bw_ABAABAA
+wire [7:0] bw_ABAABAA_ra;
+wire [7:0] bw_ABAABAA_rb;
+wire [7:0] bw_ABAABAA_issue = bw_BAABAA_rb + 8'd1;
+wire [7:0] bw_ABAABAA_dep = {{2{1'b0}}, A_rev_lat[4]} + (A_dependent ? bw_BAABAA_ra : 8'd0);
+assign bw_ABAABAA_ra = (bw_ABAABAA_issue > bw_ABAABAA_dep) ? bw_ABAABAA_issue : bw_ABAABAA_dep;
+assign bw_ABAABAA_rb = bw_BAABAA_rb;
+
+// bw_ABAABAB
+wire [7:0] bw_ABAABAB_ra;
+wire [7:0] bw_ABAABAB_rb;
+wire [7:0] bw_ABAABAB_issue = bw_BAABAB_rb + 8'd1;
+wire [7:0] bw_ABAABAB_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BAABAB_ra : 8'd0);
+assign bw_ABAABAB_ra = (bw_ABAABAB_issue > bw_ABAABAB_dep) ? bw_ABAABAB_issue : bw_ABAABAB_dep;
+assign bw_ABAABAB_rb = bw_BAABAB_rb;
+
+// bw_ABAABBA
+wire [7:0] bw_ABAABBA_ra;
+wire [7:0] bw_ABAABBA_rb;
+wire [7:0] bw_ABAABBA_issue = bw_BAABBA_rb + 8'd1;
+wire [7:0] bw_ABAABBA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BAABBA_ra : 8'd0);
+assign bw_ABAABBA_ra = (bw_ABAABBA_issue > bw_ABAABBA_dep) ? bw_ABAABBA_issue : bw_ABAABBA_dep;
+assign bw_ABAABBA_rb = bw_BAABBA_rb;
+
+// bw_ABABAAA
+wire [7:0] bw_ABABAAA_ra;
+wire [7:0] bw_ABABAAA_rb;
+wire [7:0] bw_ABABAAA_issue = bw_BABAAA_rb + 8'd1;
+wire [7:0] bw_ABABAAA_dep = {{2{1'b0}}, A_rev_lat[4]} + (A_dependent ? bw_BABAAA_ra : 8'd0);
+assign bw_ABABAAA_ra = (bw_ABABAAA_issue > bw_ABABAAA_dep) ? bw_ABABAAA_issue : bw_ABABAAA_dep;
+assign bw_ABABAAA_rb = bw_BABAAA_rb;
+
+// bw_ABABAAB
+wire [7:0] bw_ABABAAB_ra;
+wire [7:0] bw_ABABAAB_rb;
+wire [7:0] bw_ABABAAB_issue = bw_BABAAB_rb + 8'd1;
+wire [7:0] bw_ABABAAB_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BABAAB_ra : 8'd0);
+assign bw_ABABAAB_ra = (bw_ABABAAB_issue > bw_ABABAAB_dep) ? bw_ABABAAB_issue : bw_ABABAAB_dep;
+assign bw_ABABAAB_rb = bw_BABAAB_rb;
+
+// bw_ABABABA
+wire [7:0] bw_ABABABA_ra;
+wire [7:0] bw_ABABABA_rb;
+wire [7:0] bw_ABABABA_issue = bw_BABABA_rb + 8'd1;
+wire [7:0] bw_ABABABA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BABABA_ra : 8'd0);
+assign bw_ABABABA_ra = (bw_ABABABA_issue > bw_ABABABA_dep) ? bw_ABABABA_issue : bw_ABABABA_dep;
+assign bw_ABABABA_rb = bw_BABABA_rb;
+
+// bw_ABABBAA
+wire [7:0] bw_ABABBAA_ra;
+wire [7:0] bw_ABABBAA_rb;
+wire [7:0] bw_ABABBAA_issue = bw_BABBAA_rb + 8'd1;
+wire [7:0] bw_ABABBAA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BABBAA_ra : 8'd0);
+assign bw_ABABBAA_ra = (bw_ABABBAA_issue > bw_ABABBAA_dep) ? bw_ABABBAA_issue : bw_ABABBAA_dep;
+assign bw_ABABBAA_rb = bw_BABBAA_rb;
+
+// bw_ABBAAAA
+wire [7:0] bw_ABBAAAA_ra;
+wire [7:0] bw_ABBAAAA_rb;
+wire [7:0] bw_ABBAAAA_issue = bw_BBAAAA_rb + 8'd1;
+wire [7:0] bw_ABBAAAA_dep = {{2{1'b0}}, A_rev_lat[4]} + (A_dependent ? bw_BBAAAA_ra : 8'd0);
+assign bw_ABBAAAA_ra = (bw_ABBAAAA_issue > bw_ABBAAAA_dep) ? bw_ABBAAAA_issue : bw_ABBAAAA_dep;
+assign bw_ABBAAAA_rb = bw_BBAAAA_rb;
+
+// bw_ABBAAAB
+wire [7:0] bw_ABBAAAB_ra;
+wire [7:0] bw_ABBAAAB_rb;
+wire [7:0] bw_ABBAAAB_issue = bw_BBAAAB_rb + 8'd1;
+wire [7:0] bw_ABBAAAB_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BBAAAB_ra : 8'd0);
+assign bw_ABBAAAB_ra = (bw_ABBAAAB_issue > bw_ABBAAAB_dep) ? bw_ABBAAAB_issue : bw_ABBAAAB_dep;
+assign bw_ABBAAAB_rb = bw_BBAAAB_rb;
+
+// bw_ABBAABA
+wire [7:0] bw_ABBAABA_ra;
+wire [7:0] bw_ABBAABA_rb;
+wire [7:0] bw_ABBAABA_issue = bw_BBAABA_rb + 8'd1;
+wire [7:0] bw_ABBAABA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BBAABA_ra : 8'd0);
+assign bw_ABBAABA_ra = (bw_ABBAABA_issue > bw_ABBAABA_dep) ? bw_ABBAABA_issue : bw_ABBAABA_dep;
+assign bw_ABBAABA_rb = bw_BBAABA_rb;
+
+// bw_ABBABAA
+wire [7:0] bw_ABBABAA_ra;
+wire [7:0] bw_ABBABAA_rb;
+wire [7:0] bw_ABBABAA_issue = bw_BBABAA_rb + 8'd1;
+wire [7:0] bw_ABBABAA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BBABAA_ra : 8'd0);
+assign bw_ABBABAA_ra = (bw_ABBABAA_issue > bw_ABBABAA_dep) ? bw_ABBABAA_issue : bw_ABBABAA_dep;
+assign bw_ABBABAA_rb = bw_BBABAA_rb;
+
+// bw_ABBBAAA
+wire [7:0] bw_ABBBAAA_ra;
+wire [7:0] bw_ABBBAAA_rb;
+wire [7:0] bw_ABBBAAA_issue = bw_BBBAAA_rb + 8'd1;
+wire [7:0] bw_ABBBAAA_dep = {{2{1'b0}}, A_rev_lat[3]} + (A_dependent ? bw_BBBAAA_ra : 8'd0);
+assign bw_ABBBAAA_ra = (bw_ABBBAAA_issue > bw_ABBBAAA_dep) ? bw_ABBBAAA_issue : bw_ABBBAAA_dep;
+assign bw_ABBBAAA_rb = bw_BBBAAA_rb;
+
+// bw_BAAAAAA
+wire [8:0] bw_BAAAAAA_ra;
+wire [8:0] bw_BAAAAAA_rb;
+wire [8:0] bw_BAAAAAA_issue = bw_AAAAAA_ra + 9'd1;
+wire [5:0] bw_BAAAAAA_dep = B_rev_lat[0] + (B_dependent ? {{5{1'b0}}, bw_AAAAAA_rb} : 6'd0);
+assign bw_BAAAAAA_rb = (bw_BAAAAAA_issue > {{3{1'b0}}, bw_BAAAAAA_dep}) ? bw_BAAAAAA_issue : {{3{1'b0}}, bw_BAAAAAA_dep};
+assign bw_BAAAAAA_ra = bw_AAAAAA_ra;
+
+// bw_BAAAAAB
+wire [7:0] bw_BAAAAAB_ra;
+wire [7:0] bw_BAAAAAB_rb;
+wire [7:0] bw_BAAAAAB_issue = bw_AAAAAB_ra + 8'd1;
+wire [6:0] bw_BAAAAAB_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AAAAAB_rb} : 7'd0);
+assign bw_BAAAAAB_rb = (bw_BAAAAAB_issue > {{1{1'b0}}, bw_BAAAAAB_dep}) ? bw_BAAAAAB_issue : {{1{1'b0}}, bw_BAAAAAB_dep};
+assign bw_BAAAAAB_ra = bw_AAAAAB_ra;
+
+// bw_BAAAABA
+wire [7:0] bw_BAAAABA_ra;
+wire [7:0] bw_BAAAABA_rb;
+wire [7:0] bw_BAAAABA_issue = bw_AAAABA_ra + 8'd1;
+wire [6:0] bw_BAAAABA_dep = {{1{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AAAABA_rb} : 7'd0);
+assign bw_BAAAABA_rb = (bw_BAAAABA_issue > {{1{1'b0}}, bw_BAAAABA_dep}) ? bw_BAAAABA_issue : {{1{1'b0}}, bw_BAAAABA_dep};
+assign bw_BAAAABA_ra = bw_AAAABA_ra;
+
+// bw_BAAAABB
+wire [7:0] bw_BAAAABB_ra;
+wire [7:0] bw_BAAAABB_rb;
+wire [7:0] bw_BAAAABB_issue = bw_AAAABB_ra + 8'd1;
+wire [7:0] bw_BAAAABB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AAAABB_rb} : 8'd0);
+assign bw_BAAAABB_rb = (bw_BAAAABB_issue > bw_BAAAABB_dep) ? bw_BAAAABB_issue : bw_BAAAABB_dep;
+assign bw_BAAAABB_ra = bw_AAAABB_ra;
+
+// bw_BAAABAA
+wire [7:0] bw_BAAABAA_ra;
+wire [7:0] bw_BAAABAA_rb;
+wire [7:0] bw_BAAABAA_issue = bw_AAABAA_ra + 8'd1;
+wire [7:0] bw_BAAABAA_dep = {{2{1'b0}}, B_rev_lat[1]} + (B_dependent ? {{1{1'b0}}, bw_AAABAA_rb} : 8'd0);
+assign bw_BAAABAA_rb = (bw_BAAABAA_issue > bw_BAAABAA_dep) ? bw_BAAABAA_issue : bw_BAAABAA_dep;
+assign bw_BAAABAA_ra = bw_AAABAA_ra;
+
+// bw_BAAABAB
+wire [7:0] bw_BAAABAB_ra;
+wire [7:0] bw_BAAABAB_rb;
+wire [7:0] bw_BAAABAB_issue = bw_AAABAB_ra + 8'd1;
+wire [7:0] bw_BAAABAB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AAABAB_rb} : 8'd0);
+assign bw_BAAABAB_rb = (bw_BAAABAB_issue > bw_BAAABAB_dep) ? bw_BAAABAB_issue : bw_BAAABAB_dep;
+assign bw_BAAABAB_ra = bw_AAABAB_ra;
+
+// bw_BAAABBA
+wire [7:0] bw_BAAABBA_ra;
+wire [7:0] bw_BAAABBA_rb;
+wire [7:0] bw_BAAABBA_issue = bw_AAABBA_ra + 8'd1;
+wire [7:0] bw_BAAABBA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AAABBA_rb} : 8'd0);
+assign bw_BAAABBA_rb = (bw_BAAABBA_issue > bw_BAAABBA_dep) ? bw_BAAABBA_issue : bw_BAAABBA_dep;
+assign bw_BAAABBA_ra = bw_AAABBA_ra;
+
+// bw_BAABAAA
+wire [7:0] bw_BAABAAA_ra;
+wire [7:0] bw_BAABAAA_rb;
+wire [7:0] bw_BAABAAA_issue = bw_AABAAA_ra + 8'd1;
+wire [7:0] bw_BAABAAA_dep = {{2{1'b0}}, B_rev_lat[1]} + (B_dependent ? bw_AABAAA_rb : 8'd0);
+assign bw_BAABAAA_rb = (bw_BAABAAA_issue > bw_BAABAAA_dep) ? bw_BAABAAA_issue : bw_BAABAAA_dep;
+assign bw_BAABAAA_ra = bw_AABAAA_ra;
+
+// bw_BAABAAB
+wire [7:0] bw_BAABAAB_ra;
+wire [7:0] bw_BAABAAB_rb;
+wire [7:0] bw_BAABAAB_issue = bw_AABAAB_ra + 8'd1;
+wire [7:0] bw_BAABAAB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AABAAB_rb} : 8'd0);
+assign bw_BAABAAB_rb = (bw_BAABAAB_issue > bw_BAABAAB_dep) ? bw_BAABAAB_issue : bw_BAABAAB_dep;
+assign bw_BAABAAB_ra = bw_AABAAB_ra;
+
+// bw_BAABABA
+wire [7:0] bw_BAABABA_ra;
+wire [7:0] bw_BAABABA_rb;
+wire [7:0] bw_BAABABA_issue = bw_AABABA_ra + 8'd1;
+wire [7:0] bw_BAABABA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? {{1{1'b0}}, bw_AABABA_rb} : 8'd0);
+assign bw_BAABABA_rb = (bw_BAABABA_issue > bw_BAABABA_dep) ? bw_BAABABA_issue : bw_BAABABA_dep;
+assign bw_BAABABA_ra = bw_AABABA_ra;
+
+// bw_BAABBAA
+wire [7:0] bw_BAABBAA_ra;
+wire [7:0] bw_BAABBAA_rb;
+wire [7:0] bw_BAABBAA_issue = bw_AABBAA_ra + 8'd1;
+wire [7:0] bw_BAABBAA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? bw_AABBAA_rb : 8'd0);
+assign bw_BAABBAA_rb = (bw_BAABBAA_issue > bw_BAABBAA_dep) ? bw_BAABBAA_issue : bw_BAABBAA_dep;
+assign bw_BAABBAA_ra = bw_AABBAA_ra;
+
+// bw_BABAAAA
+wire [7:0] bw_BABAAAA_ra;
+wire [7:0] bw_BABAAAA_rb;
+wire [7:0] bw_BABAAAA_issue = bw_ABAAAA_ra + 8'd1;
+wire [7:0] bw_BABAAAA_dep = {{2{1'b0}}, B_rev_lat[1]} + (B_dependent ? bw_ABAAAA_rb : 8'd0);
+assign bw_BABAAAA_rb = (bw_BABAAAA_issue > bw_BABAAAA_dep) ? bw_BABAAAA_issue : bw_BABAAAA_dep;
+assign bw_BABAAAA_ra = bw_ABAAAA_ra;
+
+// bw_BABAAAB
+wire [7:0] bw_BABAAAB_ra;
+wire [7:0] bw_BABAAAB_rb;
+wire [7:0] bw_BABAAAB_issue = bw_ABAAAB_ra + 8'd1;
+wire [7:0] bw_BABAAAB_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? bw_ABAAAB_rb : 8'd0);
+assign bw_BABAAAB_rb = (bw_BABAAAB_issue > bw_BABAAAB_dep) ? bw_BABAAAB_issue : bw_BABAAAB_dep;
+assign bw_BABAAAB_ra = bw_ABAAAB_ra;
+
+// bw_BABAABA
+wire [7:0] bw_BABAABA_ra;
+wire [7:0] bw_BABAABA_rb;
+wire [7:0] bw_BABAABA_issue = bw_ABAABA_ra + 8'd1;
+wire [7:0] bw_BABAABA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? bw_ABAABA_rb : 8'd0);
+assign bw_BABAABA_rb = (bw_BABAABA_issue > bw_BABAABA_dep) ? bw_BABAABA_issue : bw_BABAABA_dep;
+assign bw_BABAABA_ra = bw_ABAABA_ra;
+
+// bw_BABABAA
+wire [7:0] bw_BABABAA_ra;
+wire [7:0] bw_BABABAA_rb;
+wire [7:0] bw_BABABAA_issue = bw_ABABAA_ra + 8'd1;
+wire [7:0] bw_BABABAA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? bw_ABABAA_rb : 8'd0);
+assign bw_BABABAA_rb = (bw_BABABAA_issue > bw_BABABAA_dep) ? bw_BABABAA_issue : bw_BABABAA_dep;
+assign bw_BABABAA_ra = bw_ABABAA_ra;
+
+// bw_BABBAAA
+wire [7:0] bw_BABBAAA_ra;
+wire [7:0] bw_BABBAAA_rb;
+wire [7:0] bw_BABBAAA_issue = bw_ABBAAA_ra + 8'd1;
+wire [7:0] bw_BABBAAA_dep = {{2{1'b0}}, B_rev_lat[2]} + (B_dependent ? bw_ABBAAA_rb : 8'd0);
+assign bw_BABBAAA_rb = (bw_BABBAAA_issue > bw_BABBAAA_dep) ? bw_BABBAAA_issue : bw_BABBAAA_dep;
+assign bw_BABBAAA_ra = bw_ABBAAA_ra;
+
+// bw_BBAAAAA
+wire [7:0] bw_BBAAAAA_ra;
+wire [8:0] bw_BBAAAAA_rb;
+wire [5:0] bw_BBAAAAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
+wire [8:0] bw_BBAAAAA_path = {{1{1'b0}}, bw_BAAAAA_rb} + {{3{1'b0}}, bw_BBAAAAA_step};
+assign bw_BBAAAAA_rb = (bw_BBAAAAA_path > {{3{1'b0}}, B_rev_lat[1]}) ? bw_BBAAAAA_path : {{3{1'b0}}, B_rev_lat[1]};
+assign bw_BBAAAAA_ra = bw_BAAAAA_ra;
+
+// bw_BBAAAAB
+wire [7:0] bw_BBAAAAB_ra;
+wire [7:0] bw_BBAAAAB_rb;
+wire [5:0] bw_BBAAAAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBAAAAB_path = bw_BAAAAB_rb + {{2{1'b0}}, bw_BBAAAAB_step};
+assign bw_BBAAAAB_rb = (bw_BBAAAAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAAAB_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBAAAAB_ra = bw_BAAAAB_ra;
+
+// bw_BBAAABA
+wire [7:0] bw_BBAAABA_ra;
+wire [7:0] bw_BBAAABA_rb;
+wire [5:0] bw_BBAAABA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBAAABA_path = bw_BAAABA_rb + {{2{1'b0}}, bw_BBAAABA_step};
+assign bw_BBAAABA_rb = (bw_BBAAABA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAABA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBAAABA_ra = bw_BAAABA_ra;
+
+// bw_BBAABAA
+wire [7:0] bw_BBAABAA_ra;
+wire [7:0] bw_BBAABAA_rb;
+wire [5:0] bw_BBAABAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBAABAA_path = bw_BAABAA_rb + {{2{1'b0}}, bw_BBAABAA_step};
+assign bw_BBAABAA_rb = (bw_BBAABAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAABAA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBAABAA_ra = bw_BAABAA_ra;
+
+// bw_BBABAAA
+wire [7:0] bw_BBABAAA_ra;
+wire [7:0] bw_BBABAAA_rb;
+wire [5:0] bw_BBABAAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [7:0] bw_BBABAAA_path = bw_BABAAA_rb + {{2{1'b0}}, bw_BBABAAA_step};
+assign bw_BBABAAA_rb = (bw_BBABAAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBABAAA_path : {{2{1'b0}}, B_rev_lat[2]};
+assign bw_BBABAAA_ra = bw_BABAAA_ra;
+
+// bw_BBBAAAA
+wire [7:0] bw_BBBAAAA_ra;
+wire [8:0] bw_BBBAAAA_rb;
+wire [5:0] bw_BBBAAAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [8:0] bw_BBBAAAA_path = {{1{1'b0}}, bw_BBAAAA_rb} + {{3{1'b0}}, bw_BBBAAAA_step};
+assign bw_BBBAAAA_rb = (bw_BBBAAAA_path > {{3{1'b0}}, B_rev_lat[2]}) ? bw_BBBAAAA_path : {{3{1'b0}}, B_rev_lat[2]};
+assign bw_BBBAAAA_ra = bw_BBAAAA_ra;
+
+

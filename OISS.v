@@ -411,91 +411,40 @@ always @(*) begin
     end
 end
 // ============================================================
-// Tree Calculator
+// Backward Tree Calculator
 // ============================================================
+// Reverse latency indexing is shared by all backward suffix nodes.
+reg [5:0] A_rev_lat [0:7];
+reg [5:0] B_rev_lat [0:3];
+integer rev_i;
 
-// Shared arithmetic for two consecutive issues from the same group.
-// Legal latency is positive: consecutive dependent issues advance by latency.
-wire [5:0] A_step_0 = A_dependent ? A_lat_ext[0][5:0] : 6'd1;
-wire [6:0] A_pair_0 = {1'b0,A_step_0} + {1'b0,A_lat_ext[1][5:0]};
-wire [5:0] A_step_1 = A_dependent ? A_lat_ext[1][5:0] : 6'd1;
-wire [6:0] A_pair_1 = {1'b0,A_step_1} + {1'b0,A_lat_ext[2][5:0]};
-wire [5:0] A_step_2 = A_dependent ? A_lat_ext[2][5:0] : 6'd1;
-wire [6:0] A_pair_2 = {1'b0,A_step_2} + {1'b0,A_lat_ext[3][5:0]};
-wire [5:0] A_step_3 = A_dependent ? A_lat_ext[3][5:0] : 6'd1;
-wire [6:0] A_pair_3 = {1'b0,A_step_3} + {1'b0,A_lat_ext[4][5:0]};
-wire [5:0] A_step_4 = A_dependent ? A_lat_ext[4][5:0] : 6'd1;
-wire [6:0] A_pair_4 = {1'b0,A_step_4} + {1'b0,A_lat_ext[5][5:0]};
-wire [5:0] A_step_5 = A_dependent ? A_lat_ext[5][5:0] : 6'd1;
-wire [6:0] A_pair_5 = {1'b0,A_step_5} + {1'b0,A_lat_ext[6][5:0]};
-wire [5:0] A_step_6 = A_dependent ? A_lat_ext[6][5:0] : 6'd1;
-wire [6:0] A_pair_6 = {1'b0,A_step_6} + {1'b0,A_lat_ext[7][5:0]};
-wire [5:0] B_step_0 = B_dependent ? B_lat_ext[0][5:0] : 6'd1;
-wire [6:0] B_pair_0 = {1'b0,B_step_0} + {1'b0,B_lat_ext[1][5:0]};
-wire [5:0] B_step_1 = B_dependent ? B_lat_ext[1][5:0] : 6'd1;
-wire [6:0] B_pair_1 = {1'b0,B_step_1} + {1'b0,B_lat_ext[2][5:0]};
-wire [5:0] B_step_2 = B_dependent ? B_lat_ext[2][5:0] : 6'd1;
-wire [6:0] B_pair_2 = {1'b0,B_step_2} + {1'b0,B_lat_ext[3][5:0]};
-
-// shared tail precomputation
-wire [5:0] A_dep_sum_3 = A_lat_ext[3];
-wire [6:0] A_dep_sum_2 = A_lat_ext[2] + A_dep_sum_3;
-wire [7:0] A_dep_sum_1 = A_lat_ext[1] + A_dep_sum_2;
-wire [7:0] A_dep_sum_0 = A_lat_ext[0] + A_dep_sum_1;
-
-wire [5:0] A_ind_tail_3 = 9'd1 + A_lat_ext[3];
-wire [5:0] A_ind_tail_2 = 9'd1 + ((A_lat_ext[2] > A_ind_tail_3) ?
-                                   A_lat_ext[2] : A_ind_tail_3);
-wire [5:0] A_ind_tail_1 = 9'd1 + ((A_lat_ext[1] > A_ind_tail_2) ?
-                                   A_lat_ext[1] : A_ind_tail_2);
-wire [5:0] A_ind_tail_0 = 9'd1 + ((A_lat_ext[0] > A_ind_tail_1) ?
-                                   A_lat_ext[0] : A_ind_tail_1);
-
-//////// DEPT 2 //////// 
-// n_AA
-wire [5:0] n_AA_sl;
-wire [6:0] n_AA_fa;
-wire [0:0] n_AA_fb;
-wire [6:0] n_AA_fm;
-
-assign n_AA_sl = A_dependent ? A_lat_ext[0] : 9'd1;
-assign n_AA_fa = n_AA_sl + A_lat_ext[1];
-assign n_AA_fb = 9'd0;
-assign n_AA_fm = (A_lat_ext[0] > n_AA_fa) ? A_lat_ext[0] : n_AA_fa;
-
-// n_AB
-wire [0:0] n_AB_sl;
-wire [5:0] n_AB_fa;
-wire [5:0] n_AB_fb;
-wire [5:0] n_AB_fm;
-
-assign n_AB_sl = 9'd1;
-assign n_AB_fa = A_lat_ext[0];
-assign n_AB_fb = 9'd1 + B_lat_ext[0];
-assign n_AB_fm = (n_AB_fa > n_AB_fb) ? n_AB_fa : n_AB_fb;
-
-// n_BA
-wire [0:0] n_BA_sl;
-wire [5:0] n_BA_fa;
-wire [5:0] n_BA_fb;
-wire [5:0] n_BA_fm;
-
-assign n_BA_sl = 9'd1;
-assign n_BA_fa = 9'd1 + A_lat_ext[0];
-assign n_BA_fb = B_lat_ext[0];
-assign n_BA_fm = (n_BA_fa > n_BA_fb) ? n_BA_fa : n_BA_fb;
-
-// n_BB
-wire [5:0] n_BB_sl;
-wire [0:0] n_BB_fa;
-wire [6:0] n_BB_fb;
-wire [6:0] n_BB_fm;
-
-assign n_BB_sl = B_dependent ? B_lat_ext[0] : 9'd1;
-assign n_BB_fa = 9'd0;
-assign n_BB_fb = n_BB_sl + B_lat_ext[1];
-assign n_BB_fm = (B_lat_ext[0] > n_BB_fb) ? B_lat_ext[0] : n_BB_fb;
-
+always @(*) begin
+    for (rev_i = 0; rev_i < 8; rev_i = rev_i + 1) A_rev_lat[rev_i] = 6'd0;
+    for (rev_i = 0; rev_i < 4; rev_i = rev_i + 1) B_rev_lat[rev_i] = 6'd0;
+    case (B_len)
+        3'd0: begin
+            A_rev_lat[0] = A_lat_ext[7][5:0]; A_rev_lat[1] = A_lat_ext[6][5:0]; A_rev_lat[2] = A_lat_ext[5][5:0]; A_rev_lat[3] = A_lat_ext[4][5:0];
+            A_rev_lat[4] = A_lat_ext[3][5:0]; A_rev_lat[5] = A_lat_ext[2][5:0]; A_rev_lat[6] = A_lat_ext[1][5:0]; A_rev_lat[7] = A_lat_ext[0][5:0];
+        end
+        3'd1: begin
+            A_rev_lat[0] = A_lat_ext[6][5:0]; A_rev_lat[1] = A_lat_ext[5][5:0]; A_rev_lat[2] = A_lat_ext[4][5:0]; A_rev_lat[3] = A_lat_ext[3][5:0];
+            A_rev_lat[4] = A_lat_ext[2][5:0]; A_rev_lat[5] = A_lat_ext[1][5:0]; A_rev_lat[6] = A_lat_ext[0][5:0]; B_rev_lat[0] = B_lat_ext[0][5:0];
+        end
+        3'd2: begin
+            A_rev_lat[0] = A_lat_ext[5][5:0]; A_rev_lat[1] = A_lat_ext[4][5:0]; A_rev_lat[2] = A_lat_ext[3][5:0]; A_rev_lat[3] = A_lat_ext[2][5:0];
+            A_rev_lat[4] = A_lat_ext[1][5:0]; A_rev_lat[5] = A_lat_ext[0][5:0]; B_rev_lat[0] = B_lat_ext[1][5:0]; B_rev_lat[1] = B_lat_ext[0][5:0];
+        end
+        3'd3: begin
+            A_rev_lat[0] = A_lat_ext[4][5:0]; A_rev_lat[1] = A_lat_ext[3][5:0]; A_rev_lat[2] = A_lat_ext[2][5:0]; A_rev_lat[3] = A_lat_ext[1][5:0]; A_rev_lat[4] = A_lat_ext[0][5:0];
+            B_rev_lat[0] = B_lat_ext[2][5:0]; B_rev_lat[1] = B_lat_ext[1][5:0]; B_rev_lat[2] = B_lat_ext[0][5:0];
+        end
+        3'd4: begin
+            A_rev_lat[0] = A_lat_ext[3][5:0]; A_rev_lat[1] = A_lat_ext[2][5:0]; A_rev_lat[2] = A_lat_ext[1][5:0]; A_rev_lat[3] = A_lat_ext[0][5:0];
+            B_rev_lat[0] = B_lat_ext[3][5:0]; B_rev_lat[1] = B_lat_ext[2][5:0]; B_rev_lat[2] = B_lat_ext[1][5:0]; B_rev_lat[3] = B_lat_ext[0][5:0];
+        end
+        default: begin end
+    endcase
+end
 
 `include "OISS_tree_node.vh"
 `include "OISS_tree_trail_final_leaves.vh"
