@@ -12,8 +12,9 @@ reg [2:0] rt     [0:7];
 reg [2:0] rd     [0:7];
 
 reg [5:0] inst_latency [0:7];
-reg [7:0] read_mask    [0:7];
-reg [7:0] write_mask   [0:7];
+reg [7:0] read_two_en;
+reg [7:0] read_rd_en;
+reg [7:0] write_rd_en;
 
 integer i;
 
@@ -38,26 +39,11 @@ always @(*) begin
             3'b111: inst_latency[i] = Inst_latency_I[47:42];
         endcase
 
-        // readmask
-        if ((~opcode[i][2]) | (opcode[i][1] & ~opcode[i][0])) begin // ADD, SUB, MUL, DIV, BRANCH
-            read_mask[i] = (8'b0000_0001 << rs[i]) | (8'b0000_0001 << rt[i]);
-
-        end else if (opcode[i] == 3'b101) begin // STORE
-            read_mask[i] = (8'b0000_0001 << rd[i]);
-
-        end else begin // LOAD, JUMP
-            read_mask[i] = 8'b0000_0000;
-
-        end
-        // writemask
-        if ((~opcode[i][2]) | ((~opcode[i][1]) & (~opcode[i][0]))) begin // ADD, SUB, MUL, DIV, LOAD
-            write_mask[i] = (8'b0000_0001 << rd[i]);
-
-        end
-        else begin // STORE, BRANCH, JUMP
-            write_mask[i] = 8'b0000_0000;
-
-        end
+        // Operand-access flags.  Register matches are evaluated directly in
+        // the dependency matrix; this avoids one-hot decoders and 8-bit masks.
+        read_two_en[i] = (~opcode[i][2]) | (opcode[i][1] & ~opcode[i][0]); // ALU, BRANCH: rs, rt
+        read_rd_en[i]  = (opcode[i] == 3'b101);                             // STORE: rd
+        write_rd_en[i] = (~opcode[i][2]) | ((~opcode[i][1]) & (~opcode[i][0])); // ALU, LOAD: rd
 
     end
 end
@@ -65,30 +51,53 @@ end
 // ============================================================
 // Dependency Detection
 // ============================================================
-reg [7:0] access_mask [0:7];
 reg [7:0] dep_mask    [0:7];
+reg [7:0] eq_rd_rd    [0:7];
+reg [7:0] eq_rd_rs    [0:7];
+reg [7:0] eq_rd_rt    [0:7];
+reg [7:0] eq_rs_rd    [0:7];
+reg [7:0] eq_rt_rd    [0:7];
 
 integer dep_i;
 integer dep_j;
 
 always @(*) begin
-    // Register access mask
     for (dep_i = 0; dep_i < 8; dep_i = dep_i + 1) begin
-        access_mask[dep_i] =  read_mask[dep_i] | write_mask[dep_i];
-        // Default: no dependency
         dep_mask[dep_i] = 8'b0000_0000;
+        eq_rd_rd[dep_i] = 8'b0000_0000;
+        eq_rd_rs[dep_i] = 8'b0000_0000;
+        eq_rd_rt[dep_i] = 8'b0000_0000;
+        eq_rs_rd[dep_i] = 8'b0000_0000;
+        eq_rt_rd[dep_i] = 8'b0000_0000;
     end
 
-    // Dependency matrix generation (Only original-order pairs (i < j) need to be checked)
+    // Dependency matrix generation (only original-order pairs i < j).
+    // Keep each 3-bit equality as a shared signal because rd_i == rd_j is
+    // needed by both WAW and STORE-related RAW/WAR checks.
     for (dep_i = 0; dep_i < 7; dep_i = dep_i + 1) begin
         for (dep_j = dep_i + 1; dep_j < 8; dep_j = dep_j + 1) begin
-            dep_mask[dep_i][dep_j] = (|(write_mask[dep_i] & access_mask[dep_j])) |  // RAW WAW
-                                     (|(read_mask[dep_i]  & write_mask[dep_j]));  // WAR
+            eq_rd_rd[dep_i][dep_j] = (rd[dep_i] == rd[dep_j]);
+            eq_rd_rs[dep_i][dep_j] = (rd[dep_i] == rs[dep_j]);
+            eq_rd_rt[dep_i][dep_j] = (rd[dep_i] == rt[dep_j]);
+            eq_rs_rd[dep_i][dep_j] = (rs[dep_i] == rd[dep_j]);
+            eq_rt_rd[dep_i][dep_j] = (rt[dep_i] == rd[dep_j]);
+
+            dep_mask[dep_i][dep_j] =
+                // write_i -> write_j / STORE_j
+                (write_rd_en[dep_i] & (write_rd_en[dep_j] | read_rd_en[dep_j]) & eq_rd_rd[dep_i][dep_j]) |
+                // write_i -> ALU/BRANCH_j
+                (write_rd_en[dep_i] & read_two_en[dep_j] & (eq_rd_rs[dep_i][dep_j] | eq_rd_rt[dep_i][dep_j])) |
+                // STORE_i -> write_j
+                (write_rd_en[dep_j] & read_rd_en[dep_i] & eq_rd_rd[dep_i][dep_j]) |
+                // ALU/BRANCH_i -> write_j
+                (write_rd_en[dep_j] & read_two_en[dep_i] & (eq_rs_rd[dep_i][dep_j] | eq_rt_rd[dep_i][dep_j]));
 
         end
     end
 
 end
+
+
 
 
 
@@ -446,6 +455,23 @@ always @(*) begin
     endcase
 end
 
+// Shared same-group backward increments.  Every same-group tree transition
+// uses one of these twelve drivers directly, rather than rebuilding the
+// dependent/independent MUX at each node.
+wire [5:0] A_bw_step_0 = A_dependent ? A_rev_lat[0] : 6'd1;
+wire [5:0] A_bw_step_1 = A_dependent ? A_rev_lat[1] : 6'd1;
+wire [5:0] A_bw_step_2 = A_dependent ? A_rev_lat[2] : 6'd1;
+wire [5:0] A_bw_step_3 = A_dependent ? A_rev_lat[3] : 6'd1;
+wire [5:0] A_bw_step_4 = A_dependent ? A_rev_lat[4] : 6'd1;
+wire [5:0] A_bw_step_5 = A_dependent ? A_rev_lat[5] : 6'd1;
+wire [5:0] A_bw_step_6 = A_dependent ? A_rev_lat[6] : 6'd1;
+wire [5:0] A_bw_step_7 = A_dependent ? A_rev_lat[7] : 6'd1;
+
+wire [5:0] B_bw_step_0 = B_dependent ? B_rev_lat[0] : 6'd1;
+wire [5:0] B_bw_step_1 = B_dependent ? B_rev_lat[1] : 6'd1;
+wire [5:0] B_bw_step_2 = B_dependent ? B_rev_lat[2] : 6'd1;
+wire [5:0] B_bw_step_3 = B_dependent ? B_rev_lat[3] : 6'd1;
+
 `include "OISS_tree_node.vh"
 `include "OISS_tree_trail_final_leaves.vh"
 `include "OISS_candidate_bank.vh"
@@ -475,4 +501,3 @@ end
 assign Ex_cycle = best_cycle;
 
 endmodule
-

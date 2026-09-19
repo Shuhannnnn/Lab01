@@ -20,8 +20,7 @@ assign bw_B_rb = B_rev_lat[0];
 // bw_AA
 wire [6:0] bw_AA_ra;
 wire [0:0] bw_AA_rb;
-wire [5:0] bw_AA_step = A_dependent ? A_rev_lat[1] : 6'd1;
-wire [6:0] bw_AA_path = {{1{1'b0}}, bw_A_ra} + {{1{1'b0}}, bw_AA_step};
+wire [6:0] bw_AA_path = {{1{1'b0}}, bw_A_ra} + {{1{1'b0}}, A_bw_step_1};
 assign bw_AA_ra = (bw_AA_path > {{1{1'b0}}, A_rev_lat[1]}) ? bw_AA_path : {{1{1'b0}}, A_rev_lat[1]};
 assign bw_AA_rb = bw_A_rb;
 
@@ -44,8 +43,7 @@ assign bw_BA_ra = bw_A_ra;
 // bw_BB
 wire [0:0] bw_BB_ra;
 wire [6:0] bw_BB_rb;
-wire [5:0] bw_BB_step = B_dependent ? B_rev_lat[1] : 6'd1;
-wire [6:0] bw_BB_path = {{1{1'b0}}, bw_B_rb} + {{1{1'b0}}, bw_BB_step};
+wire [6:0] bw_BB_path = {{1{1'b0}}, bw_B_rb} + {{1{1'b0}}, B_bw_step_1};
 assign bw_BB_rb = (bw_BB_path > {{1{1'b0}}, B_rev_lat[1]}) ? bw_BB_path : {{1{1'b0}}, B_rev_lat[1]};
 assign bw_BB_ra = bw_B_ra;
 
@@ -54,16 +52,14 @@ assign bw_BB_ra = bw_B_ra;
 // bw_AAA
 wire [7:0] bw_AAA_ra;
 wire [0:0] bw_AAA_rb;
-wire [5:0] bw_AAA_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AAA_path = {{1{1'b0}}, bw_AA_ra} + {{2{1'b0}}, bw_AAA_step};
+wire [7:0] bw_AAA_path = {{1{1'b0}}, bw_AA_ra} + {{2{1'b0}}, A_bw_step_2};
 assign bw_AAA_ra = (bw_AAA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAA_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AAA_rb = bw_AA_rb;
 
 // bw_AAB
 wire [6:0] bw_AAB_ra;
 wire [5:0] bw_AAB_rb;
-wire [5:0] bw_AAB_step = A_dependent ? A_rev_lat[1] : 6'd1;
-wire [6:0] bw_AAB_path = {{1{1'b0}}, bw_AB_ra} + {{1{1'b0}}, bw_AAB_step};
+wire [6:0] bw_AAB_path = {{1{1'b0}}, bw_AB_ra} + {{1{1'b0}}, A_bw_step_1};
 assign bw_AAB_ra = (bw_AAB_path > {{1{1'b0}}, A_rev_lat[1]}) ? bw_AAB_path : {{1{1'b0}}, A_rev_lat[1]};
 assign bw_AAB_rb = bw_AB_rb;
 
@@ -102,16 +98,14 @@ assign bw_BAB_ra = bw_AB_ra;
 // bw_BBA
 wire [5:0] bw_BBA_ra;
 wire [6:0] bw_BBA_rb;
-wire [5:0] bw_BBA_step = B_dependent ? B_rev_lat[1] : 6'd1;
-wire [6:0] bw_BBA_path = {{1{1'b0}}, bw_BA_rb} + {{1{1'b0}}, bw_BBA_step};
+wire [6:0] bw_BBA_path = {{1{1'b0}}, bw_BA_rb} + {{1{1'b0}}, B_bw_step_1};
 assign bw_BBA_rb = (bw_BBA_path > {{1{1'b0}}, B_rev_lat[1]}) ? bw_BBA_path : {{1{1'b0}}, B_rev_lat[1]};
 assign bw_BBA_ra = bw_BA_ra;
 
 // bw_BBB
 wire [0:0] bw_BBB_ra;
 wire [7:0] bw_BBB_rb;
-wire [5:0] bw_BBB_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBB_path = {{1{1'b0}}, bw_BB_rb} + {{2{1'b0}}, bw_BBB_step};
+wire [7:0] bw_BBB_path = {{1{1'b0}}, bw_BB_rb} + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBB_rb = (bw_BBB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBB_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBB_ra = bw_BB_ra;
 
@@ -120,32 +114,28 @@ assign bw_BBB_ra = bw_BB_ra;
 // bw_AAAA
 wire [7:0] bw_AAAA_ra;
 wire [0:0] bw_AAAA_rb;
-wire [5:0] bw_AAAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAAA_path = bw_AAA_ra + {{2{1'b0}}, bw_AAAA_step};
+wire [7:0] bw_AAAA_path = bw_AAA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAAA_ra = (bw_AAAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAAA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAAA_rb = bw_AAA_rb;
 
 // bw_AAAB
 wire [7:0] bw_AAAB_ra;
 wire [5:0] bw_AAAB_rb;
-wire [5:0] bw_AAAB_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AAAB_path = {{1{1'b0}}, bw_AAB_ra} + {{2{1'b0}}, bw_AAAB_step};
+wire [7:0] bw_AAAB_path = {{1{1'b0}}, bw_AAB_ra} + {{2{1'b0}}, A_bw_step_2};
 assign bw_AAAB_ra = (bw_AAAB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAAB_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AAAB_rb = bw_AAB_rb;
 
 // bw_AABA
 wire [7:0] bw_AABA_ra;
 wire [5:0] bw_AABA_rb;
-wire [5:0] bw_AABA_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AABA_path = {{1{1'b0}}, bw_ABA_ra} + {{2{1'b0}}, bw_AABA_step};
+wire [7:0] bw_AABA_path = {{1{1'b0}}, bw_ABA_ra} + {{2{1'b0}}, A_bw_step_2};
 assign bw_AABA_ra = (bw_AABA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABA_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AABA_rb = bw_ABA_rb;
 
 // bw_AABB
 wire [7:0] bw_AABB_ra;
 wire [6:0] bw_AABB_rb;
-wire [5:0] bw_AABB_step = A_dependent ? A_rev_lat[1] : 6'd1;
-wire [7:0] bw_AABB_path = {{1{1'b0}}, bw_ABB_ra} + {{2{1'b0}}, bw_AABB_step};
+wire [7:0] bw_AABB_path = {{1{1'b0}}, bw_ABB_ra} + {{2{1'b0}}, A_bw_step_1};
 assign bw_AABB_ra = (bw_AABB_path > {{2{1'b0}}, A_rev_lat[1]}) ? bw_AABB_path : {{2{1'b0}}, A_rev_lat[1]};
 assign bw_AABB_rb = bw_ABB_rb;
 
@@ -216,24 +206,21 @@ assign bw_BABB_ra = bw_ABB_ra;
 // bw_BBAA
 wire [6:0] bw_BBAA_ra;
 wire [7:0] bw_BBAA_rb;
-wire [5:0] bw_BBAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
-wire [7:0] bw_BBAA_path = {{1{1'b0}}, bw_BAA_rb} + {{2{1'b0}}, bw_BBAA_step};
+wire [7:0] bw_BBAA_path = {{1{1'b0}}, bw_BAA_rb} + {{2{1'b0}}, B_bw_step_1};
 assign bw_BBAA_rb = (bw_BBAA_path > {{2{1'b0}}, B_rev_lat[1]}) ? bw_BBAA_path : {{2{1'b0}}, B_rev_lat[1]};
 assign bw_BBAA_ra = bw_BAA_ra;
 
 // bw_BBAB
 wire [5:0] bw_BBAB_ra;
 wire [7:0] bw_BBAB_rb;
-wire [5:0] bw_BBAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBAB_path = {{1{1'b0}}, bw_BAB_rb} + {{2{1'b0}}, bw_BBAB_step};
+wire [7:0] bw_BBAB_path = {{1{1'b0}}, bw_BAB_rb} + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBAB_rb = (bw_BBAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAB_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBAB_ra = bw_BAB_ra;
 
 // bw_BBBA
 wire [5:0] bw_BBBA_ra;
 wire [7:0] bw_BBBA_rb;
-wire [5:0] bw_BBBA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBBA_path = {{1{1'b0}}, bw_BBA_rb} + {{2{1'b0}}, bw_BBBA_step};
+wire [7:0] bw_BBBA_path = {{1{1'b0}}, bw_BBA_rb} + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBBA_rb = (bw_BBBA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBBA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBBA_ra = bw_BBA_ra;
 
@@ -242,64 +229,56 @@ assign bw_BBBA_ra = bw_BBA_ra;
 // bw_AAAAA
 wire [7:0] bw_AAAAA_ra;
 wire [0:0] bw_AAAAA_rb;
-wire [5:0] bw_AAAAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAAAA_path = bw_AAAA_ra + {{2{1'b0}}, bw_AAAAA_step};
+wire [7:0] bw_AAAAA_path = bw_AAAA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAAAA_ra = (bw_AAAAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAAA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAAAA_rb = bw_AAAA_rb;
 
 // bw_AAAAB
 wire [7:0] bw_AAAAB_ra;
 wire [5:0] bw_AAAAB_rb;
-wire [5:0] bw_AAAAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAAAB_path = bw_AAAB_ra + {{2{1'b0}}, bw_AAAAB_step};
+wire [7:0] bw_AAAAB_path = bw_AAAB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAAAB_ra = (bw_AAAAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAAAB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAAAB_rb = bw_AAAB_rb;
 
 // bw_AAABA
 wire [7:0] bw_AAABA_ra;
 wire [5:0] bw_AAABA_rb;
-wire [5:0] bw_AAABA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAABA_path = bw_AABA_ra + {{2{1'b0}}, bw_AAABA_step};
+wire [7:0] bw_AAABA_path = bw_AABA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAABA_ra = (bw_AAABA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAABA_rb = bw_AABA_rb;
 
 // bw_AAABB
 wire [7:0] bw_AAABB_ra;
 wire [6:0] bw_AAABB_rb;
-wire [5:0] bw_AAABB_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AAABB_path = bw_AABB_ra + {{2{1'b0}}, bw_AAABB_step};
+wire [7:0] bw_AAABB_path = bw_AABB_ra + {{2{1'b0}}, A_bw_step_2};
 assign bw_AAABB_ra = (bw_AAABB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAABB_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AAABB_rb = bw_AABB_rb;
 
 // bw_AABAA
 wire [7:0] bw_AABAA_ra;
 wire [6:0] bw_AABAA_rb;
-wire [5:0] bw_AABAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABAA_path = bw_ABAA_ra + {{2{1'b0}}, bw_AABAA_step};
+wire [7:0] bw_AABAA_path = bw_ABAA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABAA_ra = (bw_AABAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABAA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABAA_rb = bw_ABAA_rb;
 
 // bw_AABAB
 wire [7:0] bw_AABAB_ra;
 wire [6:0] bw_AABAB_rb;
-wire [5:0] bw_AABAB_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AABAB_path = {{1{1'b0}}, bw_ABAB_ra} + {{2{1'b0}}, bw_AABAB_step};
+wire [7:0] bw_AABAB_path = {{1{1'b0}}, bw_ABAB_ra} + {{2{1'b0}}, A_bw_step_2};
 assign bw_AABAB_ra = (bw_AABAB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABAB_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AABAB_rb = bw_ABAB_rb;
 
 // bw_AABBA
 wire [7:0] bw_AABBA_ra;
 wire [6:0] bw_AABBA_rb;
-wire [5:0] bw_AABBA_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AABBA_path = {{1{1'b0}}, bw_ABBA_ra} + {{2{1'b0}}, bw_AABBA_step};
+wire [7:0] bw_AABBA_path = {{1{1'b0}}, bw_ABBA_ra} + {{2{1'b0}}, A_bw_step_2};
 assign bw_AABBA_ra = (bw_AABBA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABBA_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AABBA_rb = bw_ABBA_rb;
 
 // bw_AABBB
 wire [7:0] bw_AABBB_ra;
 wire [7:0] bw_AABBB_rb;
-wire [5:0] bw_AABBB_step = A_dependent ? A_rev_lat[1] : 6'd1;
-wire [7:0] bw_AABBB_path = bw_ABBB_ra + {{2{1'b0}}, bw_AABBB_step};
+wire [7:0] bw_AABBB_path = bw_ABBB_ra + {{2{1'b0}}, A_bw_step_1};
 assign bw_AABBB_ra = (bw_AABBB_path > {{2{1'b0}}, A_rev_lat[1]}) ? bw_AABBB_path : {{2{1'b0}}, A_rev_lat[1]};
 assign bw_AABBB_rb = bw_ABBB_rb;
 
@@ -418,32 +397,28 @@ assign bw_BABBA_ra = bw_ABBA_ra;
 // bw_BBAAA
 wire [7:0] bw_BBAAA_ra;
 wire [7:0] bw_BBAAA_rb;
-wire [5:0] bw_BBAAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
-wire [7:0] bw_BBAAA_path = bw_BAAA_rb + {{2{1'b0}}, bw_BBAAA_step};
+wire [7:0] bw_BBAAA_path = bw_BAAA_rb + {{2{1'b0}}, B_bw_step_1};
 assign bw_BBAAA_rb = (bw_BBAAA_path > {{2{1'b0}}, B_rev_lat[1]}) ? bw_BBAAA_path : {{2{1'b0}}, B_rev_lat[1]};
 assign bw_BBAAA_ra = bw_BAAA_ra;
 
 // bw_BBAAB
 wire [6:0] bw_BBAAB_ra;
 wire [7:0] bw_BBAAB_rb;
-wire [5:0] bw_BBAAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBAAB_path = {{1{1'b0}}, bw_BAAB_rb} + {{2{1'b0}}, bw_BBAAB_step};
+wire [7:0] bw_BBAAB_path = {{1{1'b0}}, bw_BAAB_rb} + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBAAB_rb = (bw_BBAAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAB_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBAAB_ra = bw_BAAB_ra;
 
 // bw_BBABA
 wire [6:0] bw_BBABA_ra;
 wire [7:0] bw_BBABA_rb;
-wire [5:0] bw_BBABA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBABA_path = {{1{1'b0}}, bw_BABA_rb} + {{2{1'b0}}, bw_BBABA_step};
+wire [7:0] bw_BBABA_path = {{1{1'b0}}, bw_BABA_rb} + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBABA_rb = (bw_BBABA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBABA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBABA_ra = bw_BABA_ra;
 
 // bw_BBBAA
 wire [6:0] bw_BBBAA_ra;
 wire [7:0] bw_BBBAA_rb;
-wire [5:0] bw_BBBAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBBAA_path = bw_BBAA_rb + {{2{1'b0}}, bw_BBBAA_step};
+wire [7:0] bw_BBBAA_path = bw_BBAA_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBBAA_rb = (bw_BBBAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBBAA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBBAA_ra = bw_BBAA_ra;
 
@@ -452,120 +427,105 @@ assign bw_BBBAA_ra = bw_BBAA_ra;
 // bw_AAAAAA
 wire [8:0] bw_AAAAAA_ra;
 wire [0:0] bw_AAAAAA_rb;
-wire [5:0] bw_AAAAAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
-wire [8:0] bw_AAAAAA_path = {{1{1'b0}}, bw_AAAAA_ra} + {{3{1'b0}}, bw_AAAAAA_step};
+wire [8:0] bw_AAAAAA_path = {{1{1'b0}}, bw_AAAAA_ra} + {{3{1'b0}}, A_bw_step_5};
 assign bw_AAAAAA_ra = (bw_AAAAAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAAAA_path : {{3{1'b0}}, A_rev_lat[5]};
 assign bw_AAAAAA_rb = bw_AAAAA_rb;
 
 // bw_AAAAAB
 wire [7:0] bw_AAAAAB_ra;
 wire [5:0] bw_AAAAAB_rb;
-wire [5:0] bw_AAAAAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAAAAB_path = bw_AAAAB_ra + {{2{1'b0}}, bw_AAAAAB_step};
+wire [7:0] bw_AAAAAB_path = bw_AAAAB_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAAAAB_ra = (bw_AAAAAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAAAB_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAAAAB_rb = bw_AAAAB_rb;
 
 // bw_AAAABA
 wire [7:0] bw_AAAABA_ra;
 wire [5:0] bw_AAAABA_rb;
-wire [5:0] bw_AAAABA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAAABA_path = bw_AAABA_ra + {{2{1'b0}}, bw_AAAABA_step};
+wire [7:0] bw_AAAABA_path = bw_AAABA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAAABA_ra = (bw_AAAABA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAABA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAAABA_rb = bw_AAABA_rb;
 
 // bw_AAAABB
 wire [7:0] bw_AAAABB_ra;
 wire [6:0] bw_AAAABB_rb;
-wire [5:0] bw_AAAABB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAAABB_path = bw_AAABB_ra + {{2{1'b0}}, bw_AAAABB_step};
+wire [7:0] bw_AAAABB_path = bw_AAABB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAAABB_ra = (bw_AAAABB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAAABB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAAABB_rb = bw_AAABB_rb;
 
 // bw_AAABAA
 wire [7:0] bw_AAABAA_ra;
 wire [6:0] bw_AAABAA_rb;
-wire [5:0] bw_AAABAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAABAA_path = bw_AABAA_ra + {{2{1'b0}}, bw_AAABAA_step};
+wire [7:0] bw_AAABAA_path = bw_AABAA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAABAA_ra = (bw_AAABAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABAA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAABAA_rb = bw_AABAA_rb;
 
 // bw_AAABAB
 wire [7:0] bw_AAABAB_ra;
 wire [6:0] bw_AAABAB_rb;
-wire [5:0] bw_AAABAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAABAB_path = bw_AABAB_ra + {{2{1'b0}}, bw_AAABAB_step};
+wire [7:0] bw_AAABAB_path = bw_AABAB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAABAB_ra = (bw_AAABAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABAB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAABAB_rb = bw_AABAB_rb;
 
 // bw_AAABBA
 wire [7:0] bw_AAABBA_ra;
 wire [6:0] bw_AAABBA_rb;
-wire [5:0] bw_AAABBA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAABBA_path = bw_AABBA_ra + {{2{1'b0}}, bw_AAABBA_step};
+wire [7:0] bw_AAABBA_path = bw_AABBA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAABBA_ra = (bw_AAABBA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABBA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAABBA_rb = bw_AABBA_rb;
 
 // bw_AAABBB
 wire [7:0] bw_AAABBB_ra;
 wire [7:0] bw_AAABBB_rb;
-wire [5:0] bw_AAABBB_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AAABBB_path = bw_AABBB_ra + {{2{1'b0}}, bw_AAABBB_step};
+wire [7:0] bw_AAABBB_path = bw_AABBB_ra + {{2{1'b0}}, A_bw_step_2};
 assign bw_AAABBB_ra = (bw_AAABBB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AAABBB_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AAABBB_rb = bw_AABBB_rb;
 
 // bw_AABAAA
 wire [7:0] bw_AABAAA_ra;
 wire [7:0] bw_AABAAA_rb;
-wire [5:0] bw_AABAAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AABAAA_path = bw_ABAAA_ra + {{2{1'b0}}, bw_AABAAA_step};
+wire [7:0] bw_AABAAA_path = bw_ABAAA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AABAAA_ra = (bw_AABAAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABAAA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AABAAA_rb = bw_ABAAA_rb;
 
 // bw_AABAAB
 wire [7:0] bw_AABAAB_ra;
 wire [6:0] bw_AABAAB_rb;
-wire [5:0] bw_AABAAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABAAB_path = bw_ABAAB_ra + {{2{1'b0}}, bw_AABAAB_step};
+wire [7:0] bw_AABAAB_path = bw_ABAAB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABAAB_ra = (bw_AABAAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABAAB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABAAB_rb = bw_ABAAB_rb;
 
 // bw_AABABA
 wire [7:0] bw_AABABA_ra;
 wire [6:0] bw_AABABA_rb;
-wire [5:0] bw_AABABA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABABA_path = bw_ABABA_ra + {{2{1'b0}}, bw_AABABA_step};
+wire [7:0] bw_AABABA_path = bw_ABABA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABABA_ra = (bw_AABABA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABABA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABABA_rb = bw_ABABA_rb;
 
 // bw_AABABB
 wire [7:0] bw_AABABB_ra;
 wire [7:0] bw_AABABB_rb;
-wire [5:0] bw_AABABB_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AABABB_path = bw_ABABB_ra + {{2{1'b0}}, bw_AABABB_step};
+wire [7:0] bw_AABABB_path = bw_ABABB_ra + {{2{1'b0}}, A_bw_step_2};
 assign bw_AABABB_ra = (bw_AABABB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABABB_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AABABB_rb = bw_ABABB_rb;
 
 // bw_AABBAA
 wire [7:0] bw_AABBAA_ra;
 wire [7:0] bw_AABBAA_rb;
-wire [5:0] bw_AABBAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABBAA_path = bw_ABBAA_ra + {{2{1'b0}}, bw_AABBAA_step};
+wire [7:0] bw_AABBAA_path = bw_ABBAA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABBAA_ra = (bw_AABBAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBAA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABBAA_rb = bw_ABBAA_rb;
 
 // bw_AABBAB
 wire [7:0] bw_AABBAB_ra;
 wire [7:0] bw_AABBAB_rb;
-wire [5:0] bw_AABBAB_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AABBAB_path = bw_ABBAB_ra + {{2{1'b0}}, bw_AABBAB_step};
+wire [7:0] bw_AABBAB_path = bw_ABBAB_ra + {{2{1'b0}}, A_bw_step_2};
 assign bw_AABBAB_ra = (bw_AABBAB_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABBAB_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AABBAB_rb = bw_ABBAB_rb;
 
 // bw_AABBBA
 wire [7:0] bw_AABBBA_ra;
 wire [7:0] bw_AABBBA_rb;
-wire [5:0] bw_AABBBA_step = A_dependent ? A_rev_lat[2] : 6'd1;
-wire [7:0] bw_AABBBA_path = bw_ABBBA_ra + {{2{1'b0}}, bw_AABBBA_step};
+wire [7:0] bw_AABBBA_path = bw_ABBBA_ra + {{2{1'b0}}, A_bw_step_2};
 assign bw_AABBBA_ra = (bw_AABBBA_path > {{2{1'b0}}, A_rev_lat[2]}) ? bw_AABBBA_path : {{2{1'b0}}, A_rev_lat[2]};
 assign bw_AABBBA_rb = bw_ABBBA_rb;
 
@@ -748,40 +708,35 @@ assign bw_BABBAA_ra = bw_ABBAA_ra;
 // bw_BBAAAA
 wire [7:0] bw_BBAAAA_ra;
 wire [7:0] bw_BBAAAA_rb;
-wire [5:0] bw_BBAAAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
-wire [7:0] bw_BBAAAA_path = bw_BAAAA_rb + {{2{1'b0}}, bw_BBAAAA_step};
+wire [7:0] bw_BBAAAA_path = bw_BAAAA_rb + {{2{1'b0}}, B_bw_step_1};
 assign bw_BBAAAA_rb = (bw_BBAAAA_path > {{2{1'b0}}, B_rev_lat[1]}) ? bw_BBAAAA_path : {{2{1'b0}}, B_rev_lat[1]};
 assign bw_BBAAAA_ra = bw_BAAAA_ra;
 
 // bw_BBAAAB
 wire [7:0] bw_BBAAAB_ra;
 wire [7:0] bw_BBAAAB_rb;
-wire [5:0] bw_BBAAAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBAAAB_path = bw_BAAAB_rb + {{2{1'b0}}, bw_BBAAAB_step};
+wire [7:0] bw_BBAAAB_path = bw_BAAAB_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBAAAB_rb = (bw_BBAAAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAAB_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBAAAB_ra = bw_BAAAB_ra;
 
 // bw_BBAABA
 wire [7:0] bw_BBAABA_ra;
 wire [7:0] bw_BBAABA_rb;
-wire [5:0] bw_BBAABA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBAABA_path = bw_BAABA_rb + {{2{1'b0}}, bw_BBAABA_step};
+wire [7:0] bw_BBAABA_path = bw_BAABA_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBAABA_rb = (bw_BBAABA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAABA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBAABA_ra = bw_BAABA_ra;
 
 // bw_BBABAA
 wire [7:0] bw_BBABAA_ra;
 wire [7:0] bw_BBABAA_rb;
-wire [5:0] bw_BBABAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBABAA_path = bw_BABAA_rb + {{2{1'b0}}, bw_BBABAA_step};
+wire [7:0] bw_BBABAA_path = bw_BABAA_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBABAA_rb = (bw_BBABAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBABAA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBABAA_ra = bw_BABAA_ra;
 
 // bw_BBBAAA
 wire [7:0] bw_BBBAAA_ra;
 wire [7:0] bw_BBBAAA_rb;
-wire [5:0] bw_BBBAAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBBAAA_path = bw_BBAAA_rb + {{2{1'b0}}, bw_BBBAAA_step};
+wire [7:0] bw_BBBAAA_path = bw_BBAAA_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBBAAA_rb = (bw_BBBAAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBBAAA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBBAAA_ra = bw_BBAAA_ra;
 
@@ -790,208 +745,182 @@ assign bw_BBBAAA_ra = bw_BBAAA_ra;
 // bw_AAAAAAA
 wire [8:0] bw_AAAAAAA_ra;
 wire [0:0] bw_AAAAAAA_rb;
-wire [5:0] bw_AAAAAAA_step = A_dependent ? A_rev_lat[6] : 6'd1;
-wire [8:0] bw_AAAAAAA_path = bw_AAAAAA_ra + {{3{1'b0}}, bw_AAAAAAA_step};
+wire [8:0] bw_AAAAAAA_path = bw_AAAAAA_ra + {{3{1'b0}}, A_bw_step_6};
 assign bw_AAAAAAA_ra = (bw_AAAAAAA_path > {{3{1'b0}}, A_rev_lat[6]}) ? bw_AAAAAAA_path : {{3{1'b0}}, A_rev_lat[6]};
 assign bw_AAAAAAA_rb = bw_AAAAAA_rb;
 
 // bw_AAAAAAB
 wire [8:0] bw_AAAAAAB_ra;
 wire [5:0] bw_AAAAAAB_rb;
-wire [5:0] bw_AAAAAAB_step = A_dependent ? A_rev_lat[5] : 6'd1;
-wire [8:0] bw_AAAAAAB_path = {{1{1'b0}}, bw_AAAAAB_ra} + {{3{1'b0}}, bw_AAAAAAB_step};
+wire [8:0] bw_AAAAAAB_path = {{1{1'b0}}, bw_AAAAAB_ra} + {{3{1'b0}}, A_bw_step_5};
 assign bw_AAAAAAB_ra = (bw_AAAAAAB_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAAAAB_path : {{3{1'b0}}, A_rev_lat[5]};
 assign bw_AAAAAAB_rb = bw_AAAAAB_rb;
 
 // bw_AAAAABA
 wire [8:0] bw_AAAAABA_ra;
 wire [5:0] bw_AAAAABA_rb;
-wire [5:0] bw_AAAAABA_step = A_dependent ? A_rev_lat[5] : 6'd1;
-wire [8:0] bw_AAAAABA_path = {{1{1'b0}}, bw_AAAABA_ra} + {{3{1'b0}}, bw_AAAAABA_step};
+wire [8:0] bw_AAAAABA_path = {{1{1'b0}}, bw_AAAABA_ra} + {{3{1'b0}}, A_bw_step_5};
 assign bw_AAAAABA_ra = (bw_AAAAABA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAAABA_path : {{3{1'b0}}, A_rev_lat[5]};
 assign bw_AAAAABA_rb = bw_AAAABA_rb;
 
 // bw_AAAAABB
 wire [8:0] bw_AAAAABB_ra;
 wire [6:0] bw_AAAAABB_rb;
-wire [5:0] bw_AAAAABB_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [8:0] bw_AAAAABB_path = {{1{1'b0}}, bw_AAAABB_ra} + {{3{1'b0}}, bw_AAAAABB_step};
+wire [8:0] bw_AAAAABB_path = {{1{1'b0}}, bw_AAAABB_ra} + {{3{1'b0}}, A_bw_step_4};
 assign bw_AAAAABB_ra = (bw_AAAAABB_path > {{3{1'b0}}, A_rev_lat[4]}) ? bw_AAAAABB_path : {{3{1'b0}}, A_rev_lat[4]};
 assign bw_AAAAABB_rb = bw_AAAABB_rb;
 
 // bw_AAAABAA
 wire [8:0] bw_AAAABAA_ra;
 wire [6:0] bw_AAAABAA_rb;
-wire [5:0] bw_AAAABAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
-wire [8:0] bw_AAAABAA_path = {{1{1'b0}}, bw_AAABAA_ra} + {{3{1'b0}}, bw_AAAABAA_step};
+wire [8:0] bw_AAAABAA_path = {{1{1'b0}}, bw_AAABAA_ra} + {{3{1'b0}}, A_bw_step_5};
 assign bw_AAAABAA_ra = (bw_AAAABAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAAABAA_path : {{3{1'b0}}, A_rev_lat[5]};
 assign bw_AAAABAA_rb = bw_AAABAA_rb;
 
 // bw_AAAABAB
 wire [7:0] bw_AAAABAB_ra;
 wire [6:0] bw_AAAABAB_rb;
-wire [5:0] bw_AAAABAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAAABAB_path = bw_AAABAB_ra + {{2{1'b0}}, bw_AAAABAB_step};
+wire [7:0] bw_AAAABAB_path = bw_AAABAB_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAAABAB_ra = (bw_AAAABAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAABAB_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAAABAB_rb = bw_AAABAB_rb;
 
 // bw_AAAABBA
 wire [7:0] bw_AAAABBA_ra;
 wire [6:0] bw_AAAABBA_rb;
-wire [5:0] bw_AAAABBA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAAABBA_path = bw_AAABBA_ra + {{2{1'b0}}, bw_AAAABBA_step};
+wire [7:0] bw_AAAABBA_path = bw_AAABBA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAAABBA_ra = (bw_AAAABBA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAAABBA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAAABBA_rb = bw_AAABBA_rb;
 
 // bw_AAAABBB
 wire [8:0] bw_AAAABBB_ra;
 wire [7:0] bw_AAAABBB_rb;
-wire [5:0] bw_AAAABBB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [8:0] bw_AAAABBB_path = {{1{1'b0}}, bw_AAABBB_ra} + {{3{1'b0}}, bw_AAAABBB_step};
+wire [8:0] bw_AAAABBB_path = {{1{1'b0}}, bw_AAABBB_ra} + {{3{1'b0}}, A_bw_step_3};
 assign bw_AAAABBB_ra = (bw_AAAABBB_path > {{3{1'b0}}, A_rev_lat[3]}) ? bw_AAAABBB_path : {{3{1'b0}}, A_rev_lat[3]};
 assign bw_AAAABBB_rb = bw_AAABBB_rb;
 
 // bw_AAABAAA
 wire [8:0] bw_AAABAAA_ra;
 wire [7:0] bw_AAABAAA_rb;
-wire [5:0] bw_AAABAAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
-wire [8:0] bw_AAABAAA_path = {{1{1'b0}}, bw_AABAAA_ra} + {{3{1'b0}}, bw_AAABAAA_step};
+wire [8:0] bw_AAABAAA_path = {{1{1'b0}}, bw_AABAAA_ra} + {{3{1'b0}}, A_bw_step_5};
 assign bw_AAABAAA_ra = (bw_AAABAAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AAABAAA_path : {{3{1'b0}}, A_rev_lat[5]};
 assign bw_AAABAAA_rb = bw_AABAAA_rb;
 
 // bw_AAABAAB
 wire [7:0] bw_AAABAAB_ra;
 wire [6:0] bw_AAABAAB_rb;
-wire [5:0] bw_AAABAAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAABAAB_path = bw_AABAAB_ra + {{2{1'b0}}, bw_AAABAAB_step};
+wire [7:0] bw_AAABAAB_path = bw_AABAAB_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAABAAB_ra = (bw_AAABAAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABAAB_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAABAAB_rb = bw_AABAAB_rb;
 
 // bw_AAABABA
 wire [7:0] bw_AAABABA_ra;
 wire [6:0] bw_AAABABA_rb;
-wire [5:0] bw_AAABABA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAABABA_path = bw_AABABA_ra + {{2{1'b0}}, bw_AAABABA_step};
+wire [7:0] bw_AAABABA_path = bw_AABABA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAABABA_ra = (bw_AAABABA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABABA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAABABA_rb = bw_AABABA_rb;
 
 // bw_AAABABB
 wire [7:0] bw_AAABABB_ra;
 wire [7:0] bw_AAABABB_rb;
-wire [5:0] bw_AAABABB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAABABB_path = bw_AABABB_ra + {{2{1'b0}}, bw_AAABABB_step};
+wire [7:0] bw_AAABABB_path = bw_AABABB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAABABB_ra = (bw_AAABABB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABABB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAABABB_rb = bw_AABABB_rb;
 
 // bw_AAABBAA
 wire [7:0] bw_AAABBAA_ra;
 wire [7:0] bw_AAABBAA_rb;
-wire [5:0] bw_AAABBAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AAABBAA_path = bw_AABBAA_ra + {{2{1'b0}}, bw_AAABBAA_step};
+wire [7:0] bw_AAABBAA_path = bw_AABBAA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AAABBAA_ra = (bw_AAABBAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AAABBAA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AAABBAA_rb = bw_AABBAA_rb;
 
 // bw_AAABBAB
 wire [7:0] bw_AAABBAB_ra;
 wire [7:0] bw_AAABBAB_rb;
-wire [5:0] bw_AAABBAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAABBAB_path = bw_AABBAB_ra + {{2{1'b0}}, bw_AAABBAB_step};
+wire [7:0] bw_AAABBAB_path = bw_AABBAB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAABBAB_ra = (bw_AAABBAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABBAB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAABBAB_rb = bw_AABBAB_rb;
 
 // bw_AAABBBA
 wire [7:0] bw_AAABBBA_ra;
 wire [7:0] bw_AAABBBA_rb;
-wire [5:0] bw_AAABBBA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AAABBBA_path = bw_AABBBA_ra + {{2{1'b0}}, bw_AAABBBA_step};
+wire [7:0] bw_AAABBBA_path = bw_AABBBA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AAABBBA_ra = (bw_AAABBBA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AAABBBA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AAABBBA_rb = bw_AABBBA_rb;
 
 // bw_AABAAAA
 wire [8:0] bw_AABAAAA_ra;
 wire [7:0] bw_AABAAAA_rb;
-wire [5:0] bw_AABAAAA_step = A_dependent ? A_rev_lat[5] : 6'd1;
-wire [8:0] bw_AABAAAA_path = {{1{1'b0}}, bw_ABAAAA_ra} + {{3{1'b0}}, bw_AABAAAA_step};
+wire [8:0] bw_AABAAAA_path = {{1{1'b0}}, bw_ABAAAA_ra} + {{3{1'b0}}, A_bw_step_5};
 assign bw_AABAAAA_ra = (bw_AABAAAA_path > {{3{1'b0}}, A_rev_lat[5]}) ? bw_AABAAAA_path : {{3{1'b0}}, A_rev_lat[5]};
 assign bw_AABAAAA_rb = bw_ABAAAA_rb;
 
 // bw_AABAAAB
 wire [7:0] bw_AABAAAB_ra;
 wire [7:0] bw_AABAAAB_rb;
-wire [5:0] bw_AABAAAB_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AABAAAB_path = bw_ABAAAB_ra + {{2{1'b0}}, bw_AABAAAB_step};
+wire [7:0] bw_AABAAAB_path = bw_ABAAAB_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AABAAAB_ra = (bw_AABAAAB_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABAAAB_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AABAAAB_rb = bw_ABAAAB_rb;
 
 // bw_AABAABA
 wire [7:0] bw_AABAABA_ra;
 wire [7:0] bw_AABAABA_rb;
-wire [5:0] bw_AABAABA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AABAABA_path = bw_ABAABA_ra + {{2{1'b0}}, bw_AABAABA_step};
+wire [7:0] bw_AABAABA_path = bw_ABAABA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AABAABA_ra = (bw_AABAABA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABAABA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AABAABA_rb = bw_ABAABA_rb;
 
 // bw_AABAABB
 wire [7:0] bw_AABAABB_ra;
 wire [7:0] bw_AABAABB_rb;
-wire [5:0] bw_AABAABB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABAABB_path = bw_ABAABB_ra + {{2{1'b0}}, bw_AABAABB_step};
+wire [7:0] bw_AABAABB_path = bw_ABAABB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABAABB_ra = (bw_AABAABB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABAABB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABAABB_rb = bw_ABAABB_rb;
 
 // bw_AABABAA
 wire [7:0] bw_AABABAA_ra;
 wire [7:0] bw_AABABAA_rb;
-wire [5:0] bw_AABABAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AABABAA_path = bw_ABABAA_ra + {{2{1'b0}}, bw_AABABAA_step};
+wire [7:0] bw_AABABAA_path = bw_ABABAA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AABABAA_ra = (bw_AABABAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABABAA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AABABAA_rb = bw_ABABAA_rb;
 
 // bw_AABABAB
 wire [7:0] bw_AABABAB_ra;
 wire [7:0] bw_AABABAB_rb;
-wire [5:0] bw_AABABAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABABAB_path = bw_ABABAB_ra + {{2{1'b0}}, bw_AABABAB_step};
+wire [7:0] bw_AABABAB_path = bw_ABABAB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABABAB_ra = (bw_AABABAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABABAB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABABAB_rb = bw_ABABAB_rb;
 
 // bw_AABABBA
 wire [7:0] bw_AABABBA_ra;
 wire [7:0] bw_AABABBA_rb;
-wire [5:0] bw_AABABBA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABABBA_path = bw_ABABBA_ra + {{2{1'b0}}, bw_AABABBA_step};
+wire [7:0] bw_AABABBA_path = bw_ABABBA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABABBA_ra = (bw_AABABBA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABABBA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABABBA_rb = bw_ABABBA_rb;
 
 // bw_AABBAAA
 wire [7:0] bw_AABBAAA_ra;
 wire [7:0] bw_AABBAAA_rb;
-wire [5:0] bw_AABBAAA_step = A_dependent ? A_rev_lat[4] : 6'd1;
-wire [7:0] bw_AABBAAA_path = bw_ABBAAA_ra + {{2{1'b0}}, bw_AABBAAA_step};
+wire [7:0] bw_AABBAAA_path = bw_ABBAAA_ra + {{2{1'b0}}, A_bw_step_4};
 assign bw_AABBAAA_ra = (bw_AABBAAA_path > {{2{1'b0}}, A_rev_lat[4]}) ? bw_AABBAAA_path : {{2{1'b0}}, A_rev_lat[4]};
 assign bw_AABBAAA_rb = bw_ABBAAA_rb;
 
 // bw_AABBAAB
 wire [7:0] bw_AABBAAB_ra;
 wire [7:0] bw_AABBAAB_rb;
-wire [5:0] bw_AABBAAB_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABBAAB_path = bw_ABBAAB_ra + {{2{1'b0}}, bw_AABBAAB_step};
+wire [7:0] bw_AABBAAB_path = bw_ABBAAB_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABBAAB_ra = (bw_AABBAAB_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBAAB_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABBAAB_rb = bw_ABBAAB_rb;
 
 // bw_AABBABA
 wire [7:0] bw_AABBABA_ra;
 wire [7:0] bw_AABBABA_rb;
-wire [5:0] bw_AABBABA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABBABA_path = bw_ABBABA_ra + {{2{1'b0}}, bw_AABBABA_step};
+wire [7:0] bw_AABBABA_path = bw_ABBABA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABBABA_ra = (bw_AABBABA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBABA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABBABA_rb = bw_ABBABA_rb;
 
 // bw_AABBBAA
 wire [7:0] bw_AABBBAA_ra;
 wire [7:0] bw_AABBBAA_rb;
-wire [5:0] bw_AABBBAA_step = A_dependent ? A_rev_lat[3] : 6'd1;
-wire [7:0] bw_AABBBAA_path = bw_ABBBAA_ra + {{2{1'b0}}, bw_AABBBAA_step};
+wire [7:0] bw_AABBBAA_path = bw_ABBBAA_ra + {{2{1'b0}}, A_bw_step_3};
 assign bw_AABBBAA_ra = (bw_AABBBAA_path > {{2{1'b0}}, A_rev_lat[3]}) ? bw_AABBBAA_path : {{2{1'b0}}, A_rev_lat[3]};
 assign bw_AABBBAA_rb = bw_ABBBAA_rb;
 
@@ -1254,49 +1183,42 @@ assign bw_BABBAAA_ra = bw_ABBAAA_ra;
 // bw_BBAAAAA
 wire [7:0] bw_BBAAAAA_ra;
 wire [8:0] bw_BBAAAAA_rb;
-wire [5:0] bw_BBAAAAA_step = B_dependent ? B_rev_lat[1] : 6'd1;
-wire [8:0] bw_BBAAAAA_path = {{1{1'b0}}, bw_BAAAAA_rb} + {{3{1'b0}}, bw_BBAAAAA_step};
+wire [8:0] bw_BBAAAAA_path = {{1{1'b0}}, bw_BAAAAA_rb} + {{3{1'b0}}, B_bw_step_1};
 assign bw_BBAAAAA_rb = (bw_BBAAAAA_path > {{3{1'b0}}, B_rev_lat[1]}) ? bw_BBAAAAA_path : {{3{1'b0}}, B_rev_lat[1]};
 assign bw_BBAAAAA_ra = bw_BAAAAA_ra;
 
 // bw_BBAAAAB
 wire [7:0] bw_BBAAAAB_ra;
 wire [7:0] bw_BBAAAAB_rb;
-wire [5:0] bw_BBAAAAB_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBAAAAB_path = bw_BAAAAB_rb + {{2{1'b0}}, bw_BBAAAAB_step};
+wire [7:0] bw_BBAAAAB_path = bw_BAAAAB_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBAAAAB_rb = (bw_BBAAAAB_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAAAB_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBAAAAB_ra = bw_BAAAAB_ra;
 
 // bw_BBAAABA
 wire [7:0] bw_BBAAABA_ra;
 wire [7:0] bw_BBAAABA_rb;
-wire [5:0] bw_BBAAABA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBAAABA_path = bw_BAAABA_rb + {{2{1'b0}}, bw_BBAAABA_step};
+wire [7:0] bw_BBAAABA_path = bw_BAAABA_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBAAABA_rb = (bw_BBAAABA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAAABA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBAAABA_ra = bw_BAAABA_ra;
 
 // bw_BBAABAA
 wire [7:0] bw_BBAABAA_ra;
 wire [7:0] bw_BBAABAA_rb;
-wire [5:0] bw_BBAABAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBAABAA_path = bw_BAABAA_rb + {{2{1'b0}}, bw_BBAABAA_step};
+wire [7:0] bw_BBAABAA_path = bw_BAABAA_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBAABAA_rb = (bw_BBAABAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBAABAA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBAABAA_ra = bw_BAABAA_ra;
 
 // bw_BBABAAA
 wire [7:0] bw_BBABAAA_ra;
 wire [7:0] bw_BBABAAA_rb;
-wire [5:0] bw_BBABAAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [7:0] bw_BBABAAA_path = bw_BABAAA_rb + {{2{1'b0}}, bw_BBABAAA_step};
+wire [7:0] bw_BBABAAA_path = bw_BABAAA_rb + {{2{1'b0}}, B_bw_step_2};
 assign bw_BBABAAA_rb = (bw_BBABAAA_path > {{2{1'b0}}, B_rev_lat[2]}) ? bw_BBABAAA_path : {{2{1'b0}}, B_rev_lat[2]};
 assign bw_BBABAAA_ra = bw_BABAAA_ra;
 
 // bw_BBBAAAA
 wire [7:0] bw_BBBAAAA_ra;
 wire [8:0] bw_BBBAAAA_rb;
-wire [5:0] bw_BBBAAAA_step = B_dependent ? B_rev_lat[2] : 6'd1;
-wire [8:0] bw_BBBAAAA_path = {{1{1'b0}}, bw_BBAAAA_rb} + {{3{1'b0}}, bw_BBBAAAA_step};
+wire [8:0] bw_BBBAAAA_path = {{1{1'b0}}, bw_BBAAAA_rb} + {{3{1'b0}}, B_bw_step_2};
 assign bw_BBBAAAA_rb = (bw_BBBAAAA_path > {{3{1'b0}}, B_rev_lat[2]}) ? bw_BBBAAAA_path : {{3{1'b0}}, B_rev_lat[2]};
 assign bw_BBBAAAA_ra = bw_BBAAAA_ra;
-
 
